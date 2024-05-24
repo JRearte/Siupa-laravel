@@ -1,0 +1,57 @@
+/* Estilos para el formulario */
+.form-group {
+    margin-bottom: 20px;
+    background: linear-gradient(to top, #294D61,#6DA5C0,#0F969C,#0C7078,#072E33,#05161A);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #fff; /* Color del texto blanco para contrastar con el fondo */
+}
+
+.form-control,
+.form-select {
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente para resaltar el texto */
+}
+
+.invalid-feedback {
+    color: #ff0000;
+}
+
+.btn-primary {
+    background-color: #87CEEB; /* Color azul pastel */
+    border-color: #87CEEB;
+}
+
+.btn-secondary {
+    background-color: #FFDAB9; /* Color naranja pastel */
+    border-color: #FFDAB9;
+}
+
+/* Estilos generales */
+body {
+    background-color: #f5f5f5; /* Color de fondo suave */
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.mt20 {
+    margin-top: 20px;
+}

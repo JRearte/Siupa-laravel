@@ -1,0 +1,284 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to top, #294D61,#6DA5C0,#0F969C,#0C7078,#072E33,#05161A);
+    background-size: cover;
+    font-family: sans-serif;
+    height: 100vh;
+}
+
+a{
+    text-decoration: none;
+}
+
+.galeria{
+    position: relative;
+    display: inline-block;
+    padding: 5px 20px;
+    background: #2984d841;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px;
+    overflow: hidden;
+    transition: 1s;
+    backdrop-filter: blur(10px);
+    border: 1px solid black;
+    border-radius: 30px;
+
+    label{
+        text-transform: uppercase;
+    }
+    p{
+        display: none;
+    }
+}
+
+
+.usuario .galeria:hover{
+    background: #CCE0FF;
+    color: #000000;
+    box-shadow: 0 0 10px #CCE0FF, 0 0 40px #CCE0FF, 0 0 80px #CCE0FF, 0 0 120px #CCE0FF;
+    .imagen{filter: none;}
+}
+
+.sala .galeria:hover{
+    background: #7FFFD4;
+    color: #000000;
+    box-shadow: 0 0 10px #7FFFD4, 0 0 40px #7FFFD4, 0 0 80px #7FFFD4, 0 0 120px #7FFFD4;
+    .imagen{filter: none;}
+}
+
+.reporte .galeria:hover{
+    background: #FFCCCC;
+    color: #000000;
+    box-shadow: 0 0 10px #FFCCCC, 0 0 40px #FFCCCC, 0 0 80px #FFCCCC, 0 0 120px #FFCCCC;
+    .imagen{filter: none;}
+}
+
+.tutor .galeria:hover{
+    background: #CCFFCC;
+    color: #000000;
+    box-shadow: 0 0 10px #CCFFCC, 0 0 40px #CCFFCC, 0 0 80px #CCFFCC, 0 0 120px #CCFFCC;
+    .imagen{filter: none;}
+}
+
+.niño .galeria:hover{
+    background: #FFFFCC;
+    color: #000000;
+    box-shadow: 0 0 10px #FFFFCC, 0 0 40px #FFFFCC, 0 0 80px #FFFFCC, 0 0 120px #FFFFCC;
+    .imagen{filter: none;}
+}
+
+.asistencia .galeria:hover{
+    background: #FFDDA1;
+    color: #000000;
+    box-shadow: 0 0 10px #FFDDA1, 0 0 40px #FFDDA1, 0 0 80px #FFDDA1, 0 0 120px #FFDDA1;
+    .imagen{filter: none;}
+}
+
+
+
+
+/********Computadora************/
+@media (min-width: 991px)
+{
+
+    .galeria p{
+        display: block;
+        position: absolute;
+        text-align: justify;
+        font-weight: bold;
+        word-spacing: -4px;
+        font-size: 14px;
+        top: 50%;
+        left: 20px;
+        right: 20px;
+        line-height: 1.5;
+    }
+
+    .contenedor{
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .galeria{
+        top: 20px;
+        width: 180px;
+        height: 580px;
+    }
+
+    .texto
+    {
+        position: relative;
+        top: 70px;
+        border: none;
+    }
+
+    .imagen{
+        position:relative;
+        width: 100px; 
+        height: 100px; 
+        filter: invert(100%);
+        top: 40px;
+    }
+
+}
+
+
+
+
+
+
+/*********Tablet************/
+@media (min-width: 768px) and (max-width: 990px)
+{
+
+    .contenedor{
+        display: flex;
+        justify-content: center;
+    }
+
+    .galeria{
+        width: 100px;
+        height: 100px;
+        text-align: center;
+    }
+
+    .texto{
+        position: relative;
+        top: 70px;
+        border: none;
+    }
+
+    .imagen{
+        position:absolute;
+        left: 32%;
+        width: 50px; 
+        height: 50px; 
+        filter: invert(100%);
+        top: 10px; 
+    }
+
+    .usuario{
+        top: 35%;
+        left: 30%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .niño{
+        top: 65%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .tutor{
+        top: 35%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .reporte{
+        top: 65%;
+        left: 70%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .sala{
+        top: 65%;
+        left: 30%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .asistencia{
+        top: 35%;
+        left: 70%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        .texto{left: -10px; }
+    }
+}
+
+
+/**********Celular**********/
+@media (max-width: 767px)
+{
+    .contenedor{
+        width: 230px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .galeria{
+        width: 230px;
+        height: 82px;
+    }
+
+    /**Manejo de botones individuales**/
+    .usuario{
+        top: 10%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .niño{
+        top: 58%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .tutor{
+        top: 42%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .sala{
+        top: 26%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .asistencia{
+        top: 74%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .reporte{
+        top: 90%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+/************************************************/
+
+    .texto{
+        position: absolute;
+        left: 90px;
+        top: 45px;
+        border: none;
+    }
+
+    .imagen{
+        position:absolute;
+        left: 20px;
+        width: 50px; 
+        height: 50px; 
+        filter: invert(100%);
+        top: 25px; 
+    }
+}
