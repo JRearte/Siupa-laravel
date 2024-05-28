@@ -45,10 +45,13 @@ class UsuarioRequest extends FormRequest
             'Legajo.regex'      => 'El legajo solo puede contener números y los símbolos "-","/"',
             'Nombre.required'   => 'El nombre es obligatorio.',
             'Nombre.regex'      => 'El nombre solo puede contener letras y espacios.',
+            'Nombre.max'        => 'El nombre solo puede tener un máximo de :max caracteres.',
             'Apellido.required' => 'El apellido es obligatorio.',
             'Apellido.regex'    => 'El apellido solo puede contener letras y espacios.',
+            'Apellido.max'      => 'El apellido solo puede tener un máximo de :max caracteres.',
             'password.required' => 'La contraseña es obligatoria.',
-            'password.min'      => 'La contraseña debe tener minimo :min caracteres.'
+            'password.min'      => 'La contraseña debe tener minimo :min caracteres.',
+            'password.max'      => 'La contraseña solo puede tener un máximo de :max caracteres.',
         ];
     }
 
