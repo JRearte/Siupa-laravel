@@ -25,8 +25,8 @@ class UsuarioRequest extends FormRequest
         $id = $this->route('usuario');
         return [
             'Legajo'     => ['required', 'string', 'size:13', Rule::unique('usuario', 'Legajo')->ignore($id), 'regex:/^[0-9\/\-]+$/'],
-            'Nombre'     => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z\s]+$/'], // Solo letras
-            'Apellido'   => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z\s]+$/'], // Solo letras
+            'Nombre'     => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'], // Solo letras
+            'Apellido'   => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'], // Solo letras
             'Categoria'  => ['required', 'string', 'max:11', 'in:Invitado,Bienestar,Coordinador,Maestro'],
             'password'   => ['required', 'string', 'min:8', 'max:60'],
             'Habilitado' => ['boolean'],
@@ -34,7 +34,7 @@ class UsuarioRequest extends FormRequest
     }
 
     /**
-     * Mensajes personalizados
+     * Mensajes personalizados.
      */
     public function messages()
     {

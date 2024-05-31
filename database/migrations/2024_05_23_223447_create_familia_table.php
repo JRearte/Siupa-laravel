@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('Apellido', 20);
             $table->string('Vinculo', 10)->comment('Padre, Madre, Padrastro, Madrastra, Tío, Tía, Primo, Prima, Hermano, Hermana, Abuelo, Abuela');
             $table->date('Fecha_de_nacimiento');
-            $table->integer('Numero_documento');
+            $table->integer('Numero_documento')->unique();
             $table->string('Tipo_documento', 20);
             $table->string('Lugar_de_trabajo', 50)->nullable();
             $table->decimal('Ingreso', 9, 2)->nullable();

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('Apellido', 20);
             $table->string('Genero', 9)->comment('Masculino, Femenino');
             $table->date('Fecha_de_nacimiento');
-            $table->integer('Numero_documento');
+            $table->integer('Numero_documento')->unique();
             $table->string('Tipo_documento', 20);
             $table->string('Categoria', 10)->comment('Ingresante, Readmitido');
             $table->date('Fecha_de_asignacion');
