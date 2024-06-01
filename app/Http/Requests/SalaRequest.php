@@ -24,7 +24,7 @@ class SalaRequest extends FormRequest
     {
         $id = $this->route('sala');
         return [
-            'Nombre'    => ['required', 'string', 'max:30', RULE::unique('sala', 'Nombre')->ignore($id), 'regex:/^[\p{L}\s]+$/u'],
+            'Nombre'    => ['required', 'string', 'max:30', RULE::unique('sala', 'Nombre')->ignore($id), 'regex:/^[a-zA-Z ]+$/'],
             'Edad'      => ['required', 'integer', 'min:0', 'max:6'], //La edad puede ser de 0 a 6 años.
             'Capacidad' => ['required', 'integer', 'digits_between:1,2'], //La capacidad comprende de 1 a 2 digitos.
         ];

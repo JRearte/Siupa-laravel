@@ -5,10 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use illuminate\Validation\Rule;
 
-class TutorRequest extends FormRequest
+class FamiliaRequest extends FormRequest
 {
     /**
-     * Determina si el usuario esta autorizado a realizar esta solicitud.
+     * Determina si el usuario esta autorizado a realizar la solicitud.
      */
     public function authorize(): bool
     {
@@ -17,24 +17,25 @@ class TutorRequest extends FormRequest
 
     /**
      * Obtiene las reglas de validación que se aplican a la solicitud.
-     *
+     * 
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        $id = $this->route('tutor');
+        $id = $this->route('familia');
         return [
-            'Legajo'              => ['required', 'string', 'size:13', Rule::unique('tutor', 'Legajo')->ignore($id), 'regex:/^[0-9\/\-]+$/'],
             'Nombre'              => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
             'Apellido'            => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
-            'Genero'              => ['required', 'string', 'max:9', 'in:Masculino,Femenino'],
+            'Vinculo'             => ['required', 'string', 'max:10', 'regex:/^[a-zA-Z ]+$/'],
             'Fecha_de_nacimiento' => ['required', 'date'],
-            'Numero_documento'    => ['required', 'integer', 'digits:8', Rule::unique('tutor', 'Numero_documento')->ignore($id)],
+            'Numero_documento'    => ['required', 'integer', 'digits:8', Rule::unique('familia', 'Numero_documento')->ignore($id)],
             'Tipo_documento'      => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
-            'Tipo_tutor'          => ['required', 'string', 'max:10', 'in:Docente,No docente'],
+            'Lugar_de_trabajo'    => ['string', 'max:50', 'regex:/^[a-zA-Z0-9 ]+$/'],
+            'Ingreso'             => ['numeric', 'regex:/^\d{1,8}(\.\d{1,2})?$/'],
             'Habilitado'          => ['boolean'],
         ];
     }
+
 
     /**
      * Mensajes personalizados.
@@ -42,10 +43,6 @@ class TutorRequest extends FormRequest
     public function messages()
     {
         return [
-            'Legajo.required'           => 'El legajo es obligatorio.',
-            'Legajo.size'               => 'El legajo debe tener :size caracteres.',
-            'Legajo.unique'             => 'El legajo ya está en uso.',
-            'Legajo.regex'              => 'El legajo solo puede contener números y los símbolos "-","/"',
             'Nombre.required'           => 'El nombre es obligatorio.',
             'Nombre.regex'              => 'El nombre solo puede contener letras y espacios.',
             'Nombre.max'                => 'El nombre solo puede tener un máximo de :max caracteres.',
@@ -53,12 +50,15 @@ class TutorRequest extends FormRequest
             'Apellido.regex'            => 'El apellido solo puede contener letras y espacios.',
             'Apellido.max'              => 'El apellido solo puede tener un máximo de :max caracteres.',
             'Numero_documento.required' => 'El número de documento es obligatorio.',
-            'Numero_documento.unique'   => 'El número de documento ya esta en uso',
+            'Numero_documento.unique'   => 'El número de documento ya esta en uso.',
             'Numero_documento.digits'   => 'El número de documento debe tener :digits dígitos.',
-            'Numero_documento.integer'  => 'El número de documento solo puede tener números enteros',
+            'Numero_documento.integer'  => 'El número de documento solo puede tener números enteros.',
             'Tipo_documento.required'   => 'El tipo de documento es obligatorio.',
             'Tipo_documento.regex'      => 'El tipo de documento solo puede contener letras.',
             'Tipo_documento.max'        => 'El tipo de documento puede tener un máximo de :max caracteres.',
+            'Lugar_de_trabajo.regex'    => 'El lugar de trabajo solo puede contener letras y números.',
+            'Lugar_de_trabajo.max'      => 'El lugar de trabajo solo puete tener un máximo de :max caracteres.',
+            'Ingreso.regex'             => 'El ingreso debe ser un número con hasta 8 dígitos enteros y hasta 2 decimales.',
         ];
     }
 }
