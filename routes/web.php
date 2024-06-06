@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\SalaController;
 
 
 
@@ -21,7 +22,14 @@ Route::controller(UsuarioController::class)->group(function(){
     Route::post('validar','validar')->name('usuario.validar');
 });
 
-
+Route::controller(SalaController::class)->group(function(){
+    Route::get('/sala','listar')->name('sala.listar');
+    Route::get('sala/agregar','agregar')->name('sala.agregar');
+    Route::post('sala/registrar','registrar')->name('sala.registrar');
+    Route::get('sala/editar/{id}', 'editar')->name('sala.editar');
+    Route::patch('sala/modificar/{sala}','modificar')->name('sala.modificar');
+    Route::delete('sala/eliminar/{id}','eliminar')->name('sala.eliminar');
+});
 
 Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
 Route::get('/', [LoginController::class, 'inicio'])->name('login');
