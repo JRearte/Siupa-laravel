@@ -1,8 +1,5 @@
-@extends('layouts.app')
-
-@section('template_title')
-    {{ __('Create') }} Sala
-@endsection
+@extends('layouts.formulario')
+@section('title', 'Agragar sala')
 
 @section('content')
     <section class="content container-fluid">

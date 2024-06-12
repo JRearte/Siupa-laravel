@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.formulario')
+@section('title', 'Formulario de sala')
 <div class="row padding-1 p-1">
     <div class="col-md-12">
         
@@ -23,6 +24,6 @@
     </div>
         <div class="col-md-12 mt20 mt-2">
         <button type="submit" class="btn btn-primary">{{ __('Aceptar') }}</button>
-        <a class="btn btn-primary" href="{{ route('usuario.listar') }}"> {{ __('Cancelar') }}</a>
+        <a class="btn btn-primary" href="{{ route('sala.listar') }}"> {{ __('Cancelar') }}</a>
     </div>
 </div>

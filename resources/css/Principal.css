@@ -1,0 +1,79 @@
+body {
+    background-color: #D2E9F0; /* Fondo verde azulado suave */
+}
+.card-header, .thead {
+    background-color: #94C1D9; /* Verde azulado más claro */
+    font-size: 18px; /* Ajuste del tamaño de la cabecera */
+    color: #000000; /* Texto oscuro en la cabecera */
+}
+.card-body {
+    background-color: #BBE4F0; /* Verde azulado pastel */
+}
+table {
+    margin-bottom: 0; /* Eliminar el margen inferior de la tabla */
+    border-collapse: collapse; /* Colapsar los bordes de la tabla */
+    width: 100%; /* Ancho completo */
+}
+.table th, .table td {
+    border: 1px solid #000000; /* Bordes negros */
+    padding: 8px; /* Añadir espacio interno */
+    color: #05161A; /* Color del texto en las celdas */
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #8adfd8; /* Alternar filas con verde azulado más claro */
+    color: #05161A; /* Texto oscuro en filas impares */
+}
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #BBE4F0; /* Alternar filas con otro verde azulado claro */
+    color: #05161A; /* Texto oscuro en filas pares */
+}
+.btn-add {
+    background-color: #5DA7C2; /* Botón agregar en verde azulado suave */
+    border-color: #5DA7C2;
+    color: white;
+}
+.btn-add:hover {
+    background-color: #468BA8; /* Hover en verde azulado más oscuro */
+    border-color: #468BA8;
+}
+.btn-edit {
+    background-color: #5DA7C2; /* Botón modificar en verde azulado suave */
+    border-color: #5DA7C2;
+    color: white;
+}
+.btn-edit:hover {
+    background-color: #468BA8; /* Hover en verde azulado más oscuro */
+    border-color: #468BA8;
+}
+.btn-delete {
+    background-color: #5DA7C2; /* Botón eliminar en verde azulado suave */
+    border-color: #5DA7C2;
+    color: white;
+}
+.btn-delete:hover {
+    background-color: #468BA8; /* Hover en verde azulado más oscuro */
+    border-color: #468BA8;
+}
+.table-hover tbody tr:hover {
+    background-color: #94C1D9; /* Hover filas en verde azulado más claro */
+}
+th, td {
+    text-align: center; /* Centrando el texto en las celdas */
+    vertical-align: middle; /* Alineando verticalmente */
+}
+
+#success-message {
+    position: fixed;
+    background: #BBE4F0; /* Verde azulado pastel */
+    color: #05161A; /* Color del texto */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    max-width: 80%;
+    text-align: center;
+    padding: 10px; /* Añadir espacio interno */
+    border-radius: 5px; /* Redondear los bordes */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+

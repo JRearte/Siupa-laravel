@@ -1,57 +1,63 @@
-/* Estilos para el formulario */
+body {
+    background-color: #D2E9F0; /* Fondo verde azulado suave */
+}
+
+.card-default {
+    max-width: 600px; /* Limitar el ancho de la tarjeta */
+    margin: auto; /* Centrar la tarjeta */
+}
+
+.card-default .card-header {
+    background-color: #94C1D9; /* Verde azulado más claro */
+    font-size: 18px; /* Ajuste del tamaño de la cabecera */
+    color: #000000; /* Texto oscuro en la cabecera */
+    padding: 10px; /* Espacio interno en la cabecera */
+    border-bottom: 2px solid #468BA8; /* Borde inferior */
+    text-align: center; /* Centrar el texto en la cabecera */
+}
+
+.card-default .card-body {
+    background-color: #BBE4F0; /* Verde azulado pastel */
+    padding: 20px; /* Espacio interno */
+}
+
+.card-title {
+    font-weight: bold; /* Texto en negrita */
+    color: #05161A; /* Color del texto */
+}
+
 .form-group {
-    margin-bottom: 20px;
-    background: linear-gradient(to top, #294D61,#6DA5C0,#0F969C,#0C7078,#072E33,#05161A);
-    padding: 15px;
-    border-radius: 10px;
+    margin-bottom: 15px; /* Espacio inferior en cada grupo de formulario */
 }
 
-.form-label {
-    font-weight: bold;
-    color: #fff; /* Color del texto blanco para contrastar con el fondo */
+.form-group label {
+    color: #05161A; /* Color del texto en las etiquetas */
+    font-size: 14px; /* Ajuste del tamaño del texto */
 }
 
-.form-control,
-.form-select {
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente para resaltar el texto */
+.form-group input, .form-group select, .form-group textarea {
+    border: 1px solid #5DA7C2; /* Borde del campo de entrada */
+    padding: 8px; /* Espacio interno */
+    width: 100%; /* Ancho completo */
+    box-sizing: border-box; /* Incluir padding y borde en el tamaño total */
+    background-color: #BBE4F0; /* Fondo del campo de entrada */
+    margin-bottom: 10px; /* Espacio inferior */
+    color: #05161A; /* Color del texto en los campos de entrada */
 }
 
-.invalid-feedback {
-    color: #ff0000;
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: #468BA8; /* Color del borde en foco */
+    outline: none; /* Sin borde de enfoque predeterminado */
 }
 
 .btn-primary {
-    background-color: #87CEEB; /* Color azul pastel */
-    border-color: #87CEEB;
+    background-color: #5DA7C2; /* Botón primario en verde azulado suave */
+    border-color: #5DA7C2;
+    color: white;
+    margin-right: 10px; /* Espacio entre los botones */
 }
 
-.btn-secondary {
-    background-color: #FFDAB9; /* Color naranja pastel */
-    border-color: #FFDAB9;
-}
-
-/* Estilos generales */
-body {
-    background-color: #f5f5f5; /* Color de fondo suave */
-    font-family: Arial, sans-serif;
-}
-
-.container {
-    margin-top: 50px;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.row {
-    margin-right: -15px;
-    margin-left: -15px;
-}
-
-.mt20 {
-    margin-top: 20px;
+.btn-primary:hover {
+    background-color: #468BA8; /* Hover en verde azulado más oscuro */
+    border-color: #468BA8;
 }

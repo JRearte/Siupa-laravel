@@ -1,5 +1,5 @@
-@extends('layouts.app')
-<!--@vite(['resources/css/Formulario.css'])-->
+@extends('layouts.formulario')
+@section('title', 'Formulario de usuario')
 <div class="row padding-1 p-1">
     <div class="col-md-12">
         

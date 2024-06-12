@@ -1,8 +1,5 @@
-@extends('layouts.app')
-
-@section('template_title')
-    {{ __('Update') }} Usuario
-@endsection
+@extends('layouts.formulario')
+@section('title', 'Modificar usuario')
 
 @section('content')
     <section class="content container-fluid">

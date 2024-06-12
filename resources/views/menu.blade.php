@@ -21,7 +21,7 @@
         
         <!--Sala-->
         <div class="sala">
-        <a href="./GUI_Sala.php">
+        <a href="{{ route('sala.listar') }}">
         <div class = "galeria">
         <center><img src = "{{ asset('imagen/sala.png') }}"class = "imagen"></center>
         <label class = "texto">Sala</label>

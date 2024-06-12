@@ -1,8 +1,5 @@
-@extends('layouts.app')
-
-@section('template_title')
-    {{ __('Create') }} Usuario
-@endsection
+@extends('layouts.formulario')
+@section('title', 'Agragar usuario')
 
 @section('content')
     <section class="content container-fluid">
