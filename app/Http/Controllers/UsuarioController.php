@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use App\Http\Requests\UsuarioRequest;
 use Illuminate\Http\Request;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //Metodo de encriptación irreversible 
 
@@ -23,8 +23,8 @@ class UsuarioController extends Controller
      */
     public function listar()
     {
-        $usuarios = Usuario::paginate();
-        return view('usuario.listar', compact('usuarios'))->with('i', (request()->input('page', 1) - 1) * $usuarios->perPage());
+        $usuarios = Usuario::paginate(10);
+        return view('usuario.listar', compact('usuarios'));
     }
 
 
@@ -122,4 +122,16 @@ class UsuarioController extends Controller
         }
     }
 
+
+    public function generarReporte()
+    {
+        $usuarios = Usuario::all();
+        $pdf = Pdf::loadView('reporte/usuarioReporte', compact('usuarios'));
+                
+        // Usar la opción de fuente predeterminada de DomPDF si es necesario
+        $pdf->setPaper('A4', 'portrait');
+        $pdf->render();
+        //return $pdf->download('Reporte de usuarios.pdf');
+        return $pdf->stream();
+    }
 }

@@ -77,3 +77,35 @@ th, td {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
 }
 
+
+
+
+
+
+.pagination {
+    justify-content: center;
+    margin-top: 20px; /* Espacio arriba de la paginación */
+}
+
+.pagination .page-item .page-link {
+    color: #05161A; /* Color del texto de los números de página */
+    background-color: #94C1D9; /* Fondo de los números de página */
+    border-color: #94C1D9; /* Color del borde de los números de página */
+}
+
+.pagination .page-item .page-link:hover {
+    color: #ffffff; /* Texto blanco al pasar el mouse */
+    background-color: #5DA7C2; /* Fondo más oscuro al pasar el mouse */
+    border-color: #5DA7C2; /* Borde más oscuro al pasar el mouse */
+}
+
+.pagination .page-item.active .page-link {
+    z-index: 1;
+    color: #ffffff; /* Texto blanco en página activa */
+    background-color: #7ee2e9; /* Fondo más oscuro en página activa */
+    border-color: #5DA7C2; /* Borde más oscuro en página activa */
+}
+
+.pagination .page-link:focus {
+    box-shadow: none; /* Quitar sombra al enfocar */
+}

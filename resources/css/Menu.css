@@ -64,7 +64,7 @@ a{
     .imagen{filter: none;}
 }
 
-.niño .galeria:hover{
+.infante .galeria:hover{
     background: #FFFFCC;
     color: #000000;
     box-shadow: 0 0 10px #FFFFCC, 0 0 40px #FFFFCC, 0 0 80px #FFFFCC, 0 0 120px #FFFFCC;
@@ -168,7 +168,7 @@ a{
         transform: translate(-50%, -50%);
     }
 
-    .niño{
+    .infante{
         top: 65%;
         left: 50%;
         position: absolute;
@@ -229,7 +229,7 @@ a{
         transform: translate(-50%, -50%);
     }
 
-    .niño{
+    .infante{
         top: 58%;
         left: 50%;
         position: absolute;

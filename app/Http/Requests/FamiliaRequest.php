@@ -24,13 +24,13 @@ class FamiliaRequest extends FormRequest
     {
         $id = $this->route('familia');
         return [
-            'Nombre'              => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
-            'Apellido'            => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
+            'Nombre'              => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
+            'Apellido'            => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
             'Vinculo'             => ['required', 'string', 'max:10', 'regex:/^[a-zA-Z ]+$/'],
             'Fecha_de_nacimiento' => ['required', 'date'],
             'Numero_documento'    => ['required', 'integer', 'digits:8', Rule::unique('familia', 'Numero_documento')->ignore($id)],
             'Tipo_documento'      => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
-            'Lugar_de_trabajo'    => ['string', 'max:50', 'regex:/^[a-zA-Z0-9 ]+$/'],
+            'Lugar_de_trabajo'    => ['string', 'max:50'],
             'Ingreso'             => ['numeric', 'regex:/^\d{1,8}(\.\d{1,2})?$/'],
             'Habilitado'          => ['boolean'],
         ];
@@ -56,7 +56,6 @@ class FamiliaRequest extends FormRequest
             'Tipo_documento.required'   => 'El tipo de documento es obligatorio.',
             'Tipo_documento.regex'      => 'El tipo de documento solo puede contener letras.',
             'Tipo_documento.max'        => 'El tipo de documento puede tener un máximo de :max caracteres.',
-            'Lugar_de_trabajo.regex'    => 'El lugar de trabajo solo puede contener letras y números.',
             'Lugar_de_trabajo.max'      => 'El lugar de trabajo solo puete tener un máximo de :max caracteres.',
             'Ingreso.regex'             => 'El ingreso debe ser un número con hasta 8 dígitos enteros y hasta 2 decimales.',
         ];

@@ -27,7 +27,6 @@ class Usuario extends Model implements Autentificacion
 
     protected $table = 'usuario';
     protected $primaryKey = 'id';
-    protected $perPage = 20;
     public $timestamps = true;
 
 

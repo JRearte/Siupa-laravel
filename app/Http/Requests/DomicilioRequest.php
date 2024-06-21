@@ -22,11 +22,11 @@ class DomicilioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Provincia'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-Z ]+$/'],
-            'Localidad'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-Z0-9 ]+$/'],
+            'Provincia'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
+            'Localidad'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
             'Codigo_postal' => ['required', 'integer', 'digits:4'],
-            'Barrio'        => ['required', 'string', 'max:35', 'regex:/^[a-zA-Z0-9 ]+$/'],
-            'Calle'         => ['required', 'string', 'max:40', 'regex:/^[a-zA-Z0-9 ]+$/'],
+            'Barrio'        => ['required', 'string', 'max:35', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
+            'Calle'         => ['required', 'string', 'max:40', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
             'Numero'        => ['required', 'string', 'max:25', 'regex:/^[a-zA-Z0-9 ]+$/'],
         ];
     }

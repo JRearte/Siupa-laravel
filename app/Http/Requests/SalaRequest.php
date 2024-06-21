@@ -24,7 +24,7 @@ class SalaRequest extends FormRequest
     {
         $id = $this->route('sala');
         return [
-            'Nombre'    => ['required', 'string', 'max:30', RULE::unique('sala', 'Nombre')->ignore($id), 'regex:/^[a-zA-Z ]+$/'],
+            'Nombre'    => ['required', 'string', 'max:30', RULE::unique('sala', 'Nombre')->ignore($id)],
             'Edad'      => ['required', 'integer', 'min:0', 'max:6'], //La edad puede ser de 0 a 6 años.
             'Capacidad' => ['required', 'integer', 'digits_between:1,2'], //La capacidad comprende de 1 a 2 digitos.
         ];
@@ -39,7 +39,6 @@ class SalaRequest extends FormRequest
             'Nombre.required'          => 'El nombre es obligatorio.',
             'Nombre.max'               => 'El nombre solo puede tener un máximo de :max caracteres.',
             'Nombre.unique'            => 'El nombre ya está en uso.',
-            'Nombre.regex'             => 'El nombre solo puede contener letras y espacios.',
             'Edad.required'            => 'La edad es obligatorio.',
             'Edad.integer'             => 'La edad debe ser un número entero.',
             'Edad.min'                 => 'La edad minima es de :min año.',

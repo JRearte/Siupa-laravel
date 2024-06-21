@@ -13,12 +13,12 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
+    /*server: {
         host: '0.0.0.0', //Escuchar en todas las interfaces de red
         port: 5173, //Puerto de Vite
         hmr: {
             host: '192.168.100.7', //Colocar IP local para que funcione el css y js
             port: 5173,
         },
-    },
+    },*/
 });

@@ -37,12 +37,12 @@
         <p>Familiar a cargo del niño con un rol en el entorno universitario.</p>
         </div></a></div>
 
-        <!--Niño-->
-        <div class="niño">
+        <!--infante-->
+        <div class="infante">
         <a href="../GUI/Asistencia.php">
         <div class = "galeria">
-        <center><img src = "{{ asset('imagen/niño.png') }}" class = "imagen"></center>
-        <label class = "texto">Niño</label>
+        <center><img src = "{{ asset('imagen/infante.png') }}" class = "imagen"></center>
+        <label class = "texto">Infante</label>
         <p>Infante que asiste al jardin maternal durante el periodo de cursadas.</p>
         </div></a></div>
 

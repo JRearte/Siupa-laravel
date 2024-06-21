@@ -20,6 +20,10 @@
                             <i class="fas fa-user-plus" style="color: #ffffff;"></i> <!-- Icono de agregar -->
                                 {{ __('Agregar') }}
                             </a>
+                            <a href="{{ route('usuario.reporte') }}" class="btn btn-dark btn-sm float-right mr-2"  data-placement="left">
+                            <i class="fas fa-file-pdf" style="color: #ffffff;"></i><!-- Icono de reporte -->
+                                {{ __('Reporte') }}
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -43,6 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php $i = 0; @endphp
                                 @foreach ($usuarios as $usuario)
                                     <tr>
                                         <td>{{ ++$i }}</td>
@@ -66,7 +71,9 @@
                     </div>
                 </div>
             </div>
-            {!! $usuarios->links() !!}
+            <div class="container">
+                {!! $usuarios->links('vendor.pagination.bootstrap-4') !!}
+            </div>
         </div>
     </div>
 @endsection

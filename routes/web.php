@@ -20,6 +20,7 @@ Route::controller(UsuarioController::class)->group(function(){
     Route::patch('usuario/modificar/{usuario}','modificar')->name('usuario.modificar');
     Route::delete('usuario/eliminar/{id}','eliminar')->name('usuario.eliminar');
     Route::post('validar','validar')->name('usuario.validar');
+    Route::get('/usuario/reporte','generarReporte')->name('usuario.reporte');
 });
 
 Route::controller(SalaController::class)->group(function(){

@@ -25,8 +25,8 @@ class TutorRequest extends FormRequest
         $id = $this->route('tutor');
         return [
             'Legajo'              => ['required', 'string', 'size:13', Rule::unique('tutor', 'Legajo')->ignore($id), 'regex:/^[0-9\/\-]+$/'],
-            'Nombre'              => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
-            'Apellido'            => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
+            'Nombre'              => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
+            'Apellido'            => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
             'Genero'              => ['required', 'string', 'max:9', 'in:Masculino,Femenino'],
             'Fecha_de_nacimiento' => ['required', 'date'],
             'Numero_documento'    => ['required', 'integer', 'digits:8', Rule::unique('tutor', 'Numero_documento')->ignore($id)],
