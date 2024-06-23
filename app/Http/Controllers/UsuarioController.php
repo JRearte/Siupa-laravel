@@ -6,8 +6,10 @@ use App\Models\Usuario;
 use App\Http\Requests\UsuarioRequest;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //Metodo de encriptación irreversible 
+
 
 
 /**
@@ -18,12 +20,13 @@ class UsuarioController extends Controller
 {
 
     /**
-     * Esta función permite obtener un listado de los usuario de la base de datos con un limite de 20
-     * usuarios por página para mostrarlos en la página principal del gestor de usuario. 
+     * Esta función permite obtener un listado de los usuario de la base de datos con un limite de 10
+     * usuarios por página, ordenandolos por apellido de forma ascendente para mostrarlos en la 
+     * página principal del gestor de usuario. 
      */
     public function listar()
     {
-        $usuarios = Usuario::paginate(10);
+        $usuarios = Usuario::orderBy('apellido', 'asc')->paginate(10);
         return view('usuario.listar', compact('usuarios'));
     }
 
@@ -100,36 +103,36 @@ class UsuarioController extends Controller
      * El usuario sera redirigido al menú principal solo si es correcto y esta habilitado.
      * @param Request $pedido → credencial de los datos solicitados desde la vista login.
      */
-    public function validar(Request $pedido)
+    public function validar(Request $pedido): RedirectResponse
     {
         $credencial = $pedido->only('Legajo', 'password');
         $credencial['Habilitado'] = true;
 
-        //SUPER USUARIO PROVICIONAL, ENTRADA DIRECTA AL SISTEMA
-        if ($credencial['Legajo'] === '1-37202750/17') 
+        if(Auth::attempt($credencial))
         {
-            Auth::loginUsingId(1);
+            $pedido->session()->regenerate();
             return redirect()->route('menu');
         }
+        return redirect()->back()->withErrors(['error' => 'Usuario inválido']);
 
-        if (Auth::attempt($credencial)) 
-        {
-            $user = Auth::user();
-            $user->api_token = Str::random(80);
-            $user->save();
-
-            return response()->json(['token' => $user->api_token, 'message' => 'Usuario autenticado'], 200);
-        } 
-        else 
-        {
-            return redirect()->back()->withErrors(['error' => 'Usuario inválido']);
-        }
+    }
+    
+    
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+        
+        $request->session()->invalidate();
+        
+        $request->session()->regenerateToken();
+        
+        return redirect('/');
     }
 
 
     public function generarReporte()
     {
-        $usuarios = Usuario::all();
+        $usuarios = Usuario::orderBy('apellido', 'asc')->get();
         $pdf = Pdf::loadView('reporte/usuarioReporte', compact('usuarios'));
                 
         // Usar la opción de fuente predeterminada de DomPDF si es necesario

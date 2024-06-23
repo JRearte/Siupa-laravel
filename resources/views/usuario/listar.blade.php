@@ -9,8 +9,24 @@
                         <span id="card_title">
                             {{ __('Gestor de usuarios') }}
                         </span>
+                        <div class="text-center" style="background: #94C1D9; border:none;">
+                        <div class="card p-2" style="background: #94C1D9; border:none;"> <!-- Reducido el padding a p-2 -->
+                            <div class="d-flex align-items-center">
+                                <div class="user-icon mr-2"> <!-- Reducido el margin a mr-2 -->
+                                    <i class="fas fa-user-circle fa-lg"></i> <!-- Tamaño grande de icono -->
+                                </div>
+                                <div>
+                                    @if (Auth::check())
+                                        <p class="mb-0">{{ Auth::user()->Nombre }} {{ Auth::user()->Apellido }}</p> <!-- mb-0 para eliminar margen inferior -->
+                                    @else
+                                        <p class="mb-0">No estás autenticado</p> <!-- mb-0 para eliminar margen inferior -->
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         <div class="float-right">
-                            <a href="{{ route('login') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left">
+                            <a href="{{ route('usuario.logout') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left">
                                 <i class="fas fa-sign-out-alt"></i> <!-- Icono de salida -->
                             </a>
                             <a href="{{ route('menu') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left">

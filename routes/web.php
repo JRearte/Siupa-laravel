@@ -12,18 +12,21 @@ use App\Http\Controllers\SalaController;
 //Primer parametro  /usuario       → lo que muestra el URL.
 //Segundo parametro listar         → el nombre de la función.
 //Tercer parametro  usuario.listar → el nombre asignado a la ruta para ser invocada como funcion en general.
-Route::controller(UsuarioController::class)->group(function(){
-    Route::get('/usuario','listar')->name('usuario.listar');
-    Route::get('usuario/agregar','agregar')->name('usuario.agregar');
-    Route::post('usuario/registrar','registrar')->name('usuario.registrar');
-    Route::get('usuario/editar/{id}','editar')->name('usuario.editar');
-    Route::patch('usuario/modificar/{usuario}','modificar')->name('usuario.modificar');
-    Route::delete('usuario/eliminar/{id}','eliminar')->name('usuario.eliminar');
-    Route::post('validar','validar')->name('usuario.validar');
-    Route::get('/usuario/reporte','generarReporte')->name('usuario.reporte');
+Route::middleware('auth')->group(function() {
+    Route::controller(UsuarioController::class)->group(function() {
+        Route::get('/usuario', 'listar')->name('usuario.listar');
+        Route::get('usuario/agregar', 'agregar')->name('usuario.agregar');
+        Route::post('usuario/registrar', 'registrar')->name('usuario.registrar');
+        Route::get('usuario/editar/{id}', 'editar')->name('usuario.editar');
+        Route::patch('usuario/modificar/{usuario}', 'modificar')->name('usuario.modificar');
+        Route::delete('usuario/eliminar/{id}', 'eliminar')->name('usuario.eliminar');
+        Route::get('/usuario/reporte', 'generarReporte')->name('usuario.reporte');
+        Route::post('/','logout')->name('usuario.logout');
+    });
 });
+Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
 
-Route::controller(SalaController::class)->group(function(){
+Route::controller(SalaController::class)->middleware('auth')->group(function(){
     Route::get('/sala','listar')->name('sala.listar');
     Route::get('sala/agregar','agregar')->name('sala.agregar');
     Route::post('sala/registrar','registrar')->name('sala.registrar');
@@ -32,7 +35,8 @@ Route::controller(SalaController::class)->group(function(){
     Route::delete('sala/eliminar/{id}','eliminar')->name('sala.eliminar');
 });
 
-Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
-Route::get('/', [LoginController::class, 'inicio'])->name('login');
+Route::get('/menu', [MenuController::class, 'menu'])->name('menu')->middleware('auth');
+Route::get('/', [LoginController::class, 'inicio'])->name('login');//no aplicar seguridad o no existira forma de acceder 
+
 
 
