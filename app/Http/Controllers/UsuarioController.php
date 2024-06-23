@@ -114,7 +114,11 @@ class UsuarioController extends Controller
 
         if (Auth::attempt($credencial)) 
         {
-            return redirect()->route('menu');
+            $user = Auth::user();
+            $user->api_token = Str::random(80);
+            $user->save();
+
+            return response()->json(['token' => $user->api_token, 'message' => 'Usuario autenticado'], 200);
         } 
         else 
         {
