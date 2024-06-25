@@ -114,18 +114,14 @@ class UsuarioController extends Controller
             return redirect()->route('menu');
         }
         return redirect()->back()->withErrors(['error' => 'Usuario inválido']);
-
     }
     
     
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
-        
         $request->session()->invalidate();
-        
         $request->session()->regenerateToken();
-        
         return redirect('/');
     }
 
@@ -135,7 +131,6 @@ class UsuarioController extends Controller
         $usuarios = Usuario::orderBy('apellido', 'asc')->get();
         $pdf = Pdf::loadView('reporte/usuarioReporte', compact('usuarios'));
                 
-        // Usar la opción de fuente predeterminada de DomPDF si es necesario
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         //return $pdf->download('Reporte de usuarios.pdf');

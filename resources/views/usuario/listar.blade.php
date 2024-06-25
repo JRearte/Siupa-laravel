@@ -17,18 +17,20 @@
                                 </div>
                                 <div>
                                     @if (Auth::check())
-                                        <p class="mb-0">{{ Auth::user()->Nombre }} {{ Auth::user()->Apellido }}</p> <!-- mb-0 para eliminar margen inferior -->
+                                        <p class="mb-0">{{ Auth::user()->Nombre }} {{ Auth::user()->Apellido }}</p> 
                                     @else
-                                        <p class="mb-0">No estás autenticado</p> <!-- mb-0 para eliminar margen inferior -->
+                                        <p class="mb-0">No estás autenticado</p> 
                                     @endif
                                 </div>
                             </div>
                         </div>
                     </div>
                         <div class="float-right">
-                            <a href="{{ route('usuario.logout') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left">
+                            <a href="{{ route('usuario.logout') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit(); ">
                                 <i class="fas fa-sign-out-alt"></i> <!-- Icono de salida -->
                             </a>
+                            <form id = "logout-form" action="{{ route('usuario.logout') }}" method="post" style="display:none; ">@csrf</form>
                             <a href="{{ route('menu') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left">
                                 <i class="fas fa-home"></i> <!-- Icono de menu -->
                             </a>

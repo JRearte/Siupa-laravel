@@ -21,10 +21,10 @@ Route::middleware('auth')->group(function() {
         Route::patch('usuario/modificar/{usuario}', 'modificar')->name('usuario.modificar');
         Route::delete('usuario/eliminar/{id}', 'eliminar')->name('usuario.eliminar');
         Route::get('/usuario/reporte', 'generarReporte')->name('usuario.reporte');
-        Route::post('/','logout')->name('usuario.logout');
     });
 });
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
+Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout');
 
 Route::controller(SalaController::class)->middleware('auth')->group(function(){
     Route::get('/sala','listar')->name('sala.listar');
