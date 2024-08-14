@@ -26,14 +26,9 @@ a{
     backdrop-filter: blur(10px);
     border: 1px solid black;
     border-radius: 30px;
-
-    label{
-        text-transform: uppercase;
-    }
-    p{
-        display: none;
-    }
 }
+label { text-transform: uppercase; }
+p { display: none; }
 
 
 .usuario .galeria:hover{
@@ -44,37 +39,31 @@ a{
 }
 
 .sala .galeria:hover{
-    background: #7FFFD4;
-    color: #000000;
-    box-shadow: 0 0 10px #7FFFD4, 0 0 40px #7FFFD4, 0 0 80px #7FFFD4, 0 0 120px #7FFFD4;
-    .imagen{filter: none;}
-}
-
-.reporte .galeria:hover{
-    background: #FFCCCC;
-    color: #000000;
-    box-shadow: 0 0 10px #FFCCCC, 0 0 40px #FFCCCC, 0 0 80px #FFCCCC, 0 0 120px #FFCCCC;
-    .imagen{filter: none;}
-}
-
-.tutor .galeria:hover{
     background: #CCFFCC;
     color: #000000;
     box-shadow: 0 0 10px #CCFFCC, 0 0 40px #CCFFCC, 0 0 80px #CCFFCC, 0 0 120px #CCFFCC;
     .imagen{filter: none;}
 }
 
-.infante .galeria:hover{
+
+.tutor .galeria:hover{
     background: #FFFFCC;
     color: #000000;
     box-shadow: 0 0 10px #FFFFCC, 0 0 40px #FFFFCC, 0 0 80px #FFFFCC, 0 0 120px #FFFFCC;
     .imagen{filter: none;}
 }
 
-.asistencia .galeria:hover{
+.infante .galeria:hover{
     background: #FFDDA1;
     color: #000000;
     box-shadow: 0 0 10px #FFDDA1, 0 0 40px #FFDDA1, 0 0 80px #FFDDA1, 0 0 120px #FFDDA1;
+    .imagen{filter: none;}
+}
+
+.asistencia .galeria:hover{
+    background: #FFB6C1;
+    color: #000000;
+    box-shadow: 0 0 10px #FFB6C1, 0 0 40px #FFB6C1, 0 0 80px #FFB6C1, 0 0 120px #FFB6C1;
     .imagen{filter: none;}
 }
 
@@ -90,11 +79,11 @@ a{
         position: absolute;
         text-align: justify;
         font-weight: bold;
-        word-spacing: -4px;
-        font-size: 14px;
+        word-spacing: -3px;
+        font-size: 14.5px;
         top: 50%;
-        left: 20px;
-        right: 20px;
+        left: 27px;
+        right: 27px;
         line-height: 1.5;
     }
 
@@ -105,7 +94,7 @@ a{
 
     .galeria{
         top: 20px;
-        width: 180px;
+        width: 210px;
         height: 580px;
     }
 
@@ -162,43 +151,36 @@ a{
     }
 
     .usuario{
-        top: 35%;
-        left: 30%;
+        top: 50%;
+        left: 10%;
         position: absolute;
         transform: translate(-50%, -50%);
     }
 
     .infante{
-        top: 65%;
-        left: 50%;
-        position: absolute;
-        transform: translate(-50%, -50%);
-    }
-
-    .tutor{
-        top: 35%;
-        left: 50%;
-        position: absolute;
-        transform: translate(-50%, -50%);
-    }
-
-    .reporte{
-        top: 65%;
+        top: 50%;
         left: 70%;
         position: absolute;
         transform: translate(-50%, -50%);
     }
 
+    .tutor{
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
     .sala{
-        top: 65%;
+        top: 50%;
         left: 30%;
         position: absolute;
         transform: translate(-50%, -50%);
     }
 
     .asistencia{
-        top: 35%;
-        left: 70%;
+        top: 50%;
+        left: 90%;
         position: absolute;
         transform: translate(-50%, -50%);
         .texto{left: -10px; }
@@ -218,7 +200,7 @@ a{
 
     .galeria{
         width: 230px;
-        height: 82px;
+        height: 92px;
     }
 
     /**Manejo de botones individuales**/
@@ -230,39 +212,33 @@ a{
     }
 
     .infante{
-        top: 58%;
+        top: 70%;
         left: 50%;
         position: absolute;
         transform: translate(-50%, -50%);
     }
 
     .tutor{
-        top: 42%;
+        top: 50%;
         left: 50%;
         position: absolute;
         transform: translate(-50%, -50%);
     }
 
     .sala{
-        top: 26%;
+        top: 30%;
         left: 50%;
         position: absolute;
         transform: translate(-50%, -50%);
     }
 
     .asistencia{
-        top: 74%;
-        left: 50%;
-        position: absolute;
-        transform: translate(-50%, -50%);
-    }
-
-    .reporte{
         top: 90%;
         left: 50%;
         position: absolute;
         transform: translate(-50%, -50%);
     }
+
 
 /************************************************/
 

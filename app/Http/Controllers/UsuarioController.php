@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use App\Http\Requests\UsuarioRequest;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //Metodo de encriptación irreversible 
@@ -117,11 +117,11 @@ class UsuarioController extends Controller
     }
     
     
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $pedido): RedirectResponse
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $pedido->session()->invalidate();
+        $pedido->session()->regenerateToken();
         return redirect('/');
     }
 
@@ -129,7 +129,7 @@ class UsuarioController extends Controller
     public function generarReporte()
     {
         $usuarios = Usuario::orderBy('apellido', 'asc')->get();
-        $pdf = Pdf::loadView('reporte/usuarioReporte', compact('usuarios'));
+        $pdf = PDF::loadView('reporte/usuarioReporte', compact('usuarios'));
                 
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();

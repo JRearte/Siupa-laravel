@@ -55,14 +55,6 @@
         <p>Registro de todos los niños y usuarios que asistieron en el dia a dia de sus cursadas.</p>
         </div></a></div>
 
-        <!--Reporte-->
-        <div class="reporte">
-        <a href="./GUI_Reporte.php">
-        <div class = "galeria">
-        <center><img src = "{{ asset('imagen/reporte.png') }}" class = "imagen"></center>
-        <label class = "texto">Reporte</label>
-        <p>Datos recopilados del sistema para su descarga en formato PDF </p>
-        </div></a></div>
     </div>
 </body>
 </html>
