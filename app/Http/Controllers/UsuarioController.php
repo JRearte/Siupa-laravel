@@ -111,7 +111,7 @@ class UsuarioController extends Controller
         if(Auth::attempt($credencial))
         {
             $pedido->session()->regenerate();
-            return redirect()->route('menu');
+            return redirect()->route('usuario.listar');
         }
         return redirect()->back()->withErrors(['error' => 'Usuario inválido']);
     }

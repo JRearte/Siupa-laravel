@@ -1,0 +1,146 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+/**************** CUERPO DE SIDEBAR *************/
+
+/* Estilos para la barra lateral */
+.sidebar {
+    position: fixed;                   /* Mantiene el sidebar fijo en la ventana */
+    top: 0;                            /* Mantiene el sidebar en la parte superior de la ventana */
+    left: 0;                           /* Alinea el sidebar al borde izquierdo de la ventana */
+    height: 100vh;                     /* Altura completa de la ventana */
+    width: 200px;                      /* Ajusta el ancho según tus necesidades */
+    min-height: 400px;
+    background: rgba(228, 228, 228, 0.297);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
+    overflow-y: auto;                  /* Permite el desplazamiento interno del contenido si es necesario */
+    z-index: 1000;                     /* Asegura que el sidebar esté por encima de otros contenidos */
+    border-radius: 0 10px 10px 0;
+}
+
+/* Asegúrate de que el body no tenga márgenes o rellenos que empujen el sidebar */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para la tarjeta de usuario */
+.sidebar .card {
+    background: rgba(175, 38, 38, 0);
+    border: none;
+    border-radius: 0;
+    border-bottom: 1.5px solid #838282;
+    color: #000000;
+    font-size: 12px;
+}
+
+/* Contenedor del icono de usuario */
+.sidebar .user-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;                       /* Ajusta el tamaño del círculo */
+    height: 50px;                      /* Ajusta el tamaño del círculo */
+    margin-left: -10px;
+    background-color: #ffffff00;     /* Fondo del círculo */
+    color: #000;                     /* Color del ícono */
+    font-size: 24px;                   /* Tamaño del ícono */
+    margin-right: 2px;                 /* Espacio entre el icono y el nombre del usuario */
+}
+
+/* Contenedor de la información del usuario (nombre y categoría) */
+.sidebar .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;       /* Alinea ambos elementos al inicio */
+    height: 100%;
+}
+
+/* Nombre del usuario */
+.sidebar .user-name {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: -5px;               /* Reduce el margen entre el nombre y la categoría */
+}
+
+/* Categoría del usuario */
+.sidebar .user-extra {
+    font-size: 12px;
+    color: #777;                     /* Color del rol */
+    margin-top: -4px;                  /* Ajuste para acercar la categoría al nombre */
+}
+
+/* Alineación del contenido dentro de la tarjeta */
+.sidebar .card .d-flex {
+    align-items: flex-start;           /* Alinea el contenido al principio verticalmente */
+}
+
+/* Espaciado adicional entre el icono y el texto */
+.sidebar .card .d-flex div:last-child {
+    margin-top: 4px;                   /* Ajusta el margen superior del texto para separarlo del icono */
+}
+
+/**************** LISTA DE ENLACES *************/
+
+/* Estilos para los enlaces del sidebar */
+.sidebar .nav-link {
+    display: flex;                     /* Usa Flexbox para alinear íconos y texto */
+    align-items: center;               /* Alinea el ícono y el texto verticalmente */
+    width: 100%;                       /* Ocupa todo el ancho disponible */
+    padding: 10px 15px;                /* Espacio interno */
+    border-radius: 5px;                /* Redondea los bordes */
+    transition: all 0.3s ease;         /* Transición suave */
+    color: #000;                     /* Color de texto */
+    text-decoration: none;             /* Quita el subrayado */
+    background: rgba(255, 255, 255, 0); /* Fondo inicial con opacidad */
+}
+
+/* Estilos al pasar el mouse sobre los enlaces del sidebar */
+.sidebar .nav-link:hover {
+    border-radius: 5px;                /* Redondea los bordes en el hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Sombra del hover */
+    background: rgba(255, 255, 255, 0.7); /* Fondo más visible en el hover */
+    color: #ff0000;                  /* Color del texto en hover */
+}
+
+/* Espacio entre el icono y el texto */
+.sidebar .nav-link .icon{
+    margin-right: 10px;                /* Ajusta el margen entre el ícono y el texto */
+    width: 20px;
+}
+
+/* Estilos para el texto dentro del enlace */
+.sidebar .nav-link .nav-text {
+    margin: 0;                         /* Elimina el margen por defecto del <p> */
+    font-size: 14px;                   /* Ajusta el tamaño del texto si es necesario */
+}
+
+/**************** BOTON DE CIERRE SESION *************/
+
+.sidebar .btn-primary {
+    width: 100%;
+    padding: 10px 15px;                /* Espaciado interno */
+    border-radius: 5px;                /* Bordes redondeados */
+    color: #fff;                     /* Color del texto */
+    background-color: #7a565a00;     /* Color de fondo (rojo para indicar acción) */
+    border: none;                      /* Sin borde */
+    display: flex;                     /* Alinea el icono y el texto */
+    align-items: center;               /* Centra el contenido verticalmente */
+    justify-content: center;           /* Centra el contenido horizontalmente */
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+    font-size: 12px;
+}
+
+/* Cambia el color de fondo en hover */
+.sidebar .btn-primary:hover {
+    background-color: #c823336a;     /* Un rojo más oscuro para el hover */
+}
+
+/* Estilo del icono en el botón */
+.sidebar .btn-primary .logout-icon {
+    margin-right: 8px;                 /* Espacio entre el icono y el texto */
+    font-size: 16px;                   /* Tamaño del icono */
+}
+

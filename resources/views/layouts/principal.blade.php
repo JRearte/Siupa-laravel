@@ -7,14 +7,24 @@
     <title>@yield('title', 'Default Title')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Cargando Bootstrap y FontAwesome desde tu instalación interna -->
     @vite(['resources/css/Principal.css'])
 </head>
 <body>
     <div class="container-fluid">
-        @yield('content')
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                @include('layouts.sidebar')
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="col-md-9">
+                @yield('content')
+            </div>
+        </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

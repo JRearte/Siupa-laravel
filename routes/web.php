@@ -35,8 +35,4 @@ Route::controller(SalaController::class)->middleware('auth')->group(function(){
     Route::delete('sala/eliminar/{id}','eliminar')->name('sala.eliminar');
 });
 
-Route::get('/menu', [MenuController::class, 'menu'])->name('menu')->middleware('auth');
 Route::get('/', [LoginController::class, 'inicio'])->name('login');//no aplicar seguridad o no existira forma de acceder 
-
-
-

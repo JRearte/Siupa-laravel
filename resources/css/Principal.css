@@ -1,5 +1,11 @@
 body {
-    background-color: #D2E9F0; /* Fondo verde azulado suave */
+    background-image: url('../../public/imagen/fondo.jpg');
+    background-size: cover; /* Asegura que el fondo cubra el área sin repetirse */
+    background-attachment: fixed; /* Fija el fondo al viewport para que no se mueva con el scroll */
+    background-repeat: no-repeat; /* Evita que el fondo se repita */
+    font-family: sans-serif;
+    height: 100vh;
+    margin: 0;
 }
 .card-header, .thead {
     background-color: #94C1D9; /* Verde azulado más claro */
