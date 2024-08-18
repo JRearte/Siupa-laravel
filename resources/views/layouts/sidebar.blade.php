@@ -38,7 +38,6 @@
     </div>
 
    <!-- Listado de Enlaces -->
-   <!-- Listado de Enlaces -->
     <ul class="nav flex-column mb-auto">
         <li class="nav-item mb-2">
             <a href="{{ route('usuario.listar') }}" class="nav-link">
@@ -77,8 +76,8 @@
     <!-- Cerrar Sesión -->
     <div class="mt-auto">
         <!-- Botón de Cierre de Sesión -->
-        <a href="{{ route('usuario.logout') }}" class="btn btn-primary">
-            <i class="logout-icon fa-solid fa-door-open"></i> Cerrar Sesión
+        <a href="{{ route('usuario.logout') }}" class="btn btn-danger">
+            <i class="logout-icon fa-solid fa-door-open"></i><i class="cerrar-icon fa-solid fa-door-closed"></i>Cerrar Sesión
         </a>
         <form id="logout-form" action="{{ route('usuario.logout') }}" method="post" style="display: none;">
             @csrf

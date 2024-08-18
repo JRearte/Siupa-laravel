@@ -1,0 +1,162 @@
+.card-movida{
+    position:relative;
+    right: 50px;
+    top: 10px;   
+    background: rgba(191, 191, 191, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+
+/*********************** TABLA ***********************/
+.table {
+    min-width: 500px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid black;
+}
+
+.table th {
+    background-color: #343a40;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: lighter;
+    padding: 5px 10px; /* Reducir padding para hacer la tabla más plana */
+    text-align: left;
+    border-right: 1px solid rgb(255, 255, 255);
+}
+
+.table th:last-child {
+    border-right: none;
+}
+
+.table .col-n{
+    width: 20px;
+    text-align: center;
+}
+
+.table .col-legajo{
+    width: 135px;
+    min-width: 135px;
+}
+
+.table .col-categoria{
+    width: 130px;
+    min-width: 130px;
+}
+
+.table .col-habilitado{
+    width: 130px;
+    min-width: 130px;
+}
+
+.table .col-opcion{
+    text-align: center;
+    width: 155px;
+    min-width: 155px;
+}
+
+.table td {
+    padding: 4px 10px; /* Reducir padding para compactar las filas */
+    border: 1px solid #000000;
+}
+
+
+
+/*********************** BOTONES ***********************/
+.btn {
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.btn-primary{
+    background-color: #1e38ff;
+    color: #ffffff;
+}
+
+.btn-success:hover{
+    box-shadow: 0 0 12px #a5ffb8;
+    background-color: #39c758;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    box-shadow: 0 0 12px #fa0a0ae1;
+    background-color: #cf1528;
+    color: #ffffff;
+}
+
+.btn-primary:hover{
+    box-shadow: 0 0 12px #3B82F6; /* Azul eléctrico brillante */
+    background-color: #3B82F6; /* Azul eléctrico brillante */
+    color: #ffffff;
+}
+
+/* Mensaje de éxito */
+#success-message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: fadeOut 1s ease-in-out 6s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+
+
+
+
+
+/*********************** PAGINACIÓN ***********************/
+.pagination {
+    justify-content: center;
+    margin-top: 13px; /* Espacio arriba de la paginación */
+}
+
+.pagination .page-item .page-link {
+    color: #05161A; /* Color del texto de los números de página */
+    background-color: rgba(191, 191, 191, 0.5); /* Fondo de los números de página con tu color */
+    border-color: #000000; /* Color del borde de los números de página */
+}
+
+.pagination .page-item .page-link:hover {
+    color: #ffffff; /* Texto blanco al pasar el mouse */
+    background-color: rgba(191, 191, 191, 0.7); /* Fondo ligeramente más oscuro al pasar el mouse */
+    border-color: rgba(191, 191, 191, 0.7); /* Borde más oscuro al pasar el mouse */
+}
+
+.pagination .page-item.active .page-link {
+    z-index: 1;
+    color: #ffffff; /* Texto blanco en página activa */
+    background-color: rgba(191, 191, 191, 0.9); /* Fondo más oscuro en página activa */
+    border-color: rgba(191, 191, 191, 0.7); /* Borde ligeramente más oscuro en página activa */
+}
+
+.pagination .page-link:focus {
+    box-shadow: none; /* Quitar sombra al enfocar */
+}
+
+

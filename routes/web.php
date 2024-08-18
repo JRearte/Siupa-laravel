@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\SalaController;
 
@@ -15,16 +14,20 @@ use App\Http\Controllers\SalaController;
 Route::middleware('auth')->group(function() {
     Route::controller(UsuarioController::class)->group(function() {
         Route::get('/usuario', 'listar')->name('usuario.listar');
+        Route::get('usuario/presentacion/{id}', 'mostrar')->name('usuario.presentacion');
         Route::get('usuario/agregar', 'agregar')->name('usuario.agregar');
         Route::post('usuario/registrar', 'registrar')->name('usuario.registrar');
         Route::get('usuario/editar/{id}', 'editar')->name('usuario.editar');
         Route::patch('usuario/modificar/{usuario}', 'modificar')->name('usuario.modificar');
         Route::delete('usuario/eliminar/{id}', 'eliminar')->name('usuario.eliminar');
+        Route::get('usuario/confirmar/{id}', 'confirmar')->name('usuario.confirmar');
         Route::get('/usuario/reporte', 'generarReporte')->name('usuario.reporte');
     });
 });
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
 Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout');
+
+
 
 Route::controller(SalaController::class)->middleware('auth')->group(function(){
     Route::get('/sala','listar')->name('sala.listar');

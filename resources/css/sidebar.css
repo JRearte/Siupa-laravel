@@ -11,8 +11,8 @@
     height: 100vh;                     /* Altura completa de la ventana */
     width: 200px;                      /* Ajusta el ancho según tus necesidades */
     min-height: 400px;
-    background: rgba(228, 228, 228, 0.297);
-    backdrop-filter: blur(10px);
+    background: rgba(228, 228, 228, 0.5);
+    backdrop-filter: blur(2px);
     padding: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
     overflow-y: auto;                  /* Permite el desplazamiento interno del contenido si es necesario */
@@ -63,6 +63,7 @@ body {
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: -5px;               /* Reduce el margen entre el nombre y la categoría */
+    text-align: left;
 }
 
 /* Categoría del usuario */
@@ -119,28 +120,45 @@ body {
 
 /**************** BOTON DE CIERRE SESION *************/
 
-.sidebar .btn-primary {
+.sidebar .btn-danger {
     width: 100%;
     padding: 10px 15px;                /* Espaciado interno */
     border-radius: 5px;                /* Bordes redondeados */
     color: #fff;                     /* Color del texto */
-    background-color: #7a565a00;     /* Color de fondo (rojo para indicar acción) */
+    background-color: #00000000;     /* Color de fondo (rojo para indicar acción) */
     border: none;                      /* Sin borde */
     display: flex;                     /* Alinea el icono y el texto */
     align-items: center;               /* Centra el contenido verticalmente */
     justify-content: center;           /* Centra el contenido horizontalmente */
-    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
     font-size: 12px;
+    .cerrar-icon{
+        display: none;
+    }
+    .logout-icon{
+        display: block;
+    }
 }
 
 /* Cambia el color de fondo en hover */
-.sidebar .btn-primary:hover {
-    background-color: #c823336a;     /* Un rojo más oscuro para el hover */
+.sidebar .btn-danger:hover {
+    background-color: #d01629a2;    /* Un rojo más oscuro para el hover */
+    box-shadow: 0 0 10px #d01629a2; 
+    .cerrar-icon{
+        display: block;
+    }
+    .logout-icon{
+        display: none;
+
+    }
 }
 
 /* Estilo del icono en el botón */
-.sidebar .btn-primary .logout-icon {
+.sidebar .btn-danger .logout-icon{
     margin-right: 8px;                 /* Espacio entre el icono y el texto */
     font-size: 16px;                   /* Tamaño del icono */
 }
 
+.cerrar-icon{
+    margin-right: 8px;                 /* Espacio entre el icono y el texto */
+    font-size: 16px;                   /* Tamaño del icono */
+}

@@ -27,7 +27,14 @@ class UsuarioController extends Controller
     public function listar()
     {
         $usuarios = Usuario::orderBy('apellido', 'asc')->paginate(10);
-        return view('usuario.listar', compact('usuarios'));
+        $totalUsuarios = Usuario::count();
+        return view('usuario.listar', compact('usuarios','totalUsuarios'));
+    }
+
+    public function mostrar(int $id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return view('usuario.presentacion', compact('usuario'));
     }
 
 
@@ -95,6 +102,17 @@ class UsuarioController extends Controller
     {
         Usuario::find($id)->delete();
         return redirect()->route('usuario.listar')->with('success', 'El usuario fue eliminado exitosamente');
+    }
+
+    /**
+     * Esta función muestra un mensaje de advertencia para confirmar la eliminación de un usuario.
+     * El usuario será redirigido a la página de confirmación.
+     * @param int $id → identificador del usuario.
+     */
+    public function confirmar(int $id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return view('usuario.advertencia', compact('usuario'));
     }
 
   

@@ -13,9 +13,6 @@
                             <a href="{{ route('login') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left">
                                 <i class="fas fa-sign-out-alt"></i> <!-- Icono de salida -->
                             </a>
-                            <a href="{{ route('menu') }}" class="btn btn-primary btn-sm float-right mr-2"  data-placement="left">
-                                <i class="fas fa-home"></i> <!-- Icono de menu -->
-                            </a>
                             <a href="{{ route('sala.agregar') }}" class="btn btn-dark btn-sm float-right mr-2"  data-placement="left">
                             <i class="fas fa-user-plus" style="color: #ffffff;"></i> <!-- Icono de agregar -->
                                 {{ __('Agregar') }}

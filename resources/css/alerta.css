@@ -1,0 +1,65 @@
+/*********************** CARTEL DE ALERTA *********************/
+
+/* Contenedor principal para centrar la alerta */
+.confirmacion-container {
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+/* Alerta personalizada */
+.confirmacion-alerta {
+    background-color: #f8d7da; /* Fondo rojo claro */
+    border: 2px solid #00000076; /* Borde rojo claro */
+    color: #721c24; /* Texto rojo oscuro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Título de la alerta */
+.confirmacion-titulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Icono de advertencia */
+.confirmacion-icono {
+    margin-right: 10px;
+    color: #d9534f; /* Rojo de Bootstrap */
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+/* Mensaje de confirmación */
+.confirmacion-mensaje {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Botones de acción */
+.confirmacion-boton {
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.confirmacion-boton.btn-danger {
+    background-color: #d9534f; /* Rojo Bootstrap */
+}
+
+.confirmacion-boton.btn-danger:hover{
+    background-color: #f07571;
+}
+
+.confirmacion-boton.btn-secondary {
+    background-color: #6c757d; /* Gris Bootstrap */
+}
+
+.confirmacion-boton.btn-secondary:hover{
+    background-color: #b4bdc4;
+    color: black;
+}
