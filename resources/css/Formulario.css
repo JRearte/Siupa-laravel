@@ -1,63 +1,137 @@
-body {
-    background-color: #D2E9F0; /* Fondo verde azulado suave */
+/* Estilo general para la sección del formulario */
+.formulario {
+    padding: 10px; /* Espacio alrededor del formulario */
 }
 
-.card-default {
-    max-width: 600px; /* Limitar el ancho de la tarjeta */
-    margin: auto; /* Centrar la tarjeta */
+/* Ajuste del diseño de la tarjeta */
+.formulario .card {
+    border-radius: 8px; /* Bordes redondeados */
+    background-color: rgba(255, 255, 255, 0.9); /* Color de fondo blanco con opacidad */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Borde gris claro y sutil */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    overflow: hidden; /* Evita que el contenido sobresalga */
 }
 
-.card-default .card-header {
-    background-color: #94C1D9; /* Verde azulado más claro */
-    font-size: 18px; /* Ajuste del tamaño de la cabecera */
-    color: #000000; /* Texto oscuro en la cabecera */
-    padding: 10px; /* Espacio interno en la cabecera */
-    border-bottom: 2px solid #468BA8; /* Borde inferior */
-    text-align: center; /* Centrar el texto en la cabecera */
-}
-
-.card-default .card-body {
-    background-color: #BBE4F0; /* Verde azulado pastel */
-    padding: 20px; /* Espacio interno */
-}
-
-.card-title {
+/* Estilo del encabezado de la tarjeta */
+.formulario .card-header {
+    background-color: #343a40; /* Fondo oscuro para el encabezado */
+    color: #ffffff; /* Texto blanco */
+    padding: 10px; /* Espacio interno reducido */
+    font-size: 1.1rem; /* Tamaño de fuente ligeramente mayor */
     font-weight: bold; /* Texto en negrita */
-    color: #05161A; /* Color del texto */
+    text-align: center; /* Centra el texto */
 }
 
-.form-group {
-    margin-bottom: 15px; /* Espacio inferior en cada grupo de formulario */
+/* Estilo del título de la tarjeta */
+.formulario .card-title {
+    font-size: 1rem; /* Tamaño de fuente del título */
 }
 
-.form-group label {
-    color: #05161A; /* Color del texto en las etiquetas */
-    font-size: 14px; /* Ajuste del tamaño del texto */
+.formulario .icon{
+    padding-right: 5px;
 }
 
-.form-group input, .form-group select, .form-group textarea {
-    border: 1px solid #5DA7C2; /* Borde del campo de entrada */
-    padding: 8px; /* Espacio interno */
-    width: 100%; /* Ancho completo */
-    box-sizing: border-box; /* Incluir padding y borde en el tamaño total */
-    background-color: #BBE4F0; /* Fondo del campo de entrada */
-    margin-bottom: 10px; /* Espacio inferior */
-    color: #05161A; /* Color del texto en los campos de entrada */
+/* Estilo del cuerpo de la tarjeta */
+.formulario .card-body {
+    padding: 15px; /* Espacio interno reducido */
 }
 
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-    border-color: #468BA8; /* Color del borde en foco */
-    outline: none; /* Sin borde de enfoque predeterminado */
+/* Ajuste del diseño del formulario para un estilo compacto en horizontal */
+.formulario .form-group {
+    position: relative; /* Posicionamiento relativo para manejar etiquetas flotantes */
+    margin-bottom: 1.5rem; /* Espacio debajo de cada grupo de formulario */
 }
 
-.btn-primary {
-    background-color: #5DA7C2; /* Botón primario en verde azulado suave */
-    border-color: #5DA7C2;
-    color: white;
-    margin-right: 10px; /* Espacio entre los botones */
+/* Estilo para las etiquetas de formulario flotantes */
+.formulario .form-label {
+    position: absolute; /* Posicionamiento absoluto dentro del contenedor relativo */
+    top: 0; /* Pegado al borde superior del contenedor del campo */
+    left: 0; /* Pegado al borde izquierdo del contenedor del campo */
+    background-color: rgb(255, 255, 255); /* Fondo blanco para que se vea bien sobre el campo */
+    border: 1px solid #ced4da;
+    border-bottom: none;
+    border-top-left-radius: 4px; /* Radio de borde superior izquierdo */
+    border-top-right-radius: 4px; /* Radio de borde superior derecho */
+    border-right-width: -7px;
+    padding: 0 0.5rem; /* Espacio alrededor del texto de la etiqueta */
+    font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+    font-family: 'Times New Roman', Times, serif;
+    color: #495057; /* Color de texto gris oscuro */
+    transform: translateY(-50%); /* Mueve la etiqueta hacia arriba un poco */
+    pointer-events: none; /* Evita que la etiqueta interfiera con el clic en el campo */
+    z-index: 1; /* Asegura que la etiqueta esté encima del campo */
 }
 
-.btn-primary:hover {
-    background-color: #468BA8; /* Hover en verde azulado más oscuro */
-    border-color: #468BA8;
+/* Pseudo-elemento para ocultar el borde inferior derecho */
+.formulario .form-label::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -1px;
+    width: 50%; /* Ajusta el ancho del área que oculta */
+    height: 50%; /* Ajusta la altura del área que oculta */
+    background-color: rgb(255, 255, 255); /* Color de fondo para ocultar el borde */
+    z-index: -1; /* Asegura que el pseudo-elemento esté detrás del borde */
 }
+
+/* Estilo para los campos de formulario */
+.formulario .form-control,
+.formulario .form-select {
+    font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+    padding: 0.7rem 0.75rem; /* Espacio interno reducido */
+    border: 1px solid #ced4da; /* Borde gris claro */
+    background-color: #ffffff; /* Fondo blanco */
+    line-height: 1.25; /* Ajusta la altura de línea para reducir la altura del campo */
+}
+
+.formulario .form-control:focus,
+.formulario .form-select:focus
+{
+    box-shadow: 0 0 5px green;
+}
+
+.formulario .opcion{
+    background: #e1e5ea;
+}
+
+/* Estilo para los mensajes de error */
+.formulario .invalid-feedback {
+    font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+    margin-top: 0.25rem; /* Espacio encima del mensaje de error */
+}
+
+.formulario .form-control.is-invalid:focus{
+    box-shadow: 0 0 5px rgb(247, 1, 1);
+}
+
+
+/* Estilo para los botones dentro del formulario */
+.formulario .btn {
+    font-size: 0.875rem; /* Tamaño de fuente más pequeño */
+    padding: 0.5rem 1rem; /* Espacio interno reducido */
+    border-radius: 4px; /* Bordes redondeados */
+    border: none; /* Quitar borde predeterminado */
+    cursor: pointer; /* Cursor de puntero al pasar por encima */
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+/* Estilo para el botón primario dentro del formulario */
+.formulario .btn-primary {
+    background-color: #007bff; /* Color azul */
+    color: #ffffff; /* Texto blanco */
+}
+
+.formulario .btn-primary:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
+
+/* Estilo para el botón de cancelación dentro del formulario */
+.formulario .btn-secondary {
+    background-color: #6c757d; /* Color gris */
+    color: #ffffff; /* Texto blanco */
+}
+
+.formulario .btn-secondary:hover {
+    background-color: #5a6268; /* Gris más oscuro al pasar el ratón */
+}
+

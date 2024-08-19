@@ -21,7 +21,7 @@
 }
 
 /* Asegúrate de que el body no tenga márgenes o rellenos que empujen el sidebar */
-body {
+.sidebar body {
     margin: 0;
     padding: 0;
 }
@@ -48,6 +48,7 @@ body {
     color: #000;                     /* Color del ícono */
     font-size: 24px;                   /* Tamaño del ícono */
     margin-right: 2px;                 /* Espacio entre el icono y el nombre del usuario */
+
 }
 
 /* Contenedor de la información del usuario (nombre y categoría) */
@@ -158,7 +159,7 @@ body {
     font-size: 16px;                   /* Tamaño del icono */
 }
 
-.cerrar-icon{
+.sidebar .cerrar-icon{
     margin-right: 8px;                 /* Espacio entre el icono y el texto */
     font-size: 16px;                   /* Tamaño del icono */
 }

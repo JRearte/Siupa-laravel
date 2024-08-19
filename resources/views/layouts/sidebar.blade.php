@@ -1,4 +1,5 @@
 <!-- resources/views/layouts/sidebar.blade.php -->
+
 @vite(['resources/css/sidebar.css']) 
 <div class="sidebar d-flex flex-column">
     
