@@ -1,26 +1,24 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
-@import '@fortawesome/fontawesome-free/css/all.min.css';
-
 /**************** CUERPO DE SIDEBAR *************/
 
 /* Estilos para la barra lateral */
 .sidebar {
-    position: fixed;                   /* Mantiene el sidebar fijo en la ventana */
-    top: 0;                            /* Mantiene el sidebar en la parte superior de la ventana */
-    left: 0;                           /* Alinea el sidebar al borde izquierdo de la ventana */
-    height: 100vh;                     /* Altura completa de la ventana */
-    width: 200px;                      /* Ajusta el ancho según tus necesidades */
+    position: fixed;                                        /* Mantiene el sidebar fijo en la ventana */
+    top: 0;                                                 /* Mantiene el sidebar en la parte superior de la ventana */
+    left: 0;                                                /* Alinea el sidebar al borde izquierdo de la ventana */
+    height: 100vh;                                          /* Altura completa de la ventana */
+    width: 200px;                                           /* Ajusta el ancho según tus necesidades */
     min-height: 400px;
     background: rgba(228, 228, 228, 0.5);
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(10px);
     padding: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
-    overflow-y: auto;                  /* Permite el desplazamiento interno del contenido si es necesario */
-    z-index: 1000;                     /* Asegura que el sidebar esté por encima de otros contenidos */
+    overflow-y: auto;                                       /* Permite el desplazamiento interno del contenido si es necesario */
+    z-index: 1;                                          /* Asegura que el sidebar esté por encima de otros contenidos */
     border-radius: 0 10px 10px 0;
+    overflow: hidden;
 }
 
-/* Asegúrate de que el body no tenga márgenes o rellenos que empujen el sidebar */
+
 .sidebar body {
     margin: 0;
     padding: 0;
@@ -41,13 +39,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 50px;                       /* Ajusta el tamaño del círculo */
-    height: 50px;                      /* Ajusta el tamaño del círculo */
+    width: 50px;                                            /* Ajusta el tamaño del círculo */
+    height: 50px;                                           /* Ajusta el tamaño del círculo */
     margin-left: -10px;
-    background-color: #ffffff00;     /* Fondo del círculo */
-    color: #000;                     /* Color del ícono */
-    font-size: 24px;                   /* Tamaño del ícono */
-    margin-right: 2px;                 /* Espacio entre el icono y el nombre del usuario */
+    background-color: #ffffff00;                          /* Fondo del círculo */
+    color: #000;                                          /* Color del ícono */
+    font-size: 24px;                                        /* Tamaño del ícono */
+    margin-right: 2px;                                      /* Espacio entre el icono y el nombre del usuario */
 
 }
 
@@ -55,7 +53,7 @@
 .sidebar .user-info {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;       /* Alinea ambos elementos al inicio */
+    justify-content: flex-start;                            /* Alinea ambos elementos al inicio */
     height: 100%;
 }
 
@@ -63,74 +61,74 @@
 .sidebar .user-name {
     font-weight: bold;
     font-size: 1.2em;
-    margin-bottom: -5px;               /* Reduce el margen entre el nombre y la categoría */
+    margin-bottom: -5px;                                    /* Reduce el margen entre el nombre y la categoría */
     text-align: left;
 }
 
 /* Categoría del usuario */
 .sidebar .user-extra {
     font-size: 12px;
-    color: #777;                     /* Color del rol */
-    margin-top: -4px;                  /* Ajuste para acercar la categoría al nombre */
+    color: #777;                                          /* Color del rol */
+    margin-top: -4px;                                       /* Ajuste para acercar la categoría al nombre */
 }
 
 /* Alineación del contenido dentro de la tarjeta */
 .sidebar .card .d-flex {
-    align-items: flex-start;           /* Alinea el contenido al principio verticalmente */
+    align-items: flex-start;                                /* Alinea el contenido al principio verticalmente */
 }
 
 /* Espaciado adicional entre el icono y el texto */
 .sidebar .card .d-flex div:last-child {
-    margin-top: 4px;                   /* Ajusta el margen superior del texto para separarlo del icono */
+    margin-top: 4px;                                        /* Ajusta el margen superior del texto para separarlo del icono */
 }
 
 /**************** LISTA DE ENLACES *************/
 
 /* Estilos para los enlaces del sidebar */
 .sidebar .nav-link {
-    display: flex;                     /* Usa Flexbox para alinear íconos y texto */
-    align-items: center;               /* Alinea el ícono y el texto verticalmente */
-    width: 100%;                       /* Ocupa todo el ancho disponible */
-    padding: 10px 15px;                /* Espacio interno */
-    border-radius: 5px;                /* Redondea los bordes */
-    transition: all 0.3s ease;         /* Transición suave */
-    color: #000;                     /* Color de texto */
-    text-decoration: none;             /* Quita el subrayado */
-    background: rgba(255, 255, 255, 0); /* Fondo inicial con opacidad */
+    display: flex;                                          /* Usa Flexbox para alinear íconos y texto */
+    align-items: center;                                    /* Alinea el ícono y el texto verticalmente */
+    width: 100%;                                            /* Ocupa todo el ancho disponible */
+    padding: 10px 15px;                                     /* Espacio interno */
+    border-radius: 5px;                                     /* Redondea los bordes */
+    transition: all 0.3s ease;                              /* Transición suave */
+    color: #000;                                          /* Color de texto */
+    text-decoration: none;                                  /* Quita el subrayado */
+    background: rgba(255, 255, 255, 0);                   /* Fondo inicial con opacidad */
 }
 
 /* Estilos al pasar el mouse sobre los enlaces del sidebar */
 .sidebar .nav-link:hover {
-    border-radius: 5px;                /* Redondea los bordes en el hover */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Sombra del hover */
-    background: rgba(255, 255, 255, 0.7); /* Fondo más visible en el hover */
-    color: #ff0000;                  /* Color del texto en hover */
+    border-radius: 5px;                                     /* Redondea los bordes en el hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);           /* Sombra del hover */
+    background: rgba(255, 255, 255, 0.7);                 /* Fondo más visible en el hover */
+    color: #ff0000;                                       /* Color del texto en hover */
 }
 
 /* Espacio entre el icono y el texto */
 .sidebar .nav-link .icon{
-    margin-right: 10px;                /* Ajusta el margen entre el ícono y el texto */
+    margin-right: 10px;                                     /* Ajusta el margen entre el ícono y el texto */
     width: 20px;
 }
 
 /* Estilos para el texto dentro del enlace */
 .sidebar .nav-link .nav-text {
-    margin: 0;                         /* Elimina el margen por defecto del <p> */
-    font-size: 14px;                   /* Ajusta el tamaño del texto si es necesario */
+    margin: 0;                                              /* Elimina el margen por defecto del <p> */
+    font-size: 14px;                                        /* Ajusta el tamaño del texto si es necesario */
 }
 
 /**************** BOTON DE CIERRE SESION *************/
 
 .sidebar .btn-danger {
     width: 100%;
-    padding: 10px 15px;                /* Espaciado interno */
-    border-radius: 5px;                /* Bordes redondeados */
-    color: #fff;                     /* Color del texto */
-    background-color: #00000000;     /* Color de fondo (rojo para indicar acción) */
-    border: none;                      /* Sin borde */
-    display: flex;                     /* Alinea el icono y el texto */
-    align-items: center;               /* Centra el contenido verticalmente */
-    justify-content: center;           /* Centra el contenido horizontalmente */
+    padding: 10px 15px;                                     /* Espaciado interno */
+    border-radius: 5px;                                     /* Bordes redondeados */
+    color: #fff;                                          /* Color del texto */
+    background-color: #00000000;                          /* Color de fondo */
+    border: none;                                           /* Sin borde */
+    display: flex;                                          /* Alinea el icono y el texto */
+    align-items: center;                                    /* Centra el contenido verticalmente */
+    justify-content: center;                                /* Centra el contenido horizontalmente */
     font-size: 12px;
     .cerrar-icon{
         display: none;
@@ -142,7 +140,7 @@
 
 /* Cambia el color de fondo en hover */
 .sidebar .btn-danger:hover {
-    background-color: #d01629a2;    /* Un rojo más oscuro para el hover */
+    background-color: #d01629a2;                          /* Un rojo más oscuro para el hover */
     box-shadow: 0 0 10px #d01629a2; 
     .cerrar-icon{
         display: block;
@@ -154,12 +152,73 @@
 }
 
 /* Estilo del icono en el botón */
-.sidebar .btn-danger .logout-icon{
-    margin-right: 8px;                 /* Espacio entre el icono y el texto */
-    font-size: 16px;                   /* Tamaño del icono */
+.sidebar .btn-danger .logout-icon,
+.sidebar .btn-danger .cerrar-icon{
+    margin-right: 8px;                                      /* Espacio entre el icono y el texto */
+    font-size: 16px;                                        /* Tamaño del icono */
 }
 
-.sidebar .cerrar-icon{
-    margin-right: 8px;                 /* Espacio entre el icono y el texto */
-    font-size: 16px;                   /* Tamaño del icono */
+
+/***************************************************************************************************/
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        width: 50px;  
+        background: rgb(203, 203, 203);                   /* Ajusta el ancho colapsado según tus necesidades */
+    }
+
+    /* Ocultar el texto y mostrar solo los íconos en el estado colapsado */
+    .sidebar .btn-text,
+    .sidebar .user-info,
+    .sidebar .user-name,
+    .sidebar .user-extra,
+    .sidebar .nav-text {
+        display: none;
+    }
+
+    /* Estilos para los botones y elementos de la lista cuando el sidebar está colapsado */
+    .sidebar .btn-danger,
+    .sidebar .nav-item,
+    .sidebar .nav-link {
+        width: 40px;                                        /* Ancho fijo para los botones y elementos */
+        height: 40px;                                       /* Ajusta la altura para asegurar que los íconos estén centrados verticalmente */
+        margin-left: -7px;                                  /* Ajuste del margen izquierdo si es necesario */
+        display: flex;                                      /* Usa flexbox para alinear el contenido del botón */
+        align-items: center;                                /* Centra los íconos verticalmente */
+        justify-content: center;                            /* Centra los íconos horizontalmente */
+        padding: 0;                                         /* Elimina el padding para evitar desalineaciones */
+    }
+
+    /* Estilo específico para los íconos dentro del botón */
+    .sidebar .btn-danger .cerrar-icon,
+    .sidebar .btn-danger .logout-icon,
+    .sidebar .nav-item .icon {
+        display: flex;                                      /* Usa flexbox para alinear los íconos */
+        align-items: center;                                /* Centra verticalmente */
+        justify-content: center;                            /* Centra horizontalmente */
+        margin: 0;                                          /* Elimina el margen para evitar desalineaciones */
+        padding: 0;                                         /* Elimina el padding para evitar desalineaciones */
+    }
+
+    
+    .sidebar .btn-danger {
+        .cerrar-icon{
+            display: none;
+        }
+        .logout-icon{
+            display: block;
+        }
+    }
+
+    .sidebar .btn-danger:hover {
+        .cerrar-icon{
+            display: block;
+        }
+        .logout-icon{
+            display: none;
+    
+        }
+    }
+
 }

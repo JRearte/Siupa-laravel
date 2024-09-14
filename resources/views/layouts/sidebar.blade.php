@@ -1,7 +1,5 @@
-<!-- resources/views/layouts/sidebar.blade.php -->
-
 @vite(['resources/css/sidebar.css']) 
-<div class="sidebar d-flex flex-column">
+<aside class="sidebar d-flex flex-column">
     
     <!-- Sección del Usuario -->
     <div class="user-section text-center mb-4">
@@ -38,7 +36,7 @@
         </div>
     </div>
 
-   <!-- Listado de Enlaces -->
+    <!-- Listado de Enlaces -->
     <ul class="nav flex-column mb-auto">
         <li class="nav-item mb-2">
             <a href="{{ route('usuario.listar') }}" class="nav-link">
@@ -73,17 +71,15 @@
     </ul>
 
 
-
     <!-- Cerrar Sesión -->
     <div class="mt-auto">
-        <!-- Botón de Cierre de Sesión -->
         <a href="{{ route('usuario.logout') }}" class="btn btn-danger">
-            <i class="logout-icon fa-solid fa-door-open"></i><i class="cerrar-icon fa-solid fa-door-closed"></i>Cerrar Sesión
+            <i class="logout-icon fa-solid fa-door-open"></i>
+            <i class="cerrar-icon fa-solid fa-door-closed"></i>
+            <span class="btn-text">Cerrar Sesión</span>
         </a>
         <form id="logout-form" action="{{ route('usuario.logout') }}" method="post" style="display: none;">
             @csrf
         </form>
     </div>
-</div>
-
-
+</aside>

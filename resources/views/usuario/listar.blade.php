@@ -1,5 +1,5 @@
 @extends('layouts.principal')
-@section('title', 'Gestor de Usuarios')
+@section('title', 'Gestor de usuarios')
 @section('content')
 @vite(['resources/css/tabla.css']) 
     <div class="row">
@@ -12,21 +12,24 @@
                         </span>
                         <div class="float-right">
                             <a href="{{ route('usuario.agregar') }}" class="btn btn-dark btn-sm float-right mr-2"  data-placement="left">
-                            <i class="fas fa-user-plus" style="color: #ffffff;"></i> <!-- Icono de agregar -->
+                            <i class="fas fa-user-plus"></i> <!-- Icono de agregar -->
                                 {{ __('Agregar') }}
                             </a>
                             <a href="{{ route('usuario.reporte') }}" class="btn btn-dark btn-sm float-right mr-2"  data-placement="left">
-                            <i class="fas fa-file-pdf" style="color: #ffffff;"></i><!-- Icono de reporte -->
+                                <i class="fa-solid fa-file-lines"></i> <!-- Icono de reporte -->
                                 {{ __('Reporte') }}
                             </a>
                         </div>
                     </div>
                 </div>
+                <!-- Mensaje de ejecución realizada -->
                 @if ($message = Session::get('success'))
                     <div id="success-message" class="alert alert-success m-4">
                         <p>{{ $message }}</p>
                     </div>
                 @endif
+
+                <!-- Cuerpo de la tabla de usuario -->
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -45,20 +48,20 @@
                                 @foreach ($usuarios as $usuario)
                                     <tr>
                                         <td class="col-n">{{ ++$i }}</td>
-                                        <td>{{ $usuario->Legajo }}</td>
+                                        <td class="col-legajo">{{ $usuario->Legajo }}</td>
                                         @php
                                         $nombreCompleto = $usuario->Nombre;
                                         $primerNombre = explode(' ', $nombreCompleto)[0]; // Toma el primer nombre
                                         $apellidoCompleto = $usuario->Apellido;
                                         $primerApellido = explode(' ', $apellidoCompleto)[0]; // Toma el primer nombre
                                         @endphp
-                                        <td>{{ $primerNombre }} {{ $primerApellido }}</td>
-                                        <td>{{ $usuario->Categoria }}</td>
-                                        <td>@if($usuario->Habilitado == 1) Activado @else Desactivado @endif</td>
+                                        <td class="col-nombre">{{ $primerNombre }} {{ $primerApellido }}</td>
+                                        <td class="col-categoria">{{ $usuario->Categoria }}</td>
+                                        <td class="col-habilitado">@if($usuario->Habilitado == 1) Activado @else Desactivado @endif</td>
 
                                         <td th class="col-opcion">
                                             <a class="btn btn-sm btn-primary" href="{{ route('usuario.presentacion',$usuario->id) }}"><i class="fas fa-user"></i></a>
-                                            <a class="btn btn-sm btn-success" href="{{ route('usuario.editar',$usuario->id) }}"><i class="fa-solid fa-pencil"></i></i></a>
+                                            <a class="btn btn-sm btn-success" href="{{ route('usuario.editar',$usuario->id) }}"><i class="fa-solid fa-pencil"></i></a>
                                             <a class="btn btn-sm btn-danger" href="{{ route('usuario.confirmar',$usuario->id) }}"><i class="fa fa-fw fa-trash"></i></a>
                                         </td>
                                     </tr>
@@ -68,6 +71,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Paginación de cada 10 usuarios -->
             <div class="container">
                 {!! $usuarios->links('vendor.pagination.bootstrap-4') !!}
             </div>

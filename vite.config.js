@@ -5,12 +5,11 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-               
                 'resources/js/app.js',
                 'resources/css/alerta.css',
                 'resources/css/app.css', 
                 'resources/css/Login.css',
-                'resources/css/Principal.css',
+                'resources/css/principal.css',
                 'resources/css/formulario.css',
                 'resources/css/sidebar.css',
                 'resources/css/tabla.css',

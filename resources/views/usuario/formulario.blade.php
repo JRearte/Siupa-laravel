@@ -41,8 +41,8 @@
             <div class="form-group mb-3">
                 <label for="habilitado" class="form-label">{{ __('Estado') }}</label>
                 <select name="Habilitado" class="form-select @error('Habilitado') is-invalid @enderror" id="habilitado">
-                    <option class="opcion" value="0" {{ old('Habilitado', $usuario?->Habilitado) == 0 ? 'selected' : '' }}>Deshabilitado</option>
                     <option class="opcion" value="1" {{ old('Habilitado', $usuario?->Habilitado) == 1 ? 'selected' : '' }}>Habilitado</option>
+                    <option class="opcion" value="0" {{ old('Habilitado', $usuario?->Habilitado) == 0 ? 'selected' : '' }}>Deshabilitado</option>
                 </select>
                 {!! $errors->first('Habilitado', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
             </div>

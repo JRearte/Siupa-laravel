@@ -9,8 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //Metodo de encriptación irreversible 
-
-
+use Illuminate\View\View;
 
 /**
  * Class UsuarioController
@@ -24,14 +23,19 @@ class UsuarioController extends Controller
      * usuarios por página, ordenandolos por apellido de forma ascendente para mostrarlos en la 
      * página principal del gestor de usuario. 
      */
-    public function listar()
+    public function listar():View
     {
         $usuarios = Usuario::orderBy('apellido', 'asc')->paginate(10);
         $totalUsuarios = Usuario::count();
         return view('usuario.listar', compact('usuarios','totalUsuarios'));
     }
 
-    public function mostrar(int $id)
+    /**
+     * Esta función permite obtener la información detallada de un usuario de la base de datos
+     * a través de su identificador unico.
+     * @param int $id → Identificador del usuario.
+     */
+    public function mostrar(int $id):View
     {
         $usuario = Usuario::findOrFail($id);
         return view('usuario.presentacion', compact('usuario'));
@@ -43,7 +47,7 @@ class UsuarioController extends Controller
      * para poder cargar la información en un objeto usuario.
      * Redirige al usuario al formulario de registro.
      */
-    public function agregar()
+    public function agregar():View
     {
         $usuario = new Usuario();
         return view('usuario.agregar', compact('usuario'));
@@ -54,11 +58,11 @@ class UsuarioController extends Controller
      * Esta función permite registrar un nuevo usuario en la base de datos, con los datos validados y
      * la clave encriptada en 60 caracteres para la seguridad en el ingreso al sistema.
      * El usuario sera redirigido a la página principal del gestor de usuario.
-     * @param UsuarioRequest $pedido → credencial validada del usuario.
+     * @param UsuarioRequest $regla → credencial validada del usuario.
      */
-    public function registrar(UsuarioRequest $pedido)
+    public function registrar(UsuarioRequest $regla):RedirectResponse
     {
-        $datos = $pedido->validated();
+        $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         Usuario::create($datos);
         return redirect()->route('usuario.listar')->with('success', 'El usuario fue creado exitosamente.');
@@ -70,7 +74,7 @@ class UsuarioController extends Controller
      * Es complementaria de la función para modificar y redirige al formulario con la información.
      * @param int $id → Identificador del usuario.  
      */
-    public function editar(int $id)
+    public function editar(int $id):View
     {
         $usuario = Usuario::find($id);
         return view('usuario.editar', compact('usuario'));
@@ -81,12 +85,12 @@ class UsuarioController extends Controller
      * Esta función permite modificar la información de un usuario en la base de datos, valiendando 
      * sus datos y encriptando de manera irreversible la clave en 60 caracteres para la seguridad.
      * El usuario sera redirigido a la página principal del gestor de usuario.
-     * @param UsuarioRequest $pedido → credencial validada del usuario.
+     * @param UsuarioRequest $regla → credencial validada del usuario.
      * @param Usuario $usuario → objeto de tipo usuario que contiene su estructura.
      */
-    public function modificar(UsuarioRequest $pedido, Usuario $usuario)
+    public function modificar(UsuarioRequest $regla, Usuario $usuario):RedirectResponse
     {
-        $datos = $pedido->validated();
+        $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario->update($datos);
         return redirect()->route('usuario.listar')->with('success', 'El usuario fue modificado exitosamente');
@@ -98,7 +102,7 @@ class UsuarioController extends Controller
      * El usuario sera redirigido a la página principal del gestor de usuario.
      * @param int $id → identificador del usuario.  
      */
-    public function eliminar(int $id)
+    public function eliminar(int $id):RedirectResponse
     {
         Usuario::find($id)->delete();
         return redirect()->route('usuario.listar')->with('success', 'El usuario fue eliminado exitosamente');
@@ -109,7 +113,7 @@ class UsuarioController extends Controller
      * El usuario será redirigido a la página de confirmación.
      * @param int $id → identificador del usuario.
      */
-    public function confirmar(int $id)
+    public function confirmar(int $id):view
     {
         $usuario = Usuario::findOrFail($id);
         return view('usuario.advertencia', compact('usuario'));
@@ -119,27 +123,27 @@ class UsuarioController extends Controller
     /**
      * Esta función permite la validación del usuario a través de la solicitud de un legajo y clave.
      * El usuario sera redirigido al menú principal solo si es correcto y esta habilitado.
-     * @param Request $pedido → credencial de los datos solicitados desde la vista login.
+     * @param Request $regla → credencial de los datos solicitados desde la vista login.
      */
-    public function validar(Request $pedido): RedirectResponse
+    public function validar(Request $regla): RedirectResponse
     {
-        $credencial = $pedido->only('Legajo', 'password');
+        $credencial = $regla->only('Legajo', 'password');
         $credencial['Habilitado'] = true;
 
         if(Auth::attempt($credencial))
         {
-            $pedido->session()->regenerate();
+            $regla->session()->regenerate();
             return redirect()->route('usuario.listar');
         }
         return redirect()->back()->withErrors(['error' => 'Usuario inválido']);
     }
     
     
-    public function logout(Request $pedido): RedirectResponse
+    public function logout(Request $regla): RedirectResponse
     {
         Auth::logout();
-        $pedido->session()->invalidate();
-        $pedido->session()->regenerateToken();
+        $regla->session()->invalidate();
+        $regla->session()->regenerateToken();
         return redirect('/');
     }
 

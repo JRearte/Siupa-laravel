@@ -2,25 +2,25 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 ">
     <title>@yield('title', 'Default Title')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <!-- Cargando Bootstrap y FontAwesome desde tu instalación interna -->
-    @vite(['resources/css/Principal.css'])
+    @vite(['resources/css/principal.css'])
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-3">
+            <div class="col-md-2">
                 @include('layouts.sidebar')
             </div>
 
             <!-- Contenido Principal -->
-            <div class="col-md-9">
+            <main class="col-md-10">
                 @yield('content')
-            </div>
+            </main>
         </div>
     </div>
     <!-- jQuery (opcional, pero necesario para algunos componentes de Bootstrap) -->

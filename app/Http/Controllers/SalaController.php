@@ -12,7 +12,7 @@ class SalaController extends Controller
      */
     public function listar()
     {
-        $salas = Sala::paginate();
+        $salas = Sala::orderBy('edad', 'asc')->withCount('infantes')->paginate(10);
         return view('sala.listar', compact('salas'))->with('i',(request()->input('page',1) - 1) * $salas->perPage());
     }
 
