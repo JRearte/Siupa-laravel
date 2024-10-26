@@ -18,7 +18,7 @@
             </div>
 
             <!-- Contenido Principal -->
-            <main class="col-md-10">
+            <main id="main-content" class="col-md-10">
                 @yield('content')
             </main>
         </div>
@@ -35,6 +35,46 @@
     <!-- Font Awesome JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
 
+
+
+    <script>
+        /*
+        document.addEventListener('DOMContentLoaded', function () {
+            // Recupera la posición de scroll almacenada
+            const scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition) {
+                window.scrollTo(0, scrollPosition);
+                localStorage.removeItem('scrollPosition'); // Limpiar después de usar
+            }
+        
+            // Recupera el número de página almacenado
+            const pageNumber = localStorage.getItem('pageNumber');
+            if (pageNumber) {
+                const paginationLinks = document.querySelectorAll('.pagination a');
+                paginationLinks.forEach(link => {
+                    if (link.href.includes(`page=${pageNumber}`)) {
+                        link.click(); // Hace clic en el enlace de la página guardada
+                    }
+                });
+            }
+        });
+        
+        window.addEventListener('click', function (event) {
+            if (event.target.matches('.pagination a')) {
+                // Guarda el número de página cuando el usuario hace clic en la paginación
+                const pageNumber = new URL(event.target.href).searchParams.get('page');
+                localStorage.setItem('pageNumber', pageNumber);
+            }
+        });
+        
+        window.addEventListener('beforeunload', function () {
+            // Guarda la posición de scroll antes de descargar la página
+            localStorage.setItem('scrollPosition', window.scrollY);
+        });
+        */
+        </script>
+
     @yield('scripts')
+    
 </body>
 </html>

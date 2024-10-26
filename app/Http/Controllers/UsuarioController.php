@@ -27,7 +27,11 @@ class UsuarioController extends Controller
     {
         $usuarios = Usuario::orderBy('apellido', 'asc')->paginate(10);
         $totalUsuarios = Usuario::count();
-        return view('usuario.listar', compact('usuarios','totalUsuarios'));
+        $usuariosBienestar = Usuario::where('Categoria', 'Bienestar')->count();
+        $usuariosCoordinador = Usuario::where('Categoria', 'Coordinador')->count();
+        $usuariosMaestro = Usuario::where('Categoria', 'Maestro')->count();
+        $usuariosInvitado = Usuario::where('Categoria', 'Invitado')->count();
+        return view('usuario.listar', compact('usuarios','totalUsuarios', 'usuariosBienestar', 'usuariosCoordinador', 'usuariosMaestro', 'usuariosInvitado'));
     }
 
     /**

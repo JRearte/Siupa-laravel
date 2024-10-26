@@ -20,7 +20,7 @@ class UsuariosSeeder extends Seeder
 
         // Crear un usuario predeterminado
         Usuario::create([
-            'legajo' => '1-37202750/19',
+            'legajo' => '1-37202750/18',
             'Nombre' => 'Jonatan',
             'Apellido' => 'Rearte',
             'categoria' => 'Bienestar',

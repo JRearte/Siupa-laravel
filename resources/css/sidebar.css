@@ -13,8 +13,7 @@
     padding: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
     overflow-y: auto;                                       /* Permite el desplazamiento interno del contenido si es necesario */
-    z-index: 1;                                          /* Asegura que el sidebar esté por encima de otros contenidos */
-    border-radius: 0 10px 10px 0;
+    z-index: 1;                                             /* Asegura que el sidebar esté por encima de otros contenidos */
     overflow: hidden;
 }
 
