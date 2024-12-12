@@ -1,7 +1,8 @@
 .card-movida {
     background: rgba(191, 191, 191, 0.5);
     backdrop-filter: blur(10px);
-    width: 100%; /* Hace que la carta ocupe todo el ancho del contenedor */
+    width: 100%;
+    /* Hace que la carta ocupe todo el ancho del contenedor */
     position: relative;
     left: 0;
 }
@@ -20,7 +21,7 @@
     font-weight: bold;
 }
 
-.card-category .card-title{
+.card-category .card-title {
     font-size: 18px;
 }
 
@@ -48,7 +49,8 @@
     color: #ffffff;
     text-transform: uppercase;
     font-weight: lighter;
-    padding: 5px 10px;                                      /* Reducir padding para hacer la tabla más plana */
+    padding: 5px 10px;
+    /* Reducir padding para hacer la tabla más plana */
     text-align: left;
     border-right: 1px solid rgb(255, 255, 255);
 }
@@ -57,36 +59,37 @@
     border-right: none;
 }
 
-.table .col-n{
+.table .col-n {
     width: 20px;
     text-align: center;
 }
 
-.table .col-legajo{
+.table .col-legajo {
     width: 135px;
     min-width: 135px;
 }
 
-.table .col-categoria{
+.table .col-categoria {
     width: 130px;
     min-width: 130px;
 }
 
-.table .col-habilitado{
+.table .col-habilitado {
     width: 130px;
     min-width: 130px;
     font-size: 16px;
     text-align: center;
 }
 
-.table .col-opcion{
+.table .col-opcion {
     text-align: center;
     width: 155px;
     min-width: 155px;
 }
 
 .table td {
-    padding: 4px 10px;                                      /* Reducir padding para compactar las filas */
+    padding: 4px 10px;
+    /* Reducir padding para compactar las filas */
     border: 1px solid #000000;
 }
 
@@ -110,12 +113,12 @@
     color: #ffffff;
 }
 
-.btn-primary{
+.btn-primary {
     background-color: #1e38ff;
     color: #ffffff;
 }
 
-.btn-success:hover{
+.btn-success:hover {
     box-shadow: 0 0 12px #a5ffb8;
     background-color: #39c758;
     color: #ffffff;
@@ -127,9 +130,9 @@
     color: #ffffff;
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
     box-shadow: 0 0 12px #3B82F6;
-    background-color: #3B82F6; 
+    background-color: #3B82F6;
     color: #ffffff;
 }
 
@@ -160,33 +163,44 @@
 /*********************** PAGINACIÓN ***********************/
 .pagination {
     justify-content: center;
-    margin-top: 13px;                                       /* Espacio arriba de la paginación */
+    margin-top: 13px;
+    /* Espacio arriba de la paginación */
 }
 
 .pagination .page-item .page-link {
-    color: #05161A;                                       /* Color del texto de los números de página */
-    background-color: rgba(191, 191, 191, 0.5);           /* Fondo de los números de página con tu color */
-    border-color: #000000;                                /* Color del borde de los números de página */
+    color: #05161A;
+    /* Color del texto de los números de página */
+    background-color: rgba(191, 191, 191, 0.5);
+    /* Fondo de los números de página con tu color */
+    border-color: #000000;
+    /* Color del borde de los números de página */
     backdrop-filter: blur(10px);
 }
 
 .pagination .page-item .page-link:hover {
-    color: #ffffff;                                       /* Texto blanco al pasar el mouse */
-    background-color: rgba(191, 191, 191, 0.7);           /* Fondo ligeramente más oscuro al pasar el mouse */
-    border-color: rgba(191, 191, 191, 0.7);               /* Borde más oscuro al pasar el mouse */
+    color: #ffffff;
+    /* Texto blanco al pasar el mouse */
+    background-color: rgba(191, 191, 191, 0.7);
+    /* Fondo ligeramente más oscuro al pasar el mouse */
+    border-color: rgba(191, 191, 191, 0.7);
+    /* Borde más oscuro al pasar el mouse */
     backdrop-filter: blur(10px);
 }
 
 .pagination .page-item.active .page-link {
     z-index: 1;
-    color: #ffffff;                                       /* Texto blanco en página activa */
-    background-color: rgba(191, 191, 191, 0.9);           /* Fondo más oscuro en página activa */
-    border-color: rgba(191, 191, 191, 0.7);               /* Borde ligeramente más oscuro en página activa */
+    color: #ffffff;
+    /* Texto blanco en página activa */
+    background-color: rgba(191, 191, 191, 0.9);
+    /* Fondo más oscuro en página activa */
+    border-color: rgba(191, 191, 191, 0.7);
+    /* Borde ligeramente más oscuro en página activa */
     backdrop-filter: blur(10px);
 }
 
 .pagination .page-link:focus {
-    box-shadow: none;                                       /* Quitar sombra al enfocar */
+    box-shadow: none;
+    /* Quitar sombra al enfocar */
 }
 
 
@@ -197,42 +211,48 @@
 
 @media (max-width: 768px) {
     .card-movida {
-        margin-left: 50px; 
+        margin-left: 50px;
     }
 
     /* Ajustes para la tabla */
     .table {
-        width: 100%; /* Asegura que la tabla use todo el ancho disponible */
-        overflow-x: auto; /* Permite el desplazamiento horizontal si la tabla es más ancha */
+        width: 100%;
+        /* Asegura que la tabla use todo el ancho disponible */
+        overflow-x: auto;
+        /* Permite el desplazamiento horizontal si la tabla es más ancha */
     }
 
     /* Ajuste de ancho de las columnas para la tabla en pantallas pequeñas */
     .table .col-nombre {
-        width: 60%; /* Ajusta el ancho según la importancia de la columna */
-        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+        width: 60%;
+        /* Ajusta el ancho según la importancia de la columna */
+        white-space: nowrap;
+        /* Evita que el texto se divida en varias líneas */
     }
 
     .table .col-opcion {
-        width: 10%; /* Ajusta el ancho según el contenido y la importancia de la columna */
-        text-align: center; /* Alinea el contenido en el centro si es necesario */
+        width: 10%;
+        /* Ajusta el ancho según el contenido y la importancia de la columna */
+        text-align: center;
+        /* Alinea el contenido en el centro si es necesario */
     }
 
     /* Opcional: Añadir estilos para mejorar la visibilidad en dispositivos móviles */
-    .table td, .table th {
-        padding: 8px; /* Asegura que haya suficiente espacio para el contenido */
+    .table td,
+    .table th {
+        padding: 8px;
+        /* Asegura que haya suficiente espacio para el contenido */
     }
 
     .table .col-categoria,
     .table .col-habilitado,
     .table .col-legajo,
-    .table .col-n{
+    .table .col-n {
         display: none;
     }
 
-    #card_title{
-        display:none;
+    #card_title {
+        display: none;
     }
 
 }
-
-

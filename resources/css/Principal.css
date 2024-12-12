@@ -2,7 +2,7 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 body {
-    background-image: url('../../public/imagen/fondo.jpg');
+    background: linear-gradient(to right, #ffecd2, #fcb69f);
     background-size: cover;         /* Asegura que el fondo cubra el área sin repetirse */
     background-attachment: fixed;   /* Fija el fondo al viewport para que no se mueva con el scroll */
     background-repeat: no-repeat;   /* Evita que el fondo se repita */

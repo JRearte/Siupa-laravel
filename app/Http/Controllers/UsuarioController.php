@@ -23,15 +23,37 @@ class UsuarioController extends Controller
      * usuarios por página, ordenandolos por apellido de forma ascendente para mostrarlos en la 
      * página principal del gestor de usuario. 
      */
-    public function listar():View
+    public function listar(): View
     {
+        // Obtener todos los usuarios
         $usuarios = Usuario::orderBy('apellido', 'asc')->paginate(10);
+
+        // Calcular estadísticas
         $totalUsuarios = Usuario::count();
         $usuariosBienestar = Usuario::where('Categoria', 'Bienestar')->count();
         $usuariosCoordinador = Usuario::where('Categoria', 'Coordinador')->count();
         $usuariosMaestro = Usuario::where('Categoria', 'Maestro')->count();
         $usuariosInvitado = Usuario::where('Categoria', 'Invitado')->count();
-        return view('usuario.listar', compact('usuarios','totalUsuarios', 'usuariosBienestar', 'usuariosCoordinador', 'usuariosMaestro', 'usuariosInvitado'));
+
+        // Calcular porcentajes
+        $porcentajeBienestar = ($usuariosBienestar / $totalUsuarios) * 100;
+        $porcentajeCoordinador = ($usuariosCoordinador / $totalUsuarios) * 100;
+        $porcentajeMaestro = ($usuariosMaestro / $totalUsuarios) * 100;
+        $porcentajeInvitado = ($usuariosInvitado / $totalUsuarios) * 100;
+
+        // Devolver la vista principal con los datos
+        return view('usuario.index', compact(
+            'usuarios',
+            'totalUsuarios',
+            'usuariosBienestar',
+            'usuariosCoordinador',
+            'usuariosMaestro',
+            'usuariosInvitado',
+            'porcentajeBienestar',
+            'porcentajeCoordinador',
+            'porcentajeMaestro',
+            'porcentajeInvitado'
+        ));
     }
 
     /**
@@ -39,7 +61,7 @@ class UsuarioController extends Controller
      * a través de su identificador unico.
      * @param int $id → Identificador del usuario.
      */
-    public function mostrar(int $id):View
+    public function mostrar(int $id): View
     {
         $usuario = Usuario::findOrFail($id);
         return view('usuario.presentacion', compact('usuario'));
@@ -51,7 +73,7 @@ class UsuarioController extends Controller
      * para poder cargar la información en un objeto usuario.
      * Redirige al usuario al formulario de registro.
      */
-    public function agregar():View
+    public function agregar(): View
     {
         $usuario = new Usuario();
         return view('usuario.agregar', compact('usuario'));
@@ -64,21 +86,21 @@ class UsuarioController extends Controller
      * El usuario sera redirigido a la página principal del gestor de usuario.
      * @param UsuarioRequest $regla → credencial validada del usuario.
      */
-    public function registrar(UsuarioRequest $regla):RedirectResponse
+    public function registrar(UsuarioRequest $regla): RedirectResponse
     {
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         Usuario::create($datos);
-        return redirect()->route('usuario.listar')->with('success', 'El usuario fue creado exitosamente.');
+        return redirect()->route('usuario.index')->with('success', 'El usuario fue creado exitosamente.');
     }
-    
+
 
     /**
      * Esta función permite obtener los datos de un usuario a través de su id.
      * Es complementaria de la función para modificar y redirige al formulario con la información.
      * @param int $id → Identificador del usuario.  
      */
-    public function editar(int $id):View
+    public function editar(int $id): View
     {
         $usuario = Usuario::find($id);
         return view('usuario.editar', compact('usuario'));
@@ -92,12 +114,12 @@ class UsuarioController extends Controller
      * @param UsuarioRequest $regla → credencial validada del usuario.
      * @param Usuario $usuario → objeto de tipo usuario que contiene su estructura.
      */
-    public function modificar(UsuarioRequest $regla, Usuario $usuario):RedirectResponse
+    public function modificar(UsuarioRequest $regla, Usuario $usuario): RedirectResponse
     {
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario->update($datos);
-        return redirect()->route('usuario.listar')->with('success', 'El usuario fue modificado exitosamente');
+        return redirect()->route('usuario.index')->with('success', 'El usuario fue modificado exitosamente');
     }
 
 
@@ -106,10 +128,10 @@ class UsuarioController extends Controller
      * El usuario sera redirigido a la página principal del gestor de usuario.
      * @param int $id → identificador del usuario.  
      */
-    public function eliminar(int $id):RedirectResponse
+    public function eliminar(int $id): RedirectResponse
     {
         Usuario::find($id)->delete();
-        return redirect()->route('usuario.listar')->with('success', 'El usuario fue eliminado exitosamente');
+        return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');
     }
 
     /**
@@ -117,13 +139,13 @@ class UsuarioController extends Controller
      * El usuario será redirigido a la página de confirmación.
      * @param int $id → identificador del usuario.
      */
-    public function confirmar(int $id):view
+    public function confirmar(int $id): view
     {
         $usuario = Usuario::findOrFail($id);
         return view('usuario.advertencia', compact('usuario'));
     }
 
-  
+
     /**
      * Esta función permite la validación del usuario a través de la solicitud de un legajo y clave.
      * El usuario sera redirigido al menú principal solo si es correcto y esta habilitado.
@@ -134,15 +156,14 @@ class UsuarioController extends Controller
         $credencial = $regla->only('Legajo', 'password');
         $credencial['Habilitado'] = true;
 
-        if(Auth::attempt($credencial))
-        {
+        if (Auth::attempt($credencial)) {
             $regla->session()->regenerate();
-            return redirect()->route('usuario.listar');
+            return redirect()->route('usuario.index');
         }
         return redirect()->back()->withErrors(['error' => 'Usuario inválido']);
     }
-    
-    
+
+
     public function logout(Request $regla): RedirectResponse
     {
         Auth::logout();
@@ -156,7 +177,7 @@ class UsuarioController extends Controller
     {
         $usuarios = Usuario::orderBy('apellido', 'asc')->get();
         $pdf = PDF::loadView('reporte/usuarioReporte', compact('usuarios'));
-                
+
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         //return $pdf->download('Reporte de usuarios.pdf');

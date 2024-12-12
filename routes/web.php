@@ -13,7 +13,7 @@ use App\Http\Controllers\SalaController;
 //Tercer parametro  usuario.listar → el nombre asignado a la ruta para ser invocada como funcion en general.
 Route::middleware('auth')->group(function() {
     Route::controller(UsuarioController::class)->group(function() {
-        Route::get('/usuario', 'listar')->name('usuario.listar');
+        Route::get('/usuarios', 'listar')->name('usuario.index');
         Route::get('usuario/presentacion/{id}', 'mostrar')->name('usuario.presentacion');
         Route::get('usuario/agregar', 'agregar')->name('usuario.agregar');
         Route::post('usuario/registrar', 'registrar')->name('usuario.registrar');

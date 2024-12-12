@@ -35,7 +35,7 @@
                                     <th class="col-nombre">Nombre</th>
                                     <th class="col-opcion">Edad</th>
                                     <th class="col-opcion">Capacidad</th>
-                                    <th class="col-opcion" >Infantes</th>
+                                    <th class="col-opcion">Infantes</th>
                                     <th class="col-opcion">Opciones</th>
                                 </tr>
                             </thead>

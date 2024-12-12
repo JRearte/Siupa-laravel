@@ -50,7 +50,7 @@
         </div>
         <div class="col-12 mt-3 text-center">
             <button type="submit" class="btn btn-primary">{{ __('Aceptar') }}</button>
-            <a class="btn btn-secondary" href="{{ route('usuario.listar') }}">{{ __('Cancelar') }}</a>
+            <a class="btn btn-secondary" href="{{ route('usuario.index') }}">{{ __('Cancelar') }}</a>
         </div>
     </div>
 </div>

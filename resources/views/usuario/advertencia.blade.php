@@ -18,7 +18,7 @@
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger confirmacion-boton">Eliminar</button>
-            <a href="{{ route('usuario.listar') }}" class="btn btn-secondary confirmacion-boton">Cancelar</a>
+            <a href="{{ route('usuario.index') }}" class="btn btn-secondary confirmacion-boton">Cancelar</a>
         </form>
     </div>
 </div>

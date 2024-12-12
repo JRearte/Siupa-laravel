@@ -1,137 +1,277 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
-/* Estilo del cuerpo de la página */
-body.cuerpo {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(120deg, #2980b9, #6DD5FA, #ffffff);
-    background-size: cover; /* Asegura que el fondo cubra el área sin repetirse */
-    background-attachment: fixed; /* Fija el fondo al viewport para que no se mueva con el scroll */
-    background-repeat: no-repeat; /* Evita que el fondo se repita */
+/* Contenedor principal */
+.contenedor-principal {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(to bottom, #87CEEB, #FFFFFF);
+    justify-content: center;
+    align-items: center;
+}
+
+.lado-izquierdo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.468);
+    backdrop-filter: blur(10px);
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 400px;
+    height: 100%;
+}
+
+
+/* Icono y título */
+.icono-escuela {
+    font-size: 50px;
+    color: #000000a5;
+    margin-bottom: 15px;
+}
+
+/* Campos de formulario */
+.grupo-formulario {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.input-group {
+    width: 100%;
+    display: flex;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 45px;
+}
+
+.input-group-text {
+    background: #000000;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    padding: 0 15px;
+    height: 100%;
 }
 
-/* Contenedor principal del formulario */
-.contenedor-login {
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    box-sizing: border-box;
+.form-control {
+    flex: 1; 
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    height: 100%;
 }
+
 
 /* Estilo del formulario */
 .formulario-login {
-    background: linear-gradient(to bottom right, #ffffff70, #f0f8ff80), url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    min-height: 450px; /* Aumenta la altura mínima del formulario */
-}
-
-/* Estilo del icono de la escuela */
-.icono-escuela {
-    color: #007bffa5;
-    font-size: 60px; /* Agranda el icono */
-    display: block;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-/* Estilo del título "SIUPA" */
-.titulo-siupa {
-    color: #007bff;
-    font-weight: 700;
-    margin-top: 10px;
-    text-align: center;
-}
-
-/* Estilo del grupo de formulario */
-.grupo-formulario {
-    position: relative;
-    margin-bottom: 30px; /* Mayor espacio entre los grupos de formulario */
-}
-
-
-/* Estilo del ícono dentro de los campos de formulario */
-.input-group-text {
-    background-color: #007bff8f;
-    color: #fff;
-    border: none;
-    border-radius: 5px 0 0 5px;
-}
-
-
-/* Estilo de los campos de texto del formulario */
-.form-control {
-    border: 1px solid #cccccc;
-    border-radius: 0 5px 5px 0;
-    box-shadow: none;
-    outline: none;
-    padding-left: 10px;
-    transition: border-color 0.3s;
-}
-
-/* Estilo de los campos de texto cuando están enfocados */
-.form-control:focus {
-    border-color: #000000;
-    border: 0.5px solid black;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Estilo del botón de inicio de sesión */
-.btn {
-    background-color: #007bffa9;
-    backdrop-filter: blur(10px);
-    color: #fff;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    margin-top: 10px; /* Baja el botón */
     width: 100%;
+    padding: 0;
 }
 
-/* Estilo del botón de inicio de sesión al pasar el mouse */
-.btn:hover {
-    background-color: #0743ab;
+/* Icono y título */
+.icono-escuela {
+    font-size: 50px;
+    color: #000000a5;
+    margin-bottom: 15px;
+}
+
+.titulo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.subtitulo {
+    font-size: 16px;
+    font-weight: bold;
+    color: #6e6d6d;
+    text-align: center;
+    margin-bottom: 40px;
 }
 
 
-/* Estilo del mensaje de error */
-.mensaje-error {
-    background-color: #f8d7da00; /* Fondo transparente */
-    border: 1px solid #f5c6cb00; /* Borde transparente */
-    color: #921d29; /* Texto rojo oscuro */
-    border-radius: 4px;
-    padding: 10px 15px; /* Padding aumentado */
-    margin-top: 15px; /* Margen superior aumentado */
-    max-width: 100%; /* Ancho máximo */
-    position: relative; /* Necesario para la animación */
-    animation: mensaje 5s forwards; /* Animación de desvanecimiento */
-}
-
-
-/* Estilo para cada ítem de la lista */
-.mensaje-error li {
+/* Campos de formulario */
+.grupo-formulario {
+    margin-bottom: 15px;
     display: flex;
-    align-items: center; /* Alineación vertical del icono y el texto */
-    margin-bottom: 8px; /* Espacio entre los ítems de la lista */
+    align-items: center;
 }
 
-/* Estilo para el icono dentro del mensaje de error */
-.icono-errores {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    color: #721c24; /* Color del icono */
-    font-size: 18px; /* Tamaño del icono */
-    margin-right: 10px; /* Espacio entre icono y texto */
+.input-group {
+    width: 100%;
+    display: flex;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 45px;
 }
 
-/* Animación del mensaje de error */
-@keyframes mensaje {
-    0% { opacity: 1; }
-    100% { opacity: 0; } 
+.input-group-text {
+    background: #3d3d3d;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15px;
+    height: 100%;
+}
+
+.form-control {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    height: 100%;
+}
+
+/* Botón de inicio de sesión */
+.btn {
+    background: #3d3d3d;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.btn:hover {
+    background: #0057b3af;
+}
+
+.mensaje-container {
+    width: 100%;
+    height: 50px;
+    margin-top: 15px;
+}
+
+/* Mensaje de error para el login */
+.mensaje-error {
+    background-color: #f8d7da00;
+    color: #721c24;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    z-index: 1;
+    animation: desaparecer-login 5s forwards;
+}
+
+/* Icono en el mensaje de error */
+.mensaje-error i {
+    font-size: 16px;
+    color: #721c24;
+}
+
+/* Animación para desaparecer */
+@keyframes desaparecer-login {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Separador de contactos */
+.separador-contactos {
+    width: 100%;
+    text-align: center;
+}
+
+.texto-separador {
+    font-size: 14px;
+    color: #868686;
+    margin: 0px 0;
+}
+
+/* Estilo general para los botones de contacto */
+.contactos {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Estilo para cada botón de contacto */
+.btn-contacto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid rgb(150, 149, 149);
+    background-color: #ffe9e98c;
+    font-size: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto hover */
+.btn-contacto:hover {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid black;
+    transform: scale(1.1);
+}
+
+
+.facebook {
+    color: #6288d9;
+}
+
+.instagram {
+    color: #e75b75a7;
+}
+
+.gmail {
+    color: #db4537b3;
+}
+
+.linkedin {
+    color: #0076b5ae;
+}
+
+.facebook:hover {
+    background-color: #6288d9;
+}
+
+.instagram:hover {
+    background-color: #e75b75a7;
+}
+
+.gmail:hover {
+    background-color: #db4537b3;
+}
+
+.linkedin:hover {
+    background-color: #0076b5ae;
+}
+
+/* Iconos dentro de los botones */
+.btn-contacto i {
+    font-size: 20px;
+}
+
+.separador {
+    color: rgba(128, 128, 128, 0.537);
+    font-size: 12px;
 }

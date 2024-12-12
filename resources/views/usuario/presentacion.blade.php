@@ -15,7 +15,7 @@
                 <p class="card-text"><strong>Fecha de creación:</strong> {{ $usuario->created_at->format('d/m/Y H:i:s') }}</p>
                 <p class="card-text"><strong>Última modificación:</strong> {{ $usuario->updated_at->format('d/m/Y H:i:s') }}</p>
             </div>
-            <a href="{{ route('usuario.listar') }}" class="btn btn-primary mt-3">Volver</a>
+            <a href="{{ route('usuario.index') }}" class="btn btn-primary mt-3">Volver</a>
         </div>
     </div>
 </div>

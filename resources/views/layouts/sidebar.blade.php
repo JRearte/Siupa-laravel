@@ -39,7 +39,7 @@
     <!-- Listado de Enlaces -->
     <ul class="nav flex-column mb-auto">
         <li class="nav-item mb-2">
-            <a href="{{ route('usuario.listar') }}" class="nav-link">
+            <a href="{{ route('usuario.index') }}" class="nav-link">
                 <i class="fas fa-user icon"></i>
                 <p class="nav-text">Usuario</p>
             </a>
