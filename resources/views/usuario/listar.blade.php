@@ -22,12 +22,48 @@
                     </div>
                 </div>
 
-                <!-- Mensaje de ejecución realizada -->
-                @if ($message = Session::get('success'))
-                    <div id="success-message" class="alert alert-success m-4">
-                        <p>{{ $message }}</p>
-                    </div>
-                @endif
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <!-- Toast de éxito -->
+                    @if (session('success'))
+                        <div id="toastSuccess"
+                            class="toast toast-success align-items-center text-bg-success border-0 show" role="alert"
+                            aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <i class="fa-solid fa-circle-check icon"></i> <!-- Icono de éxito -->
+                                <div class="toast-body">
+                                    {{ session('success') }}
+                                </div>
+                                <!-- Barra de progreso -->
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill"></div>
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                    data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Toast de error -->
+                    @if (session('error'))
+                        <div id="toastError" class="toast toast-error align-items-center text-bg-danger border-0 show"
+                            role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <i class="fa-solid fa-circle-exclamation icon"></i> <!-- Icono de error -->
+                                <div class="toast-body">
+                                    {{ session('error') }}
+                                </div>
+                                <!-- Barra de progreso -->
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill"></div>
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                    data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+
 
                 <!-- Cuerpo de la tabla de usuario -->
                 <div class="card-body">
@@ -93,14 +129,3 @@
         </div>
     </div>
 </div>
-@section('scripts')
-    <script>
-        // Función para ocultar el mensaje de éxito después de 7 segundos
-        setTimeout(function() {
-            const successMessage = document.getElementById('success-message');
-            if (successMessage) {
-                successMessage.style.display = 'none';
-            }
-        }, 7000);
-    </script>
-@endsection

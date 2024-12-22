@@ -39,7 +39,7 @@
 
 /* Estilo del botón de retorno */
 .presentacion .btn-primary {
-    width: 110px; /* Incrementado un 10% de 100px */
+    width: 90%; /* Incrementado un 10% de 100px */
     text-align: center;
     margin: 0 auto;
     margin-bottom: 11px; /* Incrementado un 10% de 10px */
@@ -48,14 +48,13 @@
     font-weight: bold;
     border: none;
     border-radius: 5.5px; /* Incrementado un 10% de 5px */
-    background-color: #6e6e6efa;
+    background-color: #6c757d;
     color: #ffffff;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .presentacion .btn-primary:hover {
-    background-color: #a0a0a0fa;
-    box-shadow: 0 0 13.2px #a0a0a0fa; /* Incrementado un 10% de 12px */
+    background-color: #5a6268;
 }
 
 /* Estilo de los elementos de texto importante */

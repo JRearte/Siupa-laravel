@@ -2,7 +2,7 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 body {
-    background: linear-gradient(to right, #ffecd2, #fcb69f);
+    background: linear-gradient(to bottom right, #80CBC4, #B0BEC5);
     background-size: cover;         /* Asegura que el fondo cubra el área sin repetirse */
     background-attachment: fixed;   /* Fija el fondo al viewport para que no se mueva con el scroll */
     background-repeat: no-repeat;   /* Evita que el fondo se repita */
@@ -22,3 +22,125 @@ body {
 .col-md-2 {
     width: 200px;
 }
+
+
+.toast-container {
+    position: fixed;
+    top: 0;
+    right: 20px;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 350px;
+    height: 50px;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-size: 16px;
+    animation: slide-in 0.5s ease-out;
+}
+
+.toast-error {
+    background: linear-gradient(135deg, 
+        #b01e24 0%,     /* Rojo oscuro */
+        #c44d57 40%,    /* Rojo más apagado */
+        #d7807a 70%,    /* Tono más suave, para desvanecer */
+        #6c757d 100%    /* Gris oscuro, final de la transición */
+    );
+}
+
+
+.toast-success {
+    background: linear-gradient(135deg, 
+        #1d6f39 0%,     /* Verde oscuro, más natural */
+        #3e9c64 40%,    /* Verde más suave, tono fresco */
+        #5caa8a 70%,    /* Verde apagado y suave */
+        #6c757d 100%    /* Gris oscuro, para el final */
+    );
+}
+
+
+
+
+.toast-body {
+    flex-grow: 1;
+    padding-left: 15px;
+}
+
+.toast .icon {
+    font-size: 16px;
+    margin-right: 5px;
+    margin-top: 15px;
+    color: #ffffff;
+}
+
+.toast .btn-close {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #fcfcfc;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.toast .btn-close:hover {
+    color: #ccc;
+}
+
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: #fff; /* Color blanco para la barra de progreso */
+    animation: progress-bar 5s linear forwards;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes progress-bar {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0;
+    }
+}
+
+/* Colores para tipos específicos de toast */
+.toast-error .progress-bar-fill {
+    background-color: #dc3545; /* Rojo para error */
+    box-shadow: 0 4px 6px rgba(220, 53, 69, 0.6); /* Sombra para el error */
+}
+
+.toast-success .progress-bar-fill {
+    background-color: #a3f393; /* Verde para éxito */
+    box-shadow: 0 12px 18px rgba(79, 236, 116, 0.845); /* Sombra para éxito */
+}
+

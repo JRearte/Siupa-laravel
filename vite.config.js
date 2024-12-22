@@ -6,6 +6,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.js',
+                'resources/js/toast.js',
                 'resources/css/alerta.css',
                 'resources/css/app.css', 
                 'resources/css/Login.css',

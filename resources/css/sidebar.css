@@ -122,13 +122,14 @@
     width: 100%;
     padding: 10px 15px;                                     /* Espaciado interno */
     border-radius: 5px;                                     /* Bordes redondeados */
-    color: #fff;                                          /* Color del texto */
+    color: #000000;                                       /* Color del texto */
     background-color: #00000000;                          /* Color de fondo */
     border: none;                                           /* Sin borde */
     display: flex;                                          /* Alinea el icono y el texto */
     align-items: center;                                    /* Centra el contenido verticalmente */
     justify-content: center;                                /* Centra el contenido horizontalmente */
     font-size: 12px;
+    transition: background-color 0.5s ease, transform 0.3s ease;
     .cerrar-icon{
         display: none;
     }

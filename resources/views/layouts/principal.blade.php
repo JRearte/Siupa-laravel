@@ -8,6 +8,7 @@
 
     <!-- Cargando Bootstrap y FontAwesome desde tu instalación interna -->
     @vite(['resources/css/principal.css'])
+    @vite(['resources/js/toast.js'])
 </head>
 <body>
     <div class="container-fluid">

@@ -1,9 +1,8 @@
 @extends('layouts.principal')
-
 @section('title', 'Gestor de usuarios')
-
 @section('content')
-    @vite(['resources/css/tabla.css'])
+@vite(['resources/css/tabla.css'])
+
     <div class="content-container">
         <!-- Incluir el listado de usuarios -->
         @include('usuario.listar', ['usuarios' => $usuarios])

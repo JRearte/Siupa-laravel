@@ -1,65 +1,86 @@
-/*********************** CARTEL DE ALERTA *********************/
+/*********************** CARTEL DE ALERTA MEJORADO *********************/
 
-/* Contenedor principal para centrar la alerta */
+/* Contenedor principal centrado */
 .confirmacion-container {
     max-width: 600px;
     margin: 50px auto;
+    padding: 15px;
 }
 
 /* Alerta personalizada */
 .confirmacion-alerta {
-    background-color: #f8d7da; /* Fondo rojo claro */
-    border: 2px solid #00000076; /* Borde rojo claro */
+    background: linear-gradient(to bottom, #f8d7da, #fdf2f3); /* Degradado sutil */
+    border: 1px solid #f5c6cb; /* Borde rojo suave */
     color: #721c24; /* Texto rojo oscuro */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más suave */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Separación entre secciones */
 }
 
-/* Título de la alerta */
-.confirmacion-titulo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 15px;
+/* Encabezado con icono */
+.confirmacion-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-/* Icono de advertencia */
 .confirmacion-icono {
-    margin-right: 10px;
-    color: #d9534f; /* Rojo de Bootstrap */
-    font-size: 1.5rem;
-    vertical-align: middle;
+    margin-right: 12px;
+    color: #d9534f; /* Rojo de advertencia */
+    font-size: 2rem;
 }
 
-/* Mensaje de confirmación */
+.confirmacion-titulo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #721c24;
+}
+
+/* Mensaje de advertencia */
 .confirmacion-mensaje {
     font-size: 1.1rem;
-    line-height: 1.5;
-    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #842029; /* Tono ligeramente más oscuro */
+    margin-bottom: 20px;
 }
 
-/* Botones de acción */
+/* Contenedor para botones */
+.confirmacion-botones {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los botones */
+    gap: 10px; /* Separación entre botones */
+}
+
+/* Botones personalizados */
 .confirmacion-boton {
     font-size: 1rem;
-    padding: 10px 20px;
-    margin-right: 10px;
-    border-radius: 5px;
+    padding: 10px 18px;
+    border-radius: 6px;
     border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: calc(50% - 5px); /* Cada botón ocupa el 50% menos el espacio de separación */
 }
 
+/* Botón de peligro */
 .confirmacion-boton.btn-danger {
-    background-color: #d9534f; /* Rojo Bootstrap */
+    background-color: #d9534f;
+    color: #fff;
 }
 
-.confirmacion-boton.btn-danger:hover{
-    background-color: #f07571;
+.confirmacion-boton.btn-danger:hover {
+    background-color: #c9302c;
 }
 
+/* Botón secundario */
 .confirmacion-boton.btn-secondary {
-    background-color: #6c757d; /* Gris Bootstrap */
+    background-color: #6c757d;
+    color: #fff;
 }
 
-.confirmacion-boton.btn-secondary:hover{
-    background-color: #b4bdc4;
-    color: black;
+.confirmacion-boton.btn-secondary:hover {
+    background-color: #5a6268;
 }

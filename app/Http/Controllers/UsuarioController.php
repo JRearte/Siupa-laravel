@@ -183,4 +183,5 @@ class UsuarioController extends Controller
         //return $pdf->download('Reporte de usuarios.pdf');
         return $pdf->stream();
     }
+
 }

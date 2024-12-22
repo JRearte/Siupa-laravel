@@ -39,7 +39,7 @@
 /* Ajuste del diseño del formulario para un estilo compacto en horizontal */
 .formulario .form-group {
     position: relative;                                     /* Posicionamiento relativo para manejar etiquetas flotantes */
-    margin-bottom: 1.5rem;                                  /* Espacio debajo de cada grupo de formulario */
+    margin-bottom: 1.5rem !important;                                  /* Espacio debajo de cada grupo de formulario */
 }
 
 /* Estilo para las etiquetas de formulario flotantes */
@@ -97,7 +97,7 @@
 /* Estilo para los mensajes de error */
 .formulario .invalid-feedback {
     font-size: 0.75rem;                                     /* Tamaño de fuente más pequeño */
-    margin-top: 0.25rem;                                    /* Espacio encima del mensaje de error */
+    margin-top: 0.25rem;                               /* Espacio encima del mensaje de error */
 }
 
 .formulario .form-control.is-invalid:focus{
