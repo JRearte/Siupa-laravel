@@ -1,101 +1,235 @@
-.card-movida {
-    background: rgba(191, 191, 191, 0.5);
+/* -------------------- Contenedor General -------------------- */
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaciado entre secciones */
+    padding: 20px;
+    background-color: #f8f9fa00;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    box-sizing: border-box; /* Asegura que el padding no desborde */
+}
+
+/* -------------------- Cabecera -------------------- */
+.cabecera {
+    background-color: #ffffff31;
     backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    padding: 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.titulo {
+    font-size: 1.25rem; /* Tamaño del texto */
+    font-weight: bold;
+    color: #343a40; /* Texto oscuro */
+}
+
+/* -------------------- Buscador -------------------- */
+.buscador-input {
+    width: 250px; /* Ancho ajustado */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.buscador-btn {
+    border-radius: 5px; /* Uniformidad */
+}
+
+/* -------------------- Acciones -------------------- */
+.acciones .btn {
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+/* -------------------- Contenido Principal -------------------- */
+.contenido-principal {
+    display: flex;
+    flex-direction: row; /* Elementos en fila por defecto (pantallas grandes) */
+    flex: 1;
+    gap: 20px;
+}
+
+/* -------------------- Listado de Usuarios -------------------- */
+.tabla-usuarios {
+    flex: 1; /* Ocupa más espacio en la fila */
+    background-color: #ffffff31;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    border-radius: 8px;
+    padding: 15px;
     width: 100%;
-    /* Hace que la carta ocupe todo el ancho del contenedor */
-    position: relative;
-    left: 0;
+    box-sizing: border-box;
+    max-height: 460px;
 }
 
-/* Cuadros de categorías */
-.card-category {
-    border-radius: 10px;
-    background-color: rgba(191, 191, 191, 0.5);
+/* -------------------- Estadísticas -------------------- */
+.estadisticas-usuarios {
+    flex: 1; /* Ocupa menos espacio en la fila */
+    background-color: #ffffff31;
     backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    padding: 20px;
+    height: auto;
+    box-sizing: border-box;
+    max-height: 460px; 
+}
+
+.estadisticas-container {
+    display: block; 
+    margin: 0; 
+    padding: 0;
+}
+
+.estadistica {
+    width: 100%; /* Cada contenedor ocupa el ancho total del contenedor principal */
+    height: 25%;
+    margin-bottom: 15px; /* Espacio entre los contenedores */
+    position: relative;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    box-sizing: border-box; /* Asegura que padding y borders respeten el ancho */
+}
+
+.icono-fondo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4.5rem;
+    color: rgba(0, 0, 0, 0.300);
+    z-index: 1;
 }
 
 
-.card-category h5 {
+.contenido {
+    display: flex;
+    flex-direction: row; /* Acomoda los elementos en una fila */
+    justify-content: space-between;
+    align-items: center; /* Centra verticalmente los elementos */
+    height: 100%;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
     font-weight: bold;
 }
 
-.card-category .card-title {
-    font-size: 18px;
+.info {
+    display: flex;
+    flex-direction: column; /* Acomoda el porcentaje y usuarios en columna */
+    align-items: flex-end; /* Alinea al lado derecho */
+    text-align: right;
+    font-size: 0.85rem;
+}
+
+.info .porcentaje {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+}
+
+span {
+    color: #666;
+    font-size: 0.85rem;
 }
 
 
-.card-category p {
-    font-size: 16px;
-    margin-top: 10px;
-    color: #343a40;
+/* -------------------- Media Queries (Dispositivos Móviles) -------------------- */
+@media (max-width: 768px) {
+    .contenido-principal {
+        flex-direction: column; /* Coloca los elementos en columna */
+        gap: 10px; /* Reduce el espacio entre elementos */
+    }
+
+    .tabla-usuarios {
+        width: 100%; /* Asegura que la tabla ocupe todo el ancho del contenedor */
+    }
+
+    .estadisticas-usuarios {
+        width: 100%; /* Asegura que las estadísticas también ocupen todo el ancho */
+        order: 2; /* Mueve las estadísticas debajo de la tabla */
+    }
 }
 
-
-/*********************** TABLA ***********************/
-.table {
-    min-width: 500px;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+/* -------------------- Estilos de la Tabla -------------------- */
+thead th {
     border: 1px solid black;
+    font-size: 0.80rem;  /* Reducir tamaño del texto */
+    font-weight: bold; /* Corregido: "bolt" a "bold" */
+    color: #000000;  /* Color sutil para el texto */
+    text-align: center;  /* Alinear el texto a la izquierda */
 }
 
-.table th {
-    background-color: #343a40;
-    color: #ffffff;
-    text-transform: uppercase;
-    font-weight: lighter;
-    padding: 5px 10px;
-    /* Reducir padding para hacer la tabla más plana */
-    text-align: left;
-    border-right: 1px solid rgb(255, 255, 255);
-}
-
-.table th:last-child {
-    border-right: none;
-}
-
-.table .col-n {
-    width: 20px;
+td {
+    border: 1px solid black;
     text-align: center;
 }
 
-.table .col-legajo {
-    width: 135px;
-    min-width: 135px;
+td.usuario {
+    width: 100%; /* Ajustar ancho de la columna usuario */
 }
 
-.table .col-categoria {
-    width: 130px;
-    min-width: 130px;
+/* -------------------- Contenedor de Usuario -------------------- */
+.usuario {
+    display: flex;
+    justify-content: space-between; /* Asegura que el texto y el botón estén separados */
+    align-items: center; /* Alineación vertical centrada */
+    gap: 10px; /* Espaciado entre texto y botón */
 }
 
-.table .col-habilitado {
-    width: 130px;
-    min-width: 130px;
-    font-size: 16px;
+/* -------------------- Nombre del Usuario -------------------- */
+.nombre {
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+/* -------------------- Categoría del Usuario -------------------- */
+.categoria {
+    font-size: 0.7rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center; /* Centra verticalmente ícono y texto */
+    gap: 3px; /* Espaciado uniforme entre ícono y texto */
+    margin: 0; /* Elimina márgenes exteriores */
+    padding: 0; /* Elimina rellenos */
+}
+
+.categoria i {
+    margin: 0; /* Elimina márgenes alrededor del ícono */
+    padding: 0; /* Asegura que no haya relleno */
+    vertical-align: middle; /* Ajusta alineación */
+}
+
+/* -------------------- Menú de Opciones -------------------- */
+.menu-opciones {
+    margin-left: auto; /* Empuja el botón hacia el extremo derecho */
+}
+
+/* -------------------- Estado de Habilitación -------------------- */
+.habilitado {
+    text-align: center;
+    font-size: 0.7rem;  /* Reducir tamaño del texto */
+}
+
+.habilitado .text-success {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.habilitado .text-danger {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+/* -------------------- Botones de Opciones -------------------- */
+.opciones {
     text-align: center;
 }
 
-.table .col-opcion {
-    text-align: center;
-    width: 155px;
-    min-width: 155px;
-}
-
-.table td {
-    padding: 4px 10px;
-    /* Reducir padding para compactar las filas */
-    border: 1px solid #000000;
-}
-
-
-
-/*********************** BOTONES ***********************/
 .btn {
     font-size: 12px;
     padding: 4px 8px;
@@ -103,156 +237,133 @@
     transition: background-color 0.3s ease;
 }
 
-.btn-success {
-    background-color: #28a745;
-    color: #ffffff;
+/* -------------------- Dropdown -------------------- */
+.dropdown-content {
+    display: none;
 }
 
-.btn-danger {
-    background-color: #dc3545;
-    color: #ffffff;
+.dropdown-content.show {
+    display: block;
 }
 
-.btn-primary {
-    background-color: #1e38ff;
-    color: #ffffff;
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 20px;
 }
 
-.btn-success:hover {
-    box-shadow: 0 0 12px #a5ffb8;
-    background-color: #39c758;
-    color: #ffffff;
+.dropbtn {
+    background-color: #000000;
+    color: white;
+    padding: 6px 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 20px;
 }
 
-.btn-danger:hover {
-    box-shadow: 0 0 12px #fa0a0ae1;
-    background-color: #cf1528;
-    color: #ffffff;
+.dropbtn.selected {
+    background-color: rgb(127, 127, 127);
+    color: black;
 }
 
-.btn-primary:hover {
-    box-shadow: 0 0 12px #3B82F6;
-    background-color: #3B82F6;
-    color: #ffffff;
-}
-
-/* Mensaje de éxito */
-#success-message {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    animation: fadeOut 1s ease-in-out 6s forwards;
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
-}
-
-
-
-
-
-
-/*********************** PAGINACIÓN ***********************/
-.pagination {
-    justify-content: center;
-    margin-top: 13px;
-    /* Espacio arriba de la paginación */
-}
-
-.pagination .page-item .page-link {
-    color: #05161A;
-    /* Color del texto de los números de página */
-    background-color: rgba(191, 191, 191, 0.5);
-    /* Fondo de los números de página con tu color */
-    border-color: #000000;
-    /* Color del borde de los números de página */
-    backdrop-filter: blur(10px);
-}
-
-.pagination .page-item .page-link:hover {
-    color: #ffffff;
-    /* Texto blanco al pasar el mouse */
-    background-color: rgba(191, 191, 191, 0.7);
-    /* Fondo ligeramente más oscuro al pasar el mouse */
-    border-color: rgba(191, 191, 191, 0.7);
-    /* Borde más oscuro al pasar el mouse */
-    backdrop-filter: blur(10px);
-}
-
-.pagination .page-item.active .page-link {
+.dropdown-content {
+    position: absolute;
+    right: 25px;
+    bottom: -15px;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    color: #ffffff;
-    /* Texto blanco en página activa */
-    background-color: rgba(191, 191, 191, 0.9);
-    /* Fondo más oscuro en página activa */
-    border-color: rgba(191, 191, 191, 0.7);
-    /* Borde ligeramente más oscuro en página activa */
-    backdrop-filter: blur(10px);
+    border-radius: 4px;
 }
 
-.pagination .page-link:focus {
-    box-shadow: none;
-    /* Quitar sombra al enfocar */
+.dropdown-item {
+    color: black;
+    padding: 3px 6px;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+    cursor: pointer;
+    font-size: 10px;
 }
 
-
-
-
-
-
-
-@media (max-width: 768px) {
-    .card-movida {
-        margin-left: 50px;
-    }
-
-    /* Ajustes para la tabla */
-    .table {
-        width: 100%;
-        /* Asegura que la tabla use todo el ancho disponible */
-        overflow-x: auto;
-        /* Permite el desplazamiento horizontal si la tabla es más ancha */
-    }
-
-    /* Ajuste de ancho de las columnas para la tabla en pantallas pequeñas */
-    .table .col-nombre {
-        width: 60%;
-        /* Ajusta el ancho según la importancia de la columna */
-        white-space: nowrap;
-        /* Evita que el texto se divida en varias líneas */
-    }
-
-    .table .col-opcion {
-        width: 10%;
-        /* Ajusta el ancho según el contenido y la importancia de la columna */
-        text-align: center;
-        /* Alinea el contenido en el centro si es necesario */
-    }
-
-    /* Opcional: Añadir estilos para mejorar la visibilidad en dispositivos móviles */
-    .table td,
-    .table th {
-        padding: 8px;
-        /* Asegura que haya suficiente espacio para el contenido */
-    }
-
-    .table .col-categoria,
-    .table .col-habilitado,
-    .table .col-legajo,
-    .table .col-n {
-        display: none;
-    }
-
-    #card_title {
-        display: none;
-    }
-
+.dropdown-item .icon{
+    margin-right: 0px;
 }
+
+.dropdown-item:hover {
+    background-color: #ddd;
+}
+
+/* -------------------- Iconos -------------------- */
+.fas, .fa-solid, .fa-fw {
+    margin-right: 8px;
+}
+
+/* -------------------- Paginación -------------------- */
+.container.paginacion {
+    position: relative;
+    display: flex;
+    justify-content: center; /* Centra la paginación */
+    bottom: 5px;
+}
+
+.pagination {
+    display: flex;
+    list-style-type: none; /* Elimina los puntos de lista */
+    padding: 0;
+    margin: 0;
+}
+
+.pagination .page-item {
+    margin: 0 3px; /* Espaciado más pequeño entre los botones */
+}
+
+.pagination .page-link {
+    display: block;
+    padding: 5px 8px; /* Botones más pequeños */
+    text-decoration: none;
+    color: #000000; /* Texto negro */
+    background-color: #ffffff; /* Fondo blanco */
+    border: 1px solid #000000; /* Borde negro */
+    border-radius: 3px; /* Bordes ligeramente redondeados */
+    font-size: 10px; /* Tamaño de fuente más pequeño */
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s; /* Transiciones más rápidas */
+}
+
+.pagination .page-link:hover {
+    background-color: #f0f0f0; /* Fondo gris claro al hover */
+    border-color: #000000; /* Mantener borde negro */
+}
+
+.pagination .page-item a[aria-label="Previous"],
+.pagination .page-item a[aria-label="Next"] {
+    font-weight: normal; /* Sin negrita para los botones "Anterior" y "Siguiente" */
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d; /* Gris para botones deshabilitados */
+    border-color: #dee2e6; /* Borde gris */
+    cursor: not-allowed; /* Cursor "no permitido" */
+}
+
+.pagination .page-item .page-link span {
+    font-size: 12px; /* Iconos ligeramente más grandes */
+}
+
+/* -------------------- Spinner de Carga -------------------- */
+.loading-spinner {
+    display: none; /* Ocultar spinner por defecto */
+    text-align: center;
+}
+
+.loading-spinner img {
+    width: 30px; /* Tamaño del spinner más pequeño */
+    height: 30px;
+}
+

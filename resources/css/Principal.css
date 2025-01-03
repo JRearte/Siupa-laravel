@@ -2,25 +2,41 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 body {
-    background: linear-gradient(to bottom right, #80CBC4, #B0BEC5);
-    background-size: cover;         /* Asegura que el fondo cubra el área sin repetirse */
-    background-attachment: fixed;   /* Fija el fondo al viewport para que no se mueva con el scroll */
-    background-repeat: no-repeat;   /* Evita que el fondo se repita */
-    font-family: sans-serif;
-    height: 100vh;
-    margin: 0;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Degradado de 3 colores cálidos suaves */
+    background-size: cover; /* Asegura que cubra toda el área */
+    height: 100vh; /* Ocupa todo el alto de la ventana */
+    font-family: sans-serif; /* Fuente por defecto */
+    margin: 0; /* Elimina márgenes */
 }
-
-
 
 .col-md-10 {
     position: relative;
     width: calc(100% - 200px);
-    
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .col-md-2 {
     width: 200px;
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+
+@media (max-width: 768px) {
+    /* Agrega los estilos específicos para pantallas pequeñas aquí */
+    .col-md-2 {
+        display: none; /* Ocultar sidebar */
+    }
+
+    .col-md-10 {
+        position: relative;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
 }
 
 
@@ -65,9 +81,6 @@ body {
         #6c757d 100%    /* Gris oscuro, para el final */
     );
 }
-
-
-
 
 .toast-body {
     flex-grow: 1;

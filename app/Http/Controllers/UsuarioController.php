@@ -23,27 +23,35 @@ class UsuarioController extends Controller
      * usuarios por página, ordenandolos por apellido de forma ascendente para mostrarlos en la 
      * página principal del gestor de usuario. 
      */
-    public function listar(): View
+    public function listar(Request $request)
     {
-        // Obtener todos los usuarios
-        $usuarios = Usuario::orderBy('apellido', 'asc')->paginate(10);
-
+        // Obtener el término de búsqueda
+        $buscar = $request->input('buscar');
+    
+        // Filtrar los usuarios si hay un término de búsqueda
+        $usuarios = Usuario::when($buscar, function ($query, $buscar) {
+            $query->where('Nombre', 'LIKE', "%$buscar%")
+                  ->orWhere('Apellido', 'LIKE', "%$buscar%")
+                  ->orWhere('Categoria', 'LIKE', "%$buscar%");
+        })->orderBy('apellido', 'asc')->paginate(7);
+    
         // Calcular estadísticas
         $totalUsuarios = Usuario::count();
         $usuariosBienestar = Usuario::where('Categoria', 'Bienestar')->count();
         $usuariosCoordinador = Usuario::where('Categoria', 'Coordinador')->count();
         $usuariosMaestro = Usuario::where('Categoria', 'Maestro')->count();
         $usuariosInvitado = Usuario::where('Categoria', 'Invitado')->count();
-
+    
         // Calcular porcentajes
-        $porcentajeBienestar = ($usuariosBienestar / $totalUsuarios) * 100;
-        $porcentajeCoordinador = ($usuariosCoordinador / $totalUsuarios) * 100;
-        $porcentajeMaestro = ($usuariosMaestro / $totalUsuarios) * 100;
-        $porcentajeInvitado = ($usuariosInvitado / $totalUsuarios) * 100;
-
-        // Devolver la vista principal con los datos
+        $porcentajeBienestar = $totalUsuarios > 0 ? ($usuariosBienestar / $totalUsuarios) * 100 : 0;
+        $porcentajeCoordinador = $totalUsuarios > 0 ? ($usuariosCoordinador / $totalUsuarios) * 100 : 0;
+        $porcentajeMaestro = $totalUsuarios > 0 ? ($usuariosMaestro / $totalUsuarios) * 100 : 0;
+        $porcentajeInvitado = $totalUsuarios > 0 ? ($usuariosInvitado / $totalUsuarios) * 100 : 0;
+    
+        // Enviar datos a la vista
         return view('usuario.index', compact(
             'usuarios',
+            'buscar',
             'totalUsuarios',
             'usuariosBienestar',
             'usuariosCoordinador',
@@ -55,6 +63,7 @@ class UsuarioController extends Controller
             'porcentajeInvitado'
         ));
     }
+    
 
     /**
      * Esta función permite obtener la información detallada de un usuario de la base de datos

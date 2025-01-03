@@ -1,5 +1,5 @@
 /**************** CUERPO DE SIDEBAR *************/
-
+@media (min-width: 769px) {
 /* Estilos para la barra lateral */
 .sidebar {
     position: fixed;                                        /* Mantiene el sidebar fijo en la ventana */
@@ -122,8 +122,8 @@
     width: 100%;
     padding: 10px 15px;                                     /* Espaciado interno */
     border-radius: 5px;                                     /* Bordes redondeados */
-    color: #000000;                                       /* Color del texto */
     background-color: #00000000;                          /* Color de fondo */
+    color: #000000;                                       /* Color del texto */
     border: none;                                           /* Sin borde */
     display: flex;                                          /* Alinea el icono y el texto */
     align-items: center;                                    /* Centra el contenido verticalmente */
@@ -157,6 +157,13 @@
     margin-right: 8px;                                      /* Espacio entre el icono y el texto */
     font-size: 16px;                                        /* Tamaño del icono */
 }
-
+}
 
 /***************************************************************************************************/
+
+@media (max-width: 768px) {
+    /* Agrega los estilos específicos para pantallas pequeñas aquí */
+    .sidebar {
+        display: none; /* Ocultar sidebar */
+    }
+}

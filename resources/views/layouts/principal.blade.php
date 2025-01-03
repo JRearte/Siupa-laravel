@@ -9,6 +9,7 @@
     <!-- Cargando Bootstrap y FontAwesome desde tu instalación interna -->
     @vite(['resources/css/principal.css'])
     @vite(['resources/js/toast.js'])
+    @vite(['resources/js/menu_desplegable.js'])
 </head>
 <body>
     <div class="container-fluid">

@@ -1,48 +1,58 @@
-<!-- resources/views/usuario/estadistica.blade.php -->
 <div class="estadisticas-container">
-    <div class="row text-center">
-        <div class="col-sm-12">
-            <h3>Total de usuarios: {{ $totalUsuarios }}</h3>
+    <!-- Contenedor 1 -->
+    <div class="estadistica">
+        <div class="icono-fondo">
+            <i class="fa-solid fa-crown"></i>
+        </div>
+        <div class="contenido">
+            <h3>Bienestar</h3>
+            <div class="info">
+                <span>{{ $usuariosBienestar }} / {{ $totalUsuarios }} usuarios</span>
+                <span class="porcentaje">{{ number_format($porcentajeBienestar, 2) }}%</span>
+            </div>
         </div>
     </div>
 
-    <!-- Porcentaje de usuarios en cada categoría -->
-    <div class="row text-center mb-4">
-        <div class="col-md-3 col-sm-6">
-            <div class="card card-category">
-                <div class="card-body">
-                    <h5 class="card-title">Bienestar</h5>
-                    <p class="card-text">{{ $usuariosBienestar }} usuarios
-                        ({{ number_format($porcentajeBienestar, 2) }}%)</p>
-                </div>
+    <!-- Contenedor 2 -->
+    <div class="estadistica">
+        <div class="icono-fondo">
+            <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <div class="contenido">
+            <h3>Coordinador</h3>
+            <div class="info">
+                <span>{{ $usuariosCoordinador }} / {{ $totalUsuarios }} usuarios</span>
+                <span class="porcentaje">{{ number_format($porcentajeCoordinador, 2) }}%</span>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card card-category">
-                <div class="card-body">
-                    <h5 class="card-title">Coordinador</h5>
-                    <p class="card-text">{{ $usuariosCoordinador }} usuarios
-                        ({{ number_format($porcentajeCoordinador, 2) }}%)</p>
-                </div>
+    </div>
+
+    <!-- Contenedor 3 -->
+    <div class="estadistica">
+        <div class="icono-fondo">
+            <i class="fa-solid fa-chalkboard-teacher"></i>
+        </div>
+        <div class="contenido">
+            <h3>Maestro</h3>
+            <div class="info">
+                <span>{{ $usuariosMaestro }} / {{ $totalUsuarios }} usuarios</span>
+                <span class="porcentaje">{{ number_format($porcentajeMaestro, 2) }}%</span>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card card-category">
-                <div class="card-body">
-                    <h5 class="card-title">Maestro</h5>
-                    <p class="card-text">{{ $usuariosMaestro }} usuarios
-                        ({{ number_format($porcentajeMaestro, 2) }}%)</p>
-                </div>
-            </div>
+    </div>
+
+    <!-- Contenedor 4 -->
+    <div class="estadistica">
+        <div class="icono-fondo">
+            <i class="fa-solid fa-user"></i>
         </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card card-category">
-                <div class="card-body">
-                    <h5 class="card-title">Invitado</h5>
-                    <p class="card-text">{{ $usuariosInvitado }} usuarios
-                        ({{ number_format($porcentajeInvitado, 2) }}%)</p>
-                </div>
+        <div class="contenido">
+            <h3>Invitado</h3>
+            <div class="info">
+                <span>{{ $usuariosInvitado }} / {{ $totalUsuarios }} usuarios</span>
+                <span class="porcentaje">{{ number_format($porcentajeInvitado, 2) }}%</span>
             </div>
         </div>
     </div>
 </div>
+
