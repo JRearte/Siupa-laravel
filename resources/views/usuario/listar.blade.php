@@ -1,3 +1,4 @@
+@vite(['resources/css/tabla.css'])
 <div class="table-responsive">
     <table class="table table-striped table-hover">
         <thead class="thead">
@@ -21,9 +22,9 @@
                                 <div class="habilitado">
                                     <strong>{{ $primerApellido }} {{ $primerNombre }}</strong>
                                     @if ($usuario->Habilitado == 0)
-                                    <i class="fa-solid fa-lock"></i>
+                                        <i class="fa-solid fa-lock"></i>
                                     @else
-                                    <i class="fa-solid fa-lock-open"></i>
+                                        <i class="fa-solid fa-lock-open"></i>
                                     @endif
                                 </div>
                             </div>

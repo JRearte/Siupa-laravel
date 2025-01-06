@@ -2,13 +2,14 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 body {
-    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Degradado de 3 colores cálidos suaves */
-    background-size: cover; /* Asegura que cubra toda el área */
-    height: 100vh; /* Ocupa todo el alto de la ventana */
-    font-family: sans-serif; /* Fuente por defecto */
-    margin: 0; /* Elimina márgenes */
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    background-size: cover;
+    height: 100vh;
+    font-family: sans-serif;
+    margin: 0;
 }
 
+/* ==================== Estructura de Columnas ==================== */
 .col-md-10 {
     position: relative;
     width: calc(100% - 200px);
@@ -24,10 +25,18 @@ body {
     float: left;
 }
 
+/* ==================== Responsividad ==================== */
 @media (max-width: 768px) {
-    /* Agrega los estilos específicos para pantallas pequeñas aquí */
     .col-md-2 {
-        display: none; /* Ocultar sidebar */
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        background-color: #ffffff00;
+        z-index: 1;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     }
 
     .col-md-10 {
@@ -37,9 +46,10 @@ body {
         margin: 0;
         box-sizing: border-box;
     }
+
 }
 
-
+/* ==================== Notificaciones ==================== */
 .toast-container {
     position: fixed;
     top: 0;
@@ -64,22 +74,19 @@ body {
 }
 
 .toast-error {
-    background: linear-gradient(135deg, 
-        #b01e24 0%,     /* Rojo oscuro */
-        #c44d57 40%,    /* Rojo más apagado */
-        #d7807a 70%,    /* Tono más suave, para desvanecer */
-        #6c757d 100%    /* Gris oscuro, final de la transición */
-    );
+    background: linear-gradient(135deg,
+            #b01e24 0%,
+            #c44d57 40%,
+            #d7807a 70%,
+            #6c757d 100%);
 }
 
-
 .toast-success {
-    background: linear-gradient(135deg, 
-        #1d6f39 0%,     /* Verde oscuro, más natural */
-        #3e9c64 40%,    /* Verde más suave, tono fresco */
-        #5caa8a 70%,    /* Verde apagado y suave */
-        #6c757d 100%    /* Gris oscuro, para el final */
-    );
+    background: linear-gradient(135deg,
+            #1d6f39 0%,
+            #3e9c64 40%,
+            #5caa8a 70%,
+            #6c757d 100%);
 }
 
 .toast-body {
@@ -124,7 +131,7 @@ body {
 .progress-bar-fill {
     height: 100%;
     width: 100%;
-    background-color: #fff; /* Color blanco para la barra de progreso */
+    background-color: #fff;
     animation: progress-bar 5s linear forwards;
 }
 
@@ -132,6 +139,7 @@ body {
     from {
         transform: translateX(100%);
     }
+
     to {
         transform: translateX(0);
     }
@@ -141,19 +149,172 @@ body {
     from {
         width: 100%;
     }
+
     to {
         width: 0;
     }
 }
 
-/* Colores para tipos específicos de toast */
 .toast-error .progress-bar-fill {
-    background-color: #dc3545; /* Rojo para error */
-    box-shadow: 0 4px 6px rgba(220, 53, 69, 0.6); /* Sombra para el error */
+    background-color: #dc3545;
+    box-shadow: 0 4px 6px rgba(220, 53, 69, 0.6);
 }
 
 .toast-success .progress-bar-fill {
-    background-color: #a3f393; /* Verde para éxito */
-    box-shadow: 0 12px 18px rgba(79, 236, 116, 0.845); /* Sombra para éxito */
+    background-color: #a3f393;
+    box-shadow: 0 12px 18px rgba(79, 236, 116, 0.845);
 }
 
+/* ==================== Contenedor Principal ==================== */
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f8f9fa00;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+/* ==================== Cabecera ==================== */
+.cabecera {
+    background-color: #ffffff31;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.cabecera .titulo {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* ==================== Buscador ==================== */
+.cabecera .buscador-input {
+    width: 250px;
+    border-radius: 5px;
+}
+
+.cabecera .buscador-btn {
+    border-radius: 5px;
+}
+
+/* ==================== Acciones ==================== */
+.cabecera .acciones .btn {
+    border-radius: 5px;
+}
+
+.cabecera .acciones .btn-danger{
+    display: none;
+}
+
+/* ==================== Adaptación a móviles ==================== */
+@media (max-width: 768px) {
+
+    .cabecera .titulo {
+        display: none;
+    }
+
+    .cabecera span {
+        display: none;
+    }
+
+    .cabecera {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .cabecera .buscador-input {
+        width: 180px;
+    }
+
+    .cabecera .buscador-btn {
+        width: 35px;
+        height: 32px;
+    }
+
+    .cabecera .acciones {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        
+    }
+
+    .cabecera .acciones .btn {
+        width: 35px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .cabecera .acciones .btn-danger{
+        display: block;
+    }
+
+}
+
+
+/* ==================== Tabla y Historial de Usuarios ==================== */
+.tabla-usuarios {
+    flex: 1;
+    background-color: #ffffff31;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    min-width: 300px;
+    box-sizing: border-box;
+    max-height: 460px;
+}
+
+.historial-usuarios {
+    flex: 2;
+    background-color: #ffffff31;
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    padding: 15px;
+    max-height: 460px;
+    overflow-y: auto;
+}
+
+/* ==================== Layout Principal ==================== */
+.contenido-principal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .contenido-principal {
+        flex-direction: column;
+    }
+
+    .tabla-usuarios {
+        flex: 1;
+        max-width: 100%;
+    }
+}
+
+
+/* ==================== Barra de Desplazamiento ==================== */
+::-webkit-scrollbar {
+    width: 6px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ff58338b;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #c1214e8d;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #e6e6e684;
+}

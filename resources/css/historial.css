@@ -1,0 +1,49 @@
+/* -------------------- Historial -------------------- */
+.historial-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.historial-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+}
+
+
+.historial-item .usuarioauth strong,
+.historial-item .accion strong,
+.historial-item .detalle strong {
+    color: #333;
+}
+
+.historial-item .fecha {
+    font-size: 9px;
+    color: #777;
+}
+
+.separator {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+    .historial-container {
+        padding: 5px;
+    }
+
+    .historial-item {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .historial-usuarios {
+        flex: 1;
+        max-width: 100%;
+    }
+}

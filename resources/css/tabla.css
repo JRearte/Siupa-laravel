@@ -1,167 +1,10 @@
-/* -------------------- Contenedor General -------------------- */
-.contenedor-principal {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Espaciado entre secciones */
-    padding: 20px;
-    background-color: #f8f9fa00;
-    height: 100vh; /* Ocupa toda la altura de la ventana */
-    box-sizing: border-box; /* Asegura que el padding no desborde */
-}
-
-/* -------------------- Cabecera -------------------- */
-.cabecera {
-    background-color: #ffffff31;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
-    padding: 10px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-}
-
-.titulo {
-    font-size: 1.25rem; /* Tamaño del texto */
-    font-weight: bold;
-    color: #343a40; /* Texto oscuro */
-}
-
-/* -------------------- Buscador -------------------- */
-.buscador-input {
-    width: 250px; /* Ancho ajustado */
-    border-radius: 5px; /* Bordes redondeados */
-}
-
-.buscador-btn {
-    border-radius: 5px; /* Uniformidad */
-}
-
-/* -------------------- Acciones -------------------- */
-.acciones .btn {
-    border-radius: 5px; /* Bordes redondeados */
-}
-
-/* -------------------- Contenido Principal -------------------- */
-.contenido-principal {
-    display: flex;
-    flex-direction: row; /* Elementos en fila por defecto (pantallas grandes) */
-    flex: 1;
-    gap: 20px;
-}
-
-/* -------------------- Listado de Usuarios -------------------- */
-.tabla-usuarios {
-    flex: 1; /* Ocupa más espacio en la fila */
-    background-color: #ffffff31;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
-    border-radius: 8px;
-    padding: 15px;
-    width: 100%;
-    box-sizing: border-box;
-    max-height: 460px;
-}
-
-/* -------------------- Estadísticas -------------------- */
-.estadisticas-usuarios {
-    flex: 1; /* Ocupa menos espacio en la fila */
-    background-color: #ffffff31;
-    backdrop-filter: blur(10px);
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
-    padding: 20px;
-    height: auto;
-    box-sizing: border-box;
-    max-height: 460px; 
-}
-
-.estadisticas-container {
-    display: block; 
-    margin: 0; 
-    padding: 0;
-}
-
-.estadistica {
-    width: 100%; /* Cada contenedor ocupa el ancho total del contenedor principal */
-    height: 25%;
-    margin-bottom: 15px; /* Espacio entre los contenedores */
-    position: relative;
-    background: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    box-sizing: border-box; /* Asegura que padding y borders respeten el ancho */
-}
-
-.icono-fondo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 4.5rem;
-    color: rgba(0, 0, 0, 0.300);
-    z-index: 1;
-}
-
-
-.contenido {
-    display: flex;
-    flex-direction: row; /* Acomoda los elementos en una fila */
-    justify-content: space-between;
-    align-items: center; /* Centra verticalmente los elementos */
-    height: 100%;
-}
-
-h3 {
-    margin: 0;
-    font-size: 1rem;
-    color: #333;
-    font-weight: bold;
-}
-
-.info {
-    display: flex;
-    flex-direction: column; /* Acomoda el porcentaje y usuarios en columna */
-    align-items: flex-end; /* Alinea al lado derecho */
-    text-align: right;
-    font-size: 0.85rem;
-}
-
-.info .porcentaje {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #333;
-}
-
-span {
-    color: #666;
-    font-size: 0.85rem;
-}
-
-
-/* -------------------- Media Queries (Dispositivos Móviles) -------------------- */
-@media (max-width: 768px) {
-    .contenido-principal {
-        flex-direction: column; /* Coloca los elementos en columna */
-        gap: 10px; /* Reduce el espacio entre elementos */
-    }
-
-    .tabla-usuarios {
-        width: 100%; /* Asegura que la tabla ocupe todo el ancho del contenedor */
-    }
-
-    .estadisticas-usuarios {
-        width: 100%; /* Asegura que las estadísticas también ocupen todo el ancho */
-        order: 2; /* Mueve las estadísticas debajo de la tabla */
-    }
-}
-
-/* -------------------- Estilos de la Tabla -------------------- */
+/* ==================== Estilos de la Tabla ==================== */
 thead th {
     border: 1px solid black;
-    font-size: 0.80rem;  /* Reducir tamaño del texto */
-    font-weight: bold; /* Corregido: "bolt" a "bold" */
-    color: #000000;  /* Color sutil para el texto */
-    text-align: center;  /* Alinear el texto a la izquierda */
+    font-size: 0.80rem; 
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
 }
 
 td {
@@ -170,62 +13,46 @@ td {
 }
 
 td.usuario {
-    width: 100%; /* Ajustar ancho de la columna usuario */
+    width: 100%;
 }
 
-/* -------------------- Contenedor de Usuario -------------------- */
+/* ==================== Contenedor de Usuario ==================== */
 .usuario {
     display: flex;
-    justify-content: space-between; /* Asegura que el texto y el botón estén separados */
-    align-items: center; /* Alineación vertical centrada */
-    gap: 10px; /* Espaciado entre texto y botón */
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
-/* -------------------- Nombre del Usuario -------------------- */
+/* ==================== Nombre del Usuario ==================== */
 .nombre {
     font-size: 0.8rem;
     font-weight: normal;
 }
 
-/* -------------------- Categoría del Usuario -------------------- */
+/* ==================== Categoría del Usuario ==================== */
 .categoria {
     font-size: 0.7rem;
     color: #6c757d;
     display: flex;
-    align-items: center; /* Centra verticalmente ícono y texto */
-    gap: 3px; /* Espaciado uniforme entre ícono y texto */
-    margin: 0; /* Elimina márgenes exteriores */
-    padding: 0; /* Elimina rellenos */
+    align-items: center;
+    gap: 3px;
+    margin: 0;
+    padding: 0;
 }
 
 .categoria i {
-    margin: 0; /* Elimina márgenes alrededor del ícono */
-    padding: 0; /* Asegura que no haya relleno */
-    vertical-align: middle; /* Ajusta alineación */
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
 }
 
-/* -------------------- Menú de Opciones -------------------- */
-.menu-opciones {
-    margin-left: auto; /* Empuja el botón hacia el extremo derecho */
-}
-
-/* -------------------- Estado de Habilitación -------------------- */
+/* ==================== Estado de Habilitación ==================== */
 .habilitado {
-    text-align: center;
-    font-size: 0.7rem;  /* Reducir tamaño del texto */
+    font-size: 0.7rem;
 }
 
-.habilitado .text-success {
-    font-weight: bold;
-    color: #28a745;
-}
-
-.habilitado .text-danger {
-    font-weight: bold;
-    color: #dc3545;
-}
-
-/* -------------------- Botones de Opciones -------------------- */
+/* ==================== Botones de Opciones ==================== */
 .opciones {
     text-align: center;
 }
@@ -237,7 +64,7 @@ td.usuario {
     transition: background-color 0.3s ease;
 }
 
-/* -------------------- Dropdown -------------------- */
+/* ==================== Dropdown ==================== */
 .dropdown-content {
     display: none;
 }
@@ -291,7 +118,7 @@ td.usuario {
     font-size: 10px;
 }
 
-.dropdown-item .icon{
+.dropdown-item .icon {
     margin-right: 0px;
 }
 
@@ -299,71 +126,59 @@ td.usuario {
     background-color: #ddd;
 }
 
-/* -------------------- Iconos -------------------- */
+/* ==================== Iconos ==================== */
 .fas, .fa-solid, .fa-fw {
     margin-right: 8px;
 }
 
-/* -------------------- Paginación -------------------- */
+/* ==================== Paginación ==================== */
 .container.paginacion {
     position: relative;
     display: flex;
-    justify-content: center; /* Centra la paginación */
+    justify-content: center;
     bottom: 5px;
 }
 
 .pagination {
     display: flex;
-    list-style-type: none; /* Elimina los puntos de lista */
+    list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
 .pagination .page-item {
-    margin: 0 3px; /* Espaciado más pequeño entre los botones */
+    margin: 0 3px;
 }
 
 .pagination .page-link {
     display: block;
-    padding: 5px 8px; /* Botones más pequeños */
+    padding: 5px 8px;
     text-decoration: none;
-    color: #000000; /* Texto negro */
-    background-color: #ffffff; /* Fondo blanco */
-    border: 1px solid #000000; /* Borde negro */
-    border-radius: 3px; /* Bordes ligeramente redondeados */
-    font-size: 10px; /* Tamaño de fuente más pequeño */
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 3px;
+    font-size: 10px;
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s; /* Transiciones más rápidas */
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
 .pagination .page-link:hover {
-    background-color: #f0f0f0; /* Fondo gris claro al hover */
-    border-color: #000000; /* Mantener borde negro */
+    background-color: #f0f0f0;
+    border-color: #000000;
 }
 
 .pagination .page-item a[aria-label="Previous"],
 .pagination .page-item a[aria-label="Next"] {
-    font-weight: normal; /* Sin negrita para los botones "Anterior" y "Siguiente" */
+    font-weight: normal;
 }
 
 .pagination .page-item.disabled .page-link {
-    color: #6c757d; /* Gris para botones deshabilitados */
-    border-color: #dee2e6; /* Borde gris */
-    cursor: not-allowed; /* Cursor "no permitido" */
+    color: #6c757d;
+    border-color: #dee2e6;
+    cursor: not-allowed;
 }
 
 .pagination .page-item .page-link span {
-    font-size: 12px; /* Iconos ligeramente más grandes */
+    font-size: 12px;
 }
-
-/* -------------------- Spinner de Carga -------------------- */
-.loading-spinner {
-    display: none; /* Ocultar spinner por defecto */
-    text-align: center;
-}
-
-.loading-spinner img {
-    width: 30px; /* Tamaño del spinner más pequeño */
-    height: 30px;
-}
-

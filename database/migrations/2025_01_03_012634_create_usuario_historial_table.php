@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('usuario');
             $table->string('accion', 40);
-            $table->string('detalles', 100)->nullable();
+            $table->string('detalles', 200)->nullable();
             $table->timestamps();
         });
     }

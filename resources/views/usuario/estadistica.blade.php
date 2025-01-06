@@ -1,3 +1,4 @@
+@vite(['resources/css/estadistica.css'])
 <div class="estadisticas-container">
     <!-- Contenedor 1 -->
     <div class="estadistica">
@@ -7,7 +8,7 @@
         <div class="contenido">
             <h3>Bienestar</h3>
             <div class="info">
-                <span>{{ $usuariosBienestar }} / {{ $totalUsuarios }} usuarios</span>
+                <span>{{ $usuariosBienestar }} / {{ $totalUsuarios }}</span>
                 <span class="porcentaje">{{ number_format($porcentajeBienestar, 2) }}%</span>
             </div>
         </div>
@@ -21,7 +22,7 @@
         <div class="contenido">
             <h3>Coordinador</h3>
             <div class="info">
-                <span>{{ $usuariosCoordinador }} / {{ $totalUsuarios }} usuarios</span>
+                <span>{{ $usuariosCoordinador }} / {{ $totalUsuarios }}</span>
                 <span class="porcentaje">{{ number_format($porcentajeCoordinador, 2) }}%</span>
             </div>
         </div>
@@ -35,7 +36,7 @@
         <div class="contenido">
             <h3>Maestro</h3>
             <div class="info">
-                <span>{{ $usuariosMaestro }} / {{ $totalUsuarios }} usuarios</span>
+                <span>{{ $usuariosMaestro }} / {{ $totalUsuarios }}</span>
                 <span class="porcentaje">{{ number_format($porcentajeMaestro, 2) }}%</span>
             </div>
         </div>
@@ -49,7 +50,7 @@
         <div class="contenido">
             <h3>Invitado</h3>
             <div class="info">
-                <span>{{ $usuariosInvitado }} / {{ $totalUsuarios }} usuarios</span>
+                <span>{{ $usuariosInvitado }} / {{ $totalUsuarios }}</span>
                 <span class="porcentaje">{{ number_format($porcentajeInvitado, 2) }}%</span>
             </div>
         </div>

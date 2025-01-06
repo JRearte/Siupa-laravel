@@ -1,7 +1,6 @@
 @extends('layouts.principal')
 @section('title', 'Gestor de usuarios')
 @section('content')
-    @vite(['resources/css/tabla.css'])
     <div class="contenedor-principal">
         <!-- Alertas -->
         <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -55,30 +54,41 @@
                     <input type="text" name="buscar" class="form-control form-control-sm buscador-input"
                         placeholder="Buscar usuarios" value="{{ request('buscar') }}" />
                     <button type="submit" class="btn btn-secondary btn-sm ms-2 buscador-btn">
-                        <i class="fas fa-search"></i> {{ __('Buscar') }}
+                        <i class="fas fa-search"></i> <span>{{ __('Buscar') }}</span>
                     </button>
                 </form>
 
                 <!-- Botones de acciones -->
                 <div class="acciones d-flex">
                     <a href="{{ route('usuario.agregar') }}" class="btn btn-dark ms-2">
-                        <i class="fas fa-user-plus"></i> {{ __('Agregar') }}
+                        <i class="fas fa-user-plus"></i> <span>{{ __('Agregar') }}</span>
                     </a>
                     <a href="{{ route('usuario.reporte') }}" class="btn btn-dark ms-2">
-                        <i class="fa-solid fa-file-lines"></i> {{ __('Reporte') }}
+                        <i class="fa-solid fa-file-lines"></i> <span>{{ __('Reporte') }}</span>
                     </a>
+
+                    <!-- Cerrar Sesión -->
+                    <a href="{{ route('usuario.logout') }}" class="btn btn-danger ms-2">
+                        <i class="cerrar-icon fa-solid fa-door-closed"></i>
+                    </a>
+                    <form id="logout-form" action="{{ route('usuario.logout') }}" method="post" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
+
             </div>
         </div>
-
-
-
 
         <!-- Contenedor de datos principales -->
         <div class="contenido-principal">
             <!-- Listado de usuarios -->
             <div class="tabla-usuarios">
                 @include('usuario.listar', ['usuarios' => $usuarios])
+            </div>
+
+            <!-- Historial de usuarios -->
+            <div class="historial-usuarios">
+                @include('usuario.historial', ['historial' => $historial])
             </div>
 
             <!-- Sección de estadísticas -->

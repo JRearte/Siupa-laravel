@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Http\Requests\UsuarioRequest;
+use App\Models\Historial;
+use App\Traits\RegistraHistorial;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\RedirectResponse;
@@ -17,6 +19,7 @@ use Illuminate\View\View;
  */
 class UsuarioController extends Controller
 {
+    use RegistraHistorial;
 
     /**
      * Esta función permite obtener un listado de los usuario de la base de datos con un limite de 10
@@ -25,30 +28,30 @@ class UsuarioController extends Controller
      */
     public function listar(Request $request)
     {
-        // Obtener el término de búsqueda
+        // --- Sección: Filtro de usuarios ---
         $buscar = $request->input('buscar');
-    
-        // Filtrar los usuarios si hay un término de búsqueda
         $usuarios = Usuario::when($buscar, function ($query, $buscar) {
             $query->where('Nombre', 'LIKE', "%$buscar%")
-                  ->orWhere('Apellido', 'LIKE', "%$buscar%")
-                  ->orWhere('Categoria', 'LIKE', "%$buscar%");
+                ->orWhere('Apellido', 'LIKE', "%$buscar%")
+                ->orWhere('Categoria', 'LIKE', "%$buscar%");
         })->orderBy('apellido', 'asc')->paginate(7);
     
-        // Calcular estadísticas
+        // --- Sección: Estadísticas ---
         $totalUsuarios = Usuario::count();
         $usuariosBienestar = Usuario::where('Categoria', 'Bienestar')->count();
         $usuariosCoordinador = Usuario::where('Categoria', 'Coordinador')->count();
         $usuariosMaestro = Usuario::where('Categoria', 'Maestro')->count();
         $usuariosInvitado = Usuario::where('Categoria', 'Invitado')->count();
     
-        // Calcular porcentajes
         $porcentajeBienestar = $totalUsuarios > 0 ? ($usuariosBienestar / $totalUsuarios) * 100 : 0;
         $porcentajeCoordinador = $totalUsuarios > 0 ? ($usuariosCoordinador / $totalUsuarios) * 100 : 0;
         $porcentajeMaestro = $totalUsuarios > 0 ? ($usuariosMaestro / $totalUsuarios) * 100 : 0;
         $porcentajeInvitado = $totalUsuarios > 0 ? ($usuariosInvitado / $totalUsuarios) * 100 : 0;
     
-        // Enviar datos a la vista
+        // --- Sección: Historial ---
+        $historial = Historial::orderBy('created_at', 'desc')->get();
+    
+        // --- Enviar datos a la vista ---
         return view('usuario.index', compact(
             'usuarios',
             'buscar',
@@ -60,11 +63,11 @@ class UsuarioController extends Controller
             'porcentajeBienestar',
             'porcentajeCoordinador',
             'porcentajeMaestro',
-            'porcentajeInvitado'
+            'porcentajeInvitado',
+            'historial'
         ));
     }
     
-
     /**
      * Esta función permite obtener la información detallada de un usuario de la base de datos
      * a través de su identificador unico.
@@ -92,15 +95,21 @@ class UsuarioController extends Controller
     /**
      * Esta función permite registrar un nuevo usuario en la base de datos, con los datos validados y
      * la clave encriptada en 60 caracteres para la seguridad en el ingreso al sistema.
+     * Permiso exclusivo → usuario de categoría bienestar.
      * El usuario sera redirigido a la página principal del gestor de usuario.
      * @param UsuarioRequest $regla → credencial validada del usuario.
      */
     public function registrar(UsuarioRequest $regla): RedirectResponse
     {
+        $usuarioAutenticado = auth()->user();
+        if ($usuarioAutenticado->Categoria !== "Bienestar") {
+            return redirect()->route('usuario.index')->with('error', 'No tienes permiso para registrar usuarios.');
+        }
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
-        Usuario::create($datos);
-        return redirect()->route('usuario.index')->with('success', 'El usuario fue creado exitosamente.');
+        $usuario = Usuario::create($datos);
+        $this->registrarAccion(auth()->id(), 'Usuario registrado', "Se registro el usuario {$usuario->Nombre} {$usuario->Apellido} con la categoría {$usuario->Categoria} ");
+        return redirect()->route('usuario.index')->with('success', 'El usuario fue registrado exitosamente.');
     }
 
 
@@ -119,28 +128,47 @@ class UsuarioController extends Controller
     /**
      * Esta función permite modificar la información de un usuario en la base de datos, valiendando 
      * sus datos y encriptando de manera irreversible la clave en 60 caracteres para la seguridad.
+     * Permiso exclusivo → usuario de categoría bienestar.
      * El usuario sera redirigido a la página principal del gestor de usuario.
      * @param UsuarioRequest $regla → credencial validada del usuario.
      * @param Usuario $usuario → objeto de tipo usuario que contiene su estructura.
      */
     public function modificar(UsuarioRequest $regla, Usuario $usuario): RedirectResponse
     {
+        $usuarioAutenticado = auth()->user();
+        if ($usuarioAutenticado->Categoria !== "Bienestar") {
+            return redirect()->route('usuario.index')->with('error', 'No tienes permiso para modificar usuarios.');
+        }
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario->update($datos);
+        $this->registrarAccion(auth()->id(), 'Usuario modificado', "Se modifico el usuario {$usuario->Nombre} {$usuario->Apellido} ");
         return redirect()->route('usuario.index')->with('success', 'El usuario fue modificado exitosamente');
     }
 
 
     /**
      * Esta función permite eliminar un usuario de la base de datos a través de su id.
+     * Permiso exclusivo → usuario de categoría bienestar.
      * El usuario sera redirigido a la página principal del gestor de usuario.
      * @param int $id → identificador del usuario.  
      */
     public function eliminar(int $id): RedirectResponse
     {
-        Usuario::find($id)->delete();
-        return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');
+        try {
+            $usuarioAutenticado = auth()->user();
+            if ($usuarioAutenticado->Categoria !== "Bienestar") {
+                return redirect()->route('usuario.index')->with('error', 'No tienes permiso para eliminar usuarios.');
+            }
+            $usuario = Usuario::find($id);
+            $nombre = $usuario->Nombre;
+            $apellido = $usuario->Apellido;
+            $usuario->delete();
+            $this->registrarAccion(auth()->id(), 'Usuario eliminado', "Se eliminó el usuario {$nombre} {$apellido} ");
+            return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('usuario.index')->with('error', 'Hubo un problema al intentar eliminar al usuario.');
+        }
     }
 
     /**
@@ -191,6 +219,5 @@ class UsuarioController extends Controller
         $pdf->render();
         //return $pdf->download('Reporte de usuarios.pdf');
         return $pdf->stream();
-    }
-
+    }    
 }

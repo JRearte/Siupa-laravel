@@ -37,7 +37,7 @@
     </div>
 
     <!-- Listado de Enlaces -->
-    <ul class="nav flex-column mb-auto">
+    <ul class="nav nav-pills mb-auto">
         <li class="nav-item mb-2">
             <a href="{{ route('usuario.index') }}" class="nav-link">
                 <i class="fas fa-user icon"></i>

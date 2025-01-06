@@ -1,0 +1,70 @@
+/* -------------------- Estadísticas -------------------- */
+.estadisticas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-evenly;
+    align-items: stretch;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.estadistica {
+    flex: 1;
+    min-width: 244px;
+    background: #ffffff31;
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+}
+
+.estadistica .icono-fondo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4.5rem;
+    color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.estadistica .contenido {
+    position: relative;
+    z-index: 2;
+}
+
+.estadistica h3 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.info span {
+    font-size: 0.85rem;
+    color: #383737;
+}
+
+.info .porcentaje {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .estadisticas-container {
+        flex-direction: column;
+        margin-bottom: 120px;
+    }
+}
