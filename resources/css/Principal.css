@@ -206,8 +206,12 @@ body {
     border-radius: 5px;
 }
 
-.cabecera .acciones .btn-danger{
+.cabecera .acciones .btn-danger {
     display: none;
+}
+
+.cabecera .dropdown {
+    display: none !important;
 }
 
 /* ==================== Adaptación a móviles ==================== */
@@ -226,6 +230,7 @@ body {
         align-items: flex-start;
         padding: 15px;
         max-width: 100%;
+        z-index: 2;
     }
 
     .cabecera .buscador-input {
@@ -237,23 +242,61 @@ body {
         height: 32px;
     }
 
-    .cabecera .acciones {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-        
-    }
-
     .cabecera .acciones .btn {
-        width: 35px;
-        height: 32px;
+        display: none;
+    }
+
+
+    .cabecera .dropdown {
+        display: block !important;
+        position: absolute;
+        right: 40px;
+    }
+
+    .cabecera .dropdown .dropdown-toggle {
+        width: 40px;
+        height: 35px;
+        border-radius: 5px;
+        background-color: #000000;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+    }
+
+    .cabecera .dropdown .dropdown-toggle:hover {
+        background-color: #333333;
+    }
+
+    .cabecera .dropdown-menu {
+        background-color: rgba(255, 255, 255, 0.95);
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px 0;
+        min-width: 250px;
+        margin: 0;
+    }
+
+    .cabecera .dropdown-menu .dropdown-item {
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
         font-size: 16px;
+        text-decoration: none;
     }
 
-    .cabecera .acciones .btn-danger{
-        display: block;
+    .cabecera .dropdown-menu .dropdown-item:hover {
+        background-color: #f0f0f0;
+        color: #000;
     }
 
+    .cabecera.dropdown-menu .dropdown-item i {
+        font-size: 1.2rem;
+    }
 }
 
 
@@ -269,6 +312,7 @@ body {
     min-width: 300px;
     box-sizing: border-box;
     max-height: 460px;
+    z-index: 0;
 }
 
 .historial-usuarios {
@@ -303,7 +347,7 @@ body {
 
 /* ==================== Barra de Desplazamiento ==================== */
 ::-webkit-scrollbar {
-    width: 6px; 
+    width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {

@@ -11,8 +11,7 @@ use App\Http\Controllers\SalaController;
 //Primer parametro  /usuario       → lo que muestra el URL.
 //Segundo parametro listar         → el nombre de la función.
 //Tercer parametro  usuario.listar → el nombre asignado a la ruta para ser invocada como funcion en general.
-Route::middleware('auth')->group(function() {
-    Route::controller(UsuarioController::class)->group(function() {
+    Route::controller(UsuarioController::class)->middleware('auth')->group(function() {
         Route::get('/usuarios', 'listar')->name('usuario.index');
         Route::get('usuario/presentacion/{id}', 'mostrar')->name('usuario.presentacion');
         Route::get('usuario/agregar', 'agregar')->name('usuario.agregar');
@@ -23,7 +22,7 @@ Route::middleware('auth')->group(function() {
         Route::get('usuario/confirmar/{id}', 'confirmar')->name('usuario.confirmar');
         Route::get('/usuario/reporte', 'generarReporte')->name('usuario.reporte');
     });
-});
+    
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
 Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout');
 

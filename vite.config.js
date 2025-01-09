@@ -5,9 +5,6 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/js/app.js',
-                'resources/js/toast.js',
-                'resources/js/menu_desplegable.js',
                 'resources/css/app.css', 
                 'resources/css/Login.css',
                 'resources/css/principal.css',
@@ -17,7 +14,11 @@ export default defineConfig({
                 'resources/css/estadistica.css',
                 'resources/css/alerta.css',
                 'resources/css/formulario.css',
-                'resources/css/presentacion.css'],
+                'resources/css/presentacion.css',
+                'resources/js/app.js',
+                'resources/js/grafico.js',
+                'resources/js/toast.js',
+                'resources/js/menu_desplegable.js'],
             refresh: true,
         }),
     ],

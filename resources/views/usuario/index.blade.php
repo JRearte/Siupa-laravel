@@ -52,8 +52,8 @@
                 <!-- Formulario del buscador -->
                 <form method="GET" action="{{ route('usuario.index') }}" class="d-flex me-3">
                     <input type="text" name="buscar" class="form-control form-control-sm buscador-input"
-                        placeholder="Buscar usuarios" value="{{ request('buscar') }}" />
-                    <button type="submit" class="btn btn-secondary btn-sm ms-2 buscador-btn">
+                        placeholder="Buscar usuarios" value="{{ request('buscar') }}" autocomplete="off" />
+                    <button type="submit" class="btn btn-dark btn-sm ms-2 buscador-btn">
                         <i class="fas fa-search"></i> <span>{{ __('Buscar') }}</span>
                     </button>
                 </form>
@@ -66,12 +66,27 @@
                     <a href="{{ route('usuario.reporte') }}" class="btn btn-dark ms-2">
                         <i class="fa-solid fa-file-lines"></i> <span>{{ __('Reporte') }}</span>
                     </a>
+                </div>
 
-                    <!-- Cerrar Sesión -->
-                    <a href="{{ route('usuario.logout') }}" class="btn btn-danger ms-2">
-                        <i class="cerrar-icon fa-solid fa-door-closed"></i>
-                    </a>
-                    <form id="logout-form" action="{{ route('usuario.logout') }}" method="post" style="display: none;">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('usuario.agregar') }}"><i class="fas fa-user-plus"></i>
+                                Agregar</a></li>
+                        <li><a class="dropdown-item" href="{{ route('usuario.reporte') }}"><i
+                                    class="fa-solid fa-file-lines"></i> Reporte</a></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ route('usuario.logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fa-solid fa-door-closed"></i> Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+
+                    <form id="logout-form" action="{{ route('usuario.logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
                 </div>

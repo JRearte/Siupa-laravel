@@ -26,7 +26,7 @@ class UsuarioController extends Controller
      * usuarios por página, ordenandolos por apellido de forma ascendente para mostrarlos en la 
      * página principal del gestor de usuario. 
      */
-    public function listar(Request $request)
+    public function listar(Request $request): View
     {
         // --- Sección: Filtro de usuarios ---
         $buscar = $request->input('buscar');
@@ -35,22 +35,25 @@ class UsuarioController extends Controller
                 ->orWhere('Apellido', 'LIKE', "%$buscar%")
                 ->orWhere('Categoria', 'LIKE', "%$buscar%");
         })->orderBy('apellido', 'asc')->paginate(7);
-    
+
+        // Asegurar que el parámetro "buscar" se pase en la paginación
+        $usuarios->appends(['buscar' => $buscar]);
+
         // --- Sección: Estadísticas ---
         $totalUsuarios = Usuario::count();
         $usuariosBienestar = Usuario::where('Categoria', 'Bienestar')->count();
         $usuariosCoordinador = Usuario::where('Categoria', 'Coordinador')->count();
         $usuariosMaestro = Usuario::where('Categoria', 'Maestro')->count();
         $usuariosInvitado = Usuario::where('Categoria', 'Invitado')->count();
-    
+
         $porcentajeBienestar = $totalUsuarios > 0 ? ($usuariosBienestar / $totalUsuarios) * 100 : 0;
         $porcentajeCoordinador = $totalUsuarios > 0 ? ($usuariosCoordinador / $totalUsuarios) * 100 : 0;
         $porcentajeMaestro = $totalUsuarios > 0 ? ($usuariosMaestro / $totalUsuarios) * 100 : 0;
         $porcentajeInvitado = $totalUsuarios > 0 ? ($usuariosInvitado / $totalUsuarios) * 100 : 0;
-    
+
         // --- Sección: Historial ---
         $historial = Historial::orderBy('created_at', 'desc')->get();
-    
+
         // --- Enviar datos a la vista ---
         return view('usuario.index', compact(
             'usuarios',
@@ -67,7 +70,7 @@ class UsuarioController extends Controller
             'historial'
         ));
     }
-    
+
     /**
      * Esta función permite obtener la información detallada de un usuario de la base de datos
      * a través de su identificador unico.
@@ -193,7 +196,8 @@ class UsuarioController extends Controller
         $credencial = $regla->only('Legajo', 'password');
         $credencial['Habilitado'] = true;
 
-        if (Auth::attempt($credencial)) {
+        $remember = ($regla->has('remember') ? true : false);
+        if (Auth::attempt($credencial, $remember)) {
             $regla->session()->regenerate();
             return redirect()->route('usuario.index');
         }
@@ -219,5 +223,5 @@ class UsuarioController extends Controller
         $pdf->render();
         //return $pdf->download('Reporte de usuarios.pdf');
         return $pdf->stream();
-    }    
+    }
 }
