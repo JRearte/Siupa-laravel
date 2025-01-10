@@ -196,7 +196,7 @@ class UsuarioController extends Controller
         $credencial = $regla->only('Legajo', 'password');
         $credencial['Habilitado'] = true;
 
-        $remember = ($regla->has('remember') ? true : false);
+        $remember = $regla->has('remember');
         if (Auth::attempt($credencial, $remember)) {
             $regla->session()->regenerate();
             return redirect()->route('usuario.index');
@@ -207,7 +207,7 @@ class UsuarioController extends Controller
 
     public function logout(Request $regla): RedirectResponse
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
         $regla->session()->invalidate();
         $regla->session()->regenerateToken();
         return redirect('/');

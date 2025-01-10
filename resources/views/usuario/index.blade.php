@@ -84,11 +84,10 @@
                                 <i class="fa-solid fa-door-closed"></i> Cerrar Sesión
                             </a>
                         </li>
+                        <form id="logout-form" action="{{ route('usuario.logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </ul>
-
-                    <form id="logout-form" action="{{ route('usuario.logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
                 </div>
 
             </div>

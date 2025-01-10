@@ -24,7 +24,7 @@ use App\Http\Controllers\SalaController;
     });
     
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
-Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout');
+Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout')->middleware('auth');
 
 
 

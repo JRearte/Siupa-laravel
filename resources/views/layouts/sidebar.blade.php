@@ -73,11 +73,11 @@
 
     <!-- Cerrar Sesión -->
     <div class="mt-auto">
-        <a href="{{ route('usuario.logout') }}" class="btn btn-danger">
+        <a href="{{ route('usuario.logout') }}" class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="logout-icon fa-solid fa-door-open"></i>
             <i class="cerrar-icon fa-solid fa-door-closed"></i>
             <span class="btn-text">Cerrar Sesión</span>
-        </a>
+        </a>        
         <form id="logout-form" action="{{ route('usuario.logout') }}" method="post" style="display: none;">
             @csrf
         </form>
