@@ -22,24 +22,28 @@ class UsuarioController extends Controller
     use RegistraHistorial;
 
     /**
-     * Esta función permite obtener un listado de los usuario de la base de datos con un limite de 10
-     * usuarios por página, ordenandolos por apellido de forma ascendente para mostrarlos en la 
-     * página principal del gestor de usuario. 
+     * Este método:
+     * → Obtiene un listado paginado de 7 usuarios ordenados por apellido en orden ascendente.
+     * → Brinda un filtro por: nombre, apellido y categoría.
+     * → Proporciona datos estadísticos de los usuarios según su categoría.
+     * → Recupera el historial de acciones de los usuarios, ordenado por fecha en orden descendente.
+     * 
+     * @param Request $regla → Contiene el término de búsqueda opcional.
+     * @return View → Retorna las variables a la vista usuario.index.
      */
-    public function listar(Request $request): View
+    public function listar(Request $regla): View
     {
-        // --- Sección: Filtro de usuarios ---
-        $buscar = $request->input('buscar');
+        // ==================== Filtro de usuarios ====================
+        $buscar = $regla->input('buscar');
         $usuarios = Usuario::when($buscar, function ($query, $buscar) {
             $query->where('Nombre', 'LIKE', "%$buscar%")
                 ->orWhere('Apellido', 'LIKE', "%$buscar%")
                 ->orWhere('Categoria', 'LIKE', "%$buscar%");
         })->orderBy('apellido', 'asc')->paginate(7);
 
-        // Asegurar que el parámetro "buscar" se pase en la paginación
         $usuarios->appends(['buscar' => $buscar]);
 
-        // --- Sección: Estadísticas ---
+        // ==================== Estadísticas ====================
         $totalUsuarios = Usuario::count();
         $usuariosBienestar = Usuario::where('Categoria', 'Bienestar')->count();
         $usuariosCoordinador = Usuario::where('Categoria', 'Coordinador')->count();
@@ -51,10 +55,9 @@ class UsuarioController extends Controller
         $porcentajeMaestro = $totalUsuarios > 0 ? ($usuariosMaestro / $totalUsuarios) * 100 : 0;
         $porcentajeInvitado = $totalUsuarios > 0 ? ($usuariosInvitado / $totalUsuarios) * 100 : 0;
 
-        // --- Sección: Historial ---
+        // ==================== Historial ====================
         $historial = Historial::orderBy('created_at', 'desc')->get();
 
-        // --- Enviar datos a la vista ---
         return view('usuario.index', compact(
             'usuarios',
             'buscar',
@@ -72,11 +75,13 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Esta función permite obtener la información detallada de un usuario de la base de datos
-     * a través de su identificador unico.
-     * @param int $id → Identificador del usuario.
+     * Este método:
+     * → Recupera la información detallada de un usuario por su identificador único.
+     * 
+     * @param int $id → Identificador único del usuario.
+     * @return View → Retorna la vista usuario.presentacion con los datos del usuario.
      */
-    public function mostrar(int $id): View
+    public function presentar(int $id): View
     {
         $usuario = Usuario::findOrFail($id);
         return view('usuario.presentacion', compact('usuario'));
@@ -84,11 +89,13 @@ class UsuarioController extends Controller
 
 
     /**
-     * Esta función permite mostrar un formulario complementario con el registrar usuario,
-     * para poder cargar la información en un objeto usuario.
-     * Redirige al usuario al formulario de registro.
+     * Este método:
+     * → Muestra el formulario para registrar un nuevo usuario.
+     * → Prepara un objeto usuario vacío para su carga inicial.
+     * 
+     * @return View → Retorna la vista usuario.agregar con el objeto usuario.
      */
-    public function agregar(): View
+    public function formularioRegistrar(): View
     {
         $usuario = new Usuario();
         return view('usuario.agregar', compact('usuario'));
@@ -96,11 +103,13 @@ class UsuarioController extends Controller
 
 
     /**
-     * Esta función permite registrar un nuevo usuario en la base de datos, con los datos validados y
-     * la clave encriptada en 60 caracteres para la seguridad en el ingreso al sistema.
-     * Permiso exclusivo → usuario de categoría bienestar.
-     * El usuario sera redirigido a la página principal del gestor de usuario.
-     * @param UsuarioRequest $regla → credencial validada del usuario.
+     * Este método:
+     * → Registra un nuevo usuario en la base de datos con datos validados y contraseña encriptada.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     * 
+     * @param UsuarioRequest $regla → Datos validados del usuario a registrar.
+     * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
      */
     public function registrar(UsuarioRequest $regla): RedirectResponse
     {
@@ -117,11 +126,14 @@ class UsuarioController extends Controller
 
 
     /**
-     * Esta función permite obtener los datos de un usuario a través de su id.
-     * Es complementaria de la función para modificar y redirige al formulario con la información.
-     * @param int $id → Identificador del usuario.  
+     * Este método:
+     * → Recupera los datos de un usuario por su identificador único.
+     * → Redirige al formulario de edición con la información del usuario cargada.
+     * 
+     * @param int $id → Identificador único del usuario.
+     * @return View → Retorna la vista usuario.editar con los datos del usuario.
      */
-    public function editar(int $id): View
+    public function formularioModificar(int $id): View
     {
         $usuario = Usuario::find($id);
         return view('usuario.editar', compact('usuario'));
@@ -129,12 +141,15 @@ class UsuarioController extends Controller
 
 
     /**
-     * Esta función permite modificar la información de un usuario en la base de datos, valiendando 
-     * sus datos y encriptando de manera irreversible la clave en 60 caracteres para la seguridad.
-     * Permiso exclusivo → usuario de categoría bienestar.
-     * El usuario sera redirigido a la página principal del gestor de usuario.
-     * @param UsuarioRequest $regla → credencial validada del usuario.
-     * @param Usuario $usuario → objeto de tipo usuario que contiene su estructura.
+     * Este método:
+     * → Modifica la información de un usuario en la base de datos con datos validados.
+     * → Encripta de manera irreversible la contraseña para mayor seguridad.
+     * → Solo permite la modificación a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     * 
+     * @param UsuarioRequest $regla → Datos validados del usuario a modificar.
+     * @param Usuario $usuario → Objeto usuario con la estructura y datos actuales.
+     * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
      */
     public function modificar(UsuarioRequest $regla, Usuario $usuario): RedirectResponse
     {
@@ -149,12 +164,28 @@ class UsuarioController extends Controller
         return redirect()->route('usuario.index')->with('success', 'El usuario fue modificado exitosamente');
     }
 
+    /**
+     * Este método:
+     * → Muestra un mensaje de advertencia para confirmar la eliminación de un usuario.
+     * → Redirige al usuario a la página de confirmación de eliminación.
+     * 
+     * @param int $id → Identificador único del usuario a eliminar.
+     * @return View → Retorna la vista usuario.advertencia con los datos del usuario.
+     */
+    public function advertirEliminacion(int $id): view
+    {
+        $usuario = Usuario::findOrFail($id);
+        return view('usuario.advertencia', compact('usuario'));
+    }
 
     /**
-     * Esta función permite eliminar un usuario de la base de datos a través de su id.
-     * Permiso exclusivo → usuario de categoría bienestar.
-     * El usuario sera redirigido a la página principal del gestor de usuario.
-     * @param int $id → identificador del usuario.  
+     * Este método:
+     * → Elimina un usuario de la base de datos por su identificador único.
+     * → Solo permite la eliminación a usuarios con categoría "Bienestar".
+     * → Registra la acción de eliminación en el historial.
+     * 
+     * @param int $id → Identificador único del usuario a eliminar.
+     * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
      */
     public function eliminar(int $id): RedirectResponse
     {
@@ -175,21 +206,12 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Esta función muestra un mensaje de advertencia para confirmar la eliminación de un usuario.
-     * El usuario será redirigido a la página de confirmación.
-     * @param int $id → identificador del usuario.
-     */
-    public function confirmar(int $id): view
-    {
-        $usuario = Usuario::findOrFail($id);
-        return view('usuario.advertencia', compact('usuario'));
-    }
-
-
-    /**
-     * Esta función permite la validación del usuario a través de la solicitud de un legajo y clave.
-     * El usuario sera redirigido al menú principal solo si es correcto y esta habilitado.
-     * @param Request $regla → credencial de los datos solicitados desde la vista login.
+     * Este método:
+     * → Valida al usuario mediante el legajo y la clave proporcionados.
+     * → Redirige al menú principal solo si las credenciales son correctas y el usuario está habilitado.
+     * 
+     * @param Request $regla → Credenciales de inicio de sesión solicitadas desde la vista login.
+     * @return RedirectResponse → Redirige al menú principal o muestra un error si las credenciales son incorrectas.
      */
     public function validar(Request $regla): RedirectResponse
     {
@@ -205,6 +227,15 @@ class UsuarioController extends Controller
     }
 
 
+    /**
+     * Este método:
+     * → Cierra la sesión del usuario y invalida la sesión actual.
+     * → Regenera el token de sesión para mayor seguridad.
+     * → Redirige al usuario a la página de inicio.
+     * 
+     * @param Request $regla → Solicitud que contiene los datos necesarios para cerrar la sesión.
+     * @return RedirectResponse → Redirige al inicio después de cerrar sesión.
+     */
     public function logout(Request $regla): RedirectResponse
     {
         Auth::guard('web')->logout();
@@ -213,7 +244,14 @@ class UsuarioController extends Controller
         return redirect('/');
     }
 
-
+    /**
+     * Este método:
+     * → Genera un reporte en formato PDF con un listado de usuarios ordenados por apellido.
+     * → Establece el tamaño de papel A4 en orientación vertical para el reporte.
+     * → Muestra el reporte PDF directamente en el navegador.
+     * 
+     * @return PDF → Retorna el PDF generado para ser mostrado o descargado.
+     */
     public function generarReporte()
     {
         $usuarios = Usuario::orderBy('apellido', 'asc')->get();
