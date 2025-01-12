@@ -15,7 +15,7 @@ class Sala extends Model
      */
     public function infante()
     {
-        return $this->hasMany(Infante::class);
+        return $this->hasMany(Infante::class, 'sala_id');
     }
 
     /**

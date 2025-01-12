@@ -199,11 +199,14 @@ body {
 
 .cabecera .buscador-btn {
     border-radius: 5px;
+    height: 100%;
 }
 
 /* ==================== Acciones ==================== */
 .cabecera .acciones .btn {
     border-radius: 5px;
+    height: 32px;
+    font-size: 13px;
 }
 
 .cabecera .acciones .btn-danger {
@@ -213,6 +216,22 @@ body {
 .cabecera .dropdown {
     display: none !important;
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .cabecera .titulo {
+        display: none;
+    }
+    .cabecera span {
+        display: none;
+    }
+
+    .cabecera .buscador-btn,
+    .cabecera .acciones .btn {
+        width: 50px;
+        height: 32px;
+    }
+}
+
 
 /* ==================== Adaptación a móviles ==================== */
 @media (max-width: 768px) {

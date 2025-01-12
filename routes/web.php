@@ -25,7 +25,7 @@ Route::controller(UsuarioController::class)->middleware('auth')->group(function 
 
 
 Route::controller(SalaController::class)->middleware('auth')->group(function () {
-    Route::get('/sala', 'listar')->name('sala.listar');
+    Route::get('/sala', 'listar')->name('sala.index');
     Route::get('sala/agregar', 'agregar')->name('sala.agregar');
     Route::post('sala/registrar', 'registrar')->name('sala.registrar');
     Route::get('sala/editar/{id}', 'editar')->name('sala.editar');

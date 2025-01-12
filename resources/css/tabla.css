@@ -1,5 +1,5 @@
 /* ==================== Estilos de la Tabla ==================== */
-thead th {
+.user thead th {
     border: 1px solid black;
     font-size: 0.80rem; 
     font-weight: bold;
@@ -7,17 +7,17 @@ thead th {
     text-align: center;
 }
 
-td {
+.user td {
     border: 1px solid black;
     text-align: center;
 }
 
-td.usuario {
+.user td.usuario {
     width: 100%;
 }
 
 /* ==================== Contenedor de Usuario ==================== */
-.usuario {
+.user .usuario {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,13 +25,13 @@ td.usuario {
 }
 
 /* ==================== Nombre del Usuario ==================== */
-.nombre {
+.user .nombre {
     font-size: 0.8rem;
     font-weight: normal;
 }
 
 /* ==================== Categoría del Usuario ==================== */
-.categoria {
+.user .categoria {
     font-size: 0.7rem;
     color: #6c757d;
     display: flex;
@@ -41,23 +41,23 @@ td.usuario {
     padding: 0;
 }
 
-.categoria i {
+.user .categoria i {
     margin: 0;
     padding: 0;
     vertical-align: middle;
 }
 
 /* ==================== Estado de Habilitación ==================== */
-.habilitado {
+.user .habilitado {
     font-size: 0.7rem;
 }
 
 /* ==================== Botones de Opciones ==================== */
-.opciones {
+.user .opciones {
     text-align: center;
 }
 
-.btn {
+.user .btn {
     font-size: 12px;
     padding: 4px 8px;
     border-radius: 5px;
@@ -65,21 +65,21 @@ td.usuario {
 }
 
 /* ==================== Dropdown ==================== */
-.dropdown-content {
+.user .dropdown-content {
     display: none;
 }
 
-.dropdown-content.show {
+.user .dropdown-content.show {
     display: block;
 }
 
-.dropdown {
+.user .dropdown {
     position: relative;
     display: inline-block;
     width: 20px;
 }
 
-.dropbtn {
+.user .dropbtn {
     background-color: #000000;
     color: white;
     padding: 6px 8px;
@@ -90,12 +90,12 @@ td.usuario {
     width: 20px;
 }
 
-.dropbtn.selected {
+.user .dropbtn.selected {
     background-color: rgb(127, 127, 127);
     color: black;
 }
 
-.dropdown-content {
+.user .dropdown-content {
     position: absolute;
     right: 25px;
     bottom: -15px;
@@ -106,7 +106,7 @@ td.usuario {
     border-radius: 4px;
 }
 
-.dropdown-item {
+.user .dropdown-item {
     color: black;
     padding: 3px 6px;
     text-align: left;
@@ -118,52 +118,51 @@ td.usuario {
     font-size: 10px;
 }
 
-.dropdown-item .icon {
+.user .dropdown-item .icon {
     margin-right: 0px;
 }
 
-.dropdown-item:hover {
+.user .dropdown-item:hover {
     background-color: #ddd;
 }
 
 @media (max-width: 768px) {
-    .dropdown-content{
+    .user .dropdown-content {
         min-width: 150px;
         bottom: -30px;
     }
 
-    .dropdown-item{
+    .user .dropdown-item {
         min-height: 30px;
         font-size: 13px;
     }
-
 }
 
 /* ==================== Iconos ==================== */
-.fas, .fa-solid, .fa-fw {
+.user .fas, .user .fa-solid, .user .fa-fw {
     margin-right: 8px;
 }
 
 /* ==================== Paginación ==================== */
-.container.paginacion {
+.user .container.paginacion {
     position: relative;
     display: flex;
     justify-content: center;
     bottom: 5px;
 }
 
-.pagination {
+.user .pagination {
     display: flex;
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.pagination .page-item {
+.user .pagination .page-item {
     margin: 0 3px;
 }
 
-.pagination .page-link {
+.user .pagination .page-link {
     display: block;
     padding: 5px 8px;
     text-decoration: none;
@@ -176,22 +175,25 @@ td.usuario {
     transition: background-color 0.2s, border-color 0.2s;
 }
 
-.pagination .page-link:hover {
+.user .pagination .page-link:hover {
     background-color: #f0f0f0;
     border-color: #000000;
 }
 
-.pagination .page-item a[aria-label="Previous"],
-.pagination .page-item a[aria-label="Next"] {
+.user .pagination .page-item a[aria-label="Previous"],
+.user .pagination .page-item a[aria-label="Next"] {
     font-weight: normal;
 }
 
-.pagination .page-item.disabled .page-link {
+.user .pagination .page-item.disabled .page-link {
     color: #6c757d;
     border-color: #dee2e6;
     cursor: not-allowed;
 }
 
-.pagination .page-item .page-link span {
+.user .pagination .page-item .page-link span {
     font-size: 12px;
 }
+
+
+/* ==================== Tabla de sala (temporal) ==================== */

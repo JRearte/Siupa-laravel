@@ -45,25 +45,25 @@
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.listar') }}" class="nav-link">
+            <a href="{{ route('sala.index') }}" class="nav-link">
                 <i class="fas fa-home icon"></i>
                 <p class="nav-text">Sala</p>
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.listar') }}" class="nav-link">
+            <a href="{{ route('sala.index') }}" class="nav-link">
                 <i class="fas fa-user-tie icon"></i>
                 <p class="nav-text">Tutor</p>
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.listar') }}" class="nav-link">
+            <a href="{{ route('sala.index') }}" class="nav-link">
                 <i class="fas fa-child icon"></i>
                 <p class="nav-text">Infante</p>
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.listar') }}" class="nav-link">
+            <a href="{{ route('sala.index') }}" class="nav-link">
                 <i class="fas fa-clock icon"></i>
                 <p class="nav-text">Asistencia</p>
             </a>

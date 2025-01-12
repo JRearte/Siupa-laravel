@@ -2,46 +2,6 @@
 @section('title', 'Gestor de usuarios')
 @section('content')
     <div class="contenedor-principal">
-        <!-- Alertas -->
-        <div class="toast-container position-fixed top-0 end-0 p-3">
-            <!-- Toast de éxito -->
-            @if (session('success'))
-                <div id="toastSuccess" class="toast toast-success align-items-center text-bg-success border-0 show"
-                    role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <i class="fa-solid fa-circle-check icon"></i> <!-- Icono de éxito -->
-                        <div class="toast-body">
-                            {{ session('success') }}
-                        </div>
-                        <!-- Barra de progreso -->
-                        <div class="progress-bar">
-                            <div class="progress-bar-fill"></div>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Toast de error -->
-            @if (session('error'))
-                <div id="toastError" class="toast toast-error align-items-center text-bg-danger border-0 show"
-                    role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <i class="fa-solid fa-circle-exclamation icon"></i> <!-- Icono de error -->
-                        <div class="toast-body">
-                            {{ session('error') }}
-                        </div>
-                        <!-- Barra de progreso -->
-                        <div class="progress-bar">
-                            <div class="progress-bar-fill"></div>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
-                    </div>
-                </div>
-            @endif
-        </div>
 
         <!-- Cabecera principal -->
         <div class="cabecera">
@@ -59,7 +19,7 @@
                 </form>
 
                 <!-- Botones de acciones -->
-                <div class="acciones d-flex">
+                <div class="acciones d-flex  @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
                     <a href="{{ route('usuario.agregar') }}" class="btn btn-dark ms-2">
                         <i class="fas fa-user-plus"></i> <span>{{ __('Agregar') }}</span>
                     </a>
@@ -84,12 +44,12 @@
                                 <i class="fa-solid fa-door-closed"></i> Cerrar Sesión
                             </a>
                         </li>
-                        <form id="logout-form" action="{{ route('usuario.logout') }}" method="POST" style="display: none;">
+                        <form id="logout-form" action="{{ route('usuario.logout') }}" method="POST"
+                            style="display: none;">
                             @csrf
                         </form>
                     </ul>
                 </div>
-
             </div>
         </div>
 
@@ -121,5 +81,4 @@
             </div>
         </div>
     </div>
-
 @endsection

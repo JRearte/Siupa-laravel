@@ -31,7 +31,7 @@ class Infante extends Model
      */
     public function sala()
     {
-        return $this->belongsTo(Sala::class);
+        return $this->belongsTo(Sala::class, 'sala_id');
     }
 
     /**

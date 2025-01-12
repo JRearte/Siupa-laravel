@@ -14,6 +14,45 @@
 <body>
     <div class="container-fluid">
         <div class="row">
+            <!-- Mensajes de alerta -->
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <!-- Toast de éxito -->
+                @if (session('success'))
+                    <div id="toastSuccess" class="toast toast-success align-items-center text-bg-success border-0 show"
+                        role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <i class="fa-solid fa-circle-check icon"></i>
+                            <div class="toast-body">
+                                {{ session('success') }}
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill"></div>
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                        </div>
+                    </div>
+                @endif
+    
+                <!-- Toast de error -->
+                @if (session('error'))
+                    <div id="toastError" class="toast toast-error align-items-center text-bg-danger border-0 show"
+                        role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <i class="fa-solid fa-circle-exclamation icon"></i>
+                            <div class="toast-body">
+                                {{ session('error') }}
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill"></div>
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                        </div>
+                    </div>
+                @endif
+            </div>
+            
             <!-- Sidebar -->
             <div class="col-md-2">
                 @include('layouts.sidebar')

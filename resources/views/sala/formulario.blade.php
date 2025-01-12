@@ -16,7 +16,7 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="capacidad" class="form-label">{{ __('Caoacidad') }}</label>
+                <label for="capacidad" class="form-label">{{ __('Capacidad') }}</label>
                 <input type="number" name="Capacidad" class="form-control @error('Capacidad') is-invalid @enderror" value="{{ old('Capacidad', $sala?->Capacidad) }}" id="capacidad" placeholder="Capacidad">
                 {!! $errors->first('Capacidad', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
             </div>
@@ -24,7 +24,7 @@
         </div>
             <div class="col-12 mt-3 text-center">
             <button type="submit" class="btn btn-primary">{{ __('Aceptar') }}</button>
-            <a class="btn btn-primary" href="{{ route('sala.listar') }}"> {{ __('Cancelar') }}</a>
+            <a class="btn btn-primary" href="{{ route('sala.index') }}"> {{ __('Cancelar') }}</a>
         </div>
     </div>
 </div>

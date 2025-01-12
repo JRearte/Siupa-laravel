@@ -3,19 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sala;
+use Illuminate\Http\Request;
 use App\Http\Requests\SalaRequest;
+use Illuminate\View\View;
 
 class SalaController extends Controller
 {
     /**
-     * Esta función permite obtener un listado de las salas de la base de datos.
+     * Este método:
+     * → Obtiene todas las salas con sus infantes asociados.
+     * → Prepara los datos para mostrarlos en una vista general.
+     * 
+     * @return View → Retorna la vista con las salas y sus infantes.
      */
-    public function listar()
+    public function listar(): View
     {
-        $salas = Sala::orderBy('edad', 'asc')->withCount('infantes')->paginate(10);
-        return view('sala.listar', compact('salas'))->with('i',(request()->input('page',1) - 1) * $salas->perPage());
+        $salas = Sala::all();
+        $sala1 = $salas->get(0) ?? null;
+        $sala2 = $salas->get(1) ?? null;
+        $sala3 = $salas->get(2) ?? null;
+    
+        return view('sala.index', compact('sala1', 'sala2', 'sala3'));
     }
+    
 
+
+
+
+    
     /**
      * Esta función permite mostrar un formulario complementario con el registrar sala,
      * para poder cargar la información de un objeto sala.
@@ -36,7 +51,7 @@ class SalaController extends Controller
     {
         $datos = $solicitud->validated();
         Sala::create($datos);
-        return redirect()->route('sala.listar')->with('success', 'La sala fue creada exitosamente.');
+        return redirect()->route('sala.index')->with('success', 'La sala fue creada exitosamente.');
     }
 
     /**
@@ -60,7 +75,7 @@ class SalaController extends Controller
     {
         $datos = $solicitud->validated();
         $sala->update($datos);
-        return redirect()->route('sala.listar')->with('success', 'La sala fue modificada exitosamente.');
+        return redirect()->route('sala.index')->with('success', 'La sala fue modificada exitosamente.');
     }
 
     /**
@@ -71,6 +86,6 @@ class SalaController extends Controller
     public function eliminar(int $id)
     {
         Sala::find($id)->delete();
-        return redirect()->route('sala.listar')->with('success', 'La sala fue eliminada exitosamente.');
+        return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
     }
 }

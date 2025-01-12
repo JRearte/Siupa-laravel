@@ -172,7 +172,7 @@ class UsuarioController extends Controller
      * @param int $id → Identificador único del usuario a eliminar.
      * @return View → Retorna la vista usuario.advertencia con los datos del usuario.
      */
-    public function advertirEliminacion(int $id): view
+    public function advertirEliminacion(int $id): View
     {
         $usuario = Usuario::findOrFail($id);
         return view('usuario.advertencia', compact('usuario'));
