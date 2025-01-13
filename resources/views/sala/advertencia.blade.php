@@ -9,18 +9,17 @@
             Confirmación de Eliminación
         </h4>
         <p class="confirmacion-mensaje">
-            ¿Está seguro de que desea eliminar al usuario 
-            <strong>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</strong>? 
-            Esta acción no se puede deshacer. Si solo desea impedir que el usuario siga interactuando con el sistema, considere deshabilitarlo en lugar de eliminarlo.
-        </p>
+            ¿Está seguro de que desea eliminar la sala 
+            <strong>{{ $sala->Nombre }}</strong>? 
+            Esta acción no se puede deshacer. Antes de confirmar, asegúrese de que no haya infantes en la sala.
+        </p>        
         <hr>
-        <form action="{{ route('usuario.eliminar', $usuario->id) }}" method="POST">
+        <form action="{{ route('sala.eliminar', $sala->id) }}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger confirmacion-boton">Eliminar</button>
-            <a href="{{ route('usuario.index') }}" class="btn btn-secondary confirmacion-boton">Cancelar</a>
+            <a href="{{ route('sala.index') }}" class="btn btn-secondary confirmacion-boton">Cancelar</a>
         </form>
     </div>
 </div>
 @endsection
-

@@ -197,3 +197,8 @@
 
 
 /* ==================== Tabla de sala (temporal) ==================== */
+.tabla-salas .dropbtn{
+    height: 20px;
+    font-size: 3px;
+
+}

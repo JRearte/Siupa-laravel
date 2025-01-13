@@ -18,7 +18,7 @@
             <div class="toast-container position-fixed top-0 end-0 p-3">
                 <!-- Toast de éxito -->
                 @if (session('success'))
-                    <div id="toastSuccess" class="toast toast-success align-items-center text-bg-success border-0 show"
+                    <div id="toastSuccess" class="toast toast-success align-items-center border-0 show"
                         role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="d-flex">
                             <i class="fa-solid fa-circle-check icon"></i>
@@ -36,7 +36,7 @@
     
                 <!-- Toast de error -->
                 @if (session('error'))
-                    <div id="toastError" class="toast toast-error align-items-center text-bg-danger border-0 show"
+                    <div id="toastError" class="toast toast-error align-items-center border-0 show"
                         role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="d-flex">
                             <i class="fa-solid fa-circle-exclamation icon"></i>

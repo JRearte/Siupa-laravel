@@ -2,7 +2,7 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 body {
-    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    background: linear-gradient(to right, #f8d5b5, #f6a687);
     background-size: cover;
     height: 100vh;
     font-family: sans-serif;
@@ -75,17 +75,17 @@ body {
 
 .toast-error {
     background: linear-gradient(135deg,
-            #b01e24 0%,
-            #c44d57 40%,
-            #d7807a 70%,
+            #b1282d 0%,
+            #ce6069 40%,
+            #dc918b 70%,
             #6c757d 100%);
 }
 
 .toast-success {
     background: linear-gradient(135deg,
-            #1d6f39 0%,
-            #3e9c64 40%,
-            #5caa8a 70%,
+            #229548 0%,
+            #5cb680 40%,
+            #74b79b 70%,
             #6c757d 100%);
 }
 
@@ -180,7 +180,7 @@ body {
 .cabecera {
     background-color: #ffffff31;
     backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
     padding: 10px;
     border-radius: 5px;
 }
@@ -324,7 +324,7 @@ body {
     flex: 1;
     background-color: #ffffff31;
     backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
     border-radius: 8px;
     padding: 15px;
     width: 100%;
@@ -339,7 +339,7 @@ body {
     background-color: #ffffff31;
     backdrop-filter: blur(10px);
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.507);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
     padding: 15px;
     max-height: 460px;
     overflow-y: auto;
@@ -380,4 +380,20 @@ body {
 
 ::-webkit-scrollbar-track {
     background-color: #e6e6e684;
+}
+
+/* ==================== Tabla de Salas ==================== */
+.tabla-salas {
+    flex: 1;
+    background-color: #ffffff31;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.281);
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    min-width: 331px;
+    box-sizing: border-box;
+    min-height: 460px;
+    max-height: 460px;
+    z-index: 0;
 }

@@ -11,9 +11,9 @@
                 @foreach ($usuarios as $usuario)
                     @php
                         $nombreCompleto = $usuario->Nombre;
-                        $primerNombre = explode(' ', $nombreCompleto)[0]; // Toma el primer nombre
+                        $primerNombre = explode(' ', $nombreCompleto)[0]; 
                         $apellidoCompleto = $usuario->Apellido;
-                        $primerApellido = explode(' ', $apellidoCompleto)[0]; // Toma el primer apellido
+                        $primerApellido = explode(' ', $apellidoCompleto)[0];
                     @endphp
                     <tr>
                         <td class="usuario">
