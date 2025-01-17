@@ -3,7 +3,7 @@
 
 <div class="estadisticas-container">
     <!-- Contenedor 1 -->
-    <div class="estadistica" data-id="chartBienestar" data-porcentaje="{{ $porcentajeBienestar }}">
+    <div class="estadistica" data-id="chartBienestar" data-porcentaje="{{ $porcentajeBienestar }}" data-colores="#77DD77,#FAD7A0" data-icono="fa-crown">
         <div class="grafico-contenedor">
             <canvas id="chartBienestar" class="grafico"></canvas>
             <div class="cantidad-adentro">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Contenedor 2 -->
-    <div class="estadistica" data-id="chartCoordinador" data-porcentaje="{{ $porcentajeCoordinador }}">
+    <div class="estadistica" data-id="chartCoordinador" data-porcentaje="{{ $porcentajeCoordinador }}" data-colores="#77DD77,#FAD7A0" data-icono="fa-crown">
         <div class="grafico-contenedor">
             <canvas id="chartCoordinador" class="grafico"></canvas>
             <div class="cantidad-adentro">
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Contenedor 3 -->
-    <div class="estadistica" data-id="chartMaestro" data-porcentaje="{{ $porcentajeMaestro }}">
+    <div class="estadistica" data-id="chartMaestro" data-porcentaje="{{ $porcentajeMaestro }}" data-colores="#77DD77,#FAD7A0" data-icono="fa-crown">
         <div class="grafico-contenedor">
             <canvas id="chartMaestro" class="grafico"></canvas>
             <div class="cantidad-adentro">
@@ -60,7 +60,7 @@
     </div>
 
     <!-- Contenedor 4 -->
-    <div class="estadistica" data-id="chartInvitado" data-porcentaje="{{ $porcentajeInvitado }}">
+    <div class="estadistica" data-id="chartInvitado" data-porcentaje="{{ $porcentajeInvitado }}" data-colores="#77DD77,#FAD7A0" data-icono="fa-crown">
         <div class="grafico-contenedor">
             <canvas id="chartInvitado" class="grafico"></canvas>
             <div class="cantidad-adentro">
@@ -78,3 +78,4 @@
         </div>
     </div>
 </div>
+

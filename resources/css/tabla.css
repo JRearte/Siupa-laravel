@@ -196,9 +196,13 @@
 }
 
 
-/* ==================== Tabla de sala (temporal) ==================== */
+/* ==================== Tabla de sala ==================== */
 .tabla-salas .dropbtn{
     height: 20px;
     font-size: 3px;
 
+}
+
+.tabla-salas .dropdown-content{
+    top: 0px;
 }

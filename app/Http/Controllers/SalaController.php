@@ -15,6 +15,8 @@ class SalaController extends Controller
     /**
      * Este método:
      * → Obtiene todas las salas con sus infantes asociados.
+     * → Proporciona la cantidad de infantes que tiene la sala actualmente.
+     * → Proporciona datos estadisticos de las salas segun su capacidad.
      * → Prepara los datos para mostrarlos en una vista general.
      * 
      * @return View → Retorna la vista con las salas y sus infantes.
@@ -22,29 +24,44 @@ class SalaController extends Controller
     public function listar(): View
     {
         $salas = Sala::all();
-        $sala1 = $salas->get(0);
-        $sala2 = $salas->get(1);
-        $sala3 = $salas->get(2);
-
-        if ($sala1) {
-            $sala1->infante = $sala1->infante()->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala1');
-        } else {
-            $sala1 = null;
+        $datos = [];
+    
+        foreach ($salas as $index => $sala) {
+            if (!$sala) {
+                return null;
+            }
+    
+            // Procesamos la información de cada sala
+            $sala->infante = $sala->infante()->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala' . ($index + 1));
+            $sala->cantidad = $sala->infante->total();
+            $sala->habilitados = $sala->infante()->where('Habilitado', 1)->count();
+            $sala->deshabilitados = $sala->cantidad - $sala->habilitados;
+            $sala->ingresantes = $sala->infante()->where('Categoria', 'Ingresante')->count();
+            $sala->readmitidos = $sala->cantidad - $sala->ingresantes;
+    
+            // Cálculo de porcentajes
+            $sala->porcentajeCapacidad = ($sala->Capacidad > 0) ? ($sala->habilitados / $sala->Capacidad) * 100 : 0;
+            $sala->porcentajeHabilitados = ($sala->cantidad > 0) ? ($sala->habilitados / $sala->cantidad) * 100 : 0;
+            $sala->porcentajeDeshabilitados = ($sala->cantidad > 0) ? ($sala->deshabilitados / $sala->cantidad) * 100 : 0;
+            $sala->porcentajeIngresantes = ($sala->cantidad > 0) ? ($sala->ingresantes / $sala->cantidad) * 100 : 0;
+            $sala->porcentajeReadmitidos = ($sala->cantidad > 0) ? ($sala->readmitidos / $sala->cantidad) * 100 : 0;
+    
+            // Guardamos la sala en el array
+            $datos['sala' . ($index + 1)] = $sala;
         }
-
-        if ($sala2) {
-            $sala2->infante = $sala2->infante()->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala2');
-        } else {
-            $sala2 = null;
-        }
-
-        if ($sala3) {
-            $sala3->infante = $sala3->infante()->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala3');
-        } else {
-            $sala3 = null;
-        }
+    
+        // Asignamos las salas de forma explícita
+        $sala1 = $datos['sala1'] ?? null;
+        $sala2 = $datos['sala2'] ?? null;
+        $sala3 = $datos['sala3'] ?? null;
+    
+        // Retornamos la vista
         return view('sala.index', compact('sala1', 'sala2', 'sala3'));
     }
+    
+    
+    
+
 
 
     /**
@@ -120,6 +137,7 @@ class SalaController extends Controller
         if ($usuarioAutenticado->Categoria !== "Bienestar") {
             return redirect()->route('sala.index')->with('error', 'No tienes permiso para modificar salas.');
         }
+
         $datos = $regla->validated();
         $sala->update($datos);
         $this->registrarAccion(auth()->id(), 'Sala modificada', "Se modificó la sala {$sala->Nombre}");
@@ -127,7 +145,15 @@ class SalaController extends Controller
     }
 
 
-    public function advertirEliminacion(int $id): View 
+    /**
+     * Este método:
+     * → Muestra un mensaje de advertencia para confirmar la eliminación de la sala.
+     * → Redirige al usuario a la página de confirmación de eliminación.
+     * 
+     * @param int $id → Identificador único del usuario a eliminar.
+     * @return View → Retorna la vista sala.advertencia con los datos de la sala.
+     */
+    public function advertirEliminacion(int $id): View
     {
         $sala = Sala::findOrFail($id);
         return view('sala.advertencia', compact('sala'));
@@ -144,7 +170,7 @@ class SalaController extends Controller
      */
     public function eliminar(int $id): RedirectResponse
     {
-        try{
+        try {
             $sala = Sala::find($id);
             if (!$sala) {
                 return redirect()->route('sala.index')->with('error', 'La sala no existe.');
@@ -156,10 +182,8 @@ class SalaController extends Controller
             $sala->delete();
             $this->registrarAccion(auth()->id(), 'Sala eliminada', "Se eliminó la sala {$nombre}");
             return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
-        } 
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('sala.index')->with('error', 'Hubo un problema al intentar eliminar la sala.');
         }
     }
-    
 }

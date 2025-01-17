@@ -3,15 +3,17 @@ document.addEventListener('DOMContentLoaded', function () {
     estadisticas.forEach(function (estadistica) {
         const id = estadistica.getAttribute('data-id');
         const porcentaje = parseFloat(estadistica.getAttribute('data-porcentaje'));
+        const colores = estadistica.getAttribute('data-colores').split(',');
+        const icono = estadistica.getAttribute('data-icono');
         const ctx = document.getElementById(id).getContext('2d');
 
         new Chart(ctx, {
-            type: 'doughnut',  // Gráfico de rosca
+            type: 'doughnut',
             data: {
                 labels: ['Usado', 'Restante'],
                 datasets: [{
-                    data: [porcentaje, 100 - porcentaje],
-                    backgroundColor: ['#83fe00', '#FAD7A0'],
+                    data: [porcentaje, Math.max(0, 100 - porcentaje)],
+                    backgroundColor: colores,
                     borderWidth: 1,
                     borderColor: ['#000000']
                 }]
@@ -21,14 +23,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 maintainAspectRatio: true,
                 cutout: '76%',
                 plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
+                    legend: { display: false },
+                    tooltip: { enabled: false }
                 }
             }
         });
+
+        const iconoElemento = estadistica.querySelector('.icono-centro i');
+        if (iconoElemento) {
+            iconoElemento.className = `fa-solid ${icono}`;
+        }
     });
 });

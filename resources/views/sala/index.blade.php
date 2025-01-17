@@ -22,6 +22,11 @@
         <!-- Contenedor de datos principales -->
         <div class="contenido-principal">
             @include('sala.listar', ['sala1' => $sala1, 'sala2' => $sala2, 'sala3' => $sala3])
+            
+            <!-- Sección de estadísticas -->
+            <div class="estadisticas-usuarios">
+                @include('sala.estadistica', compact('sala1', 'sala2', 'sala3'))
+            </div>
         </div>
 
     </div>

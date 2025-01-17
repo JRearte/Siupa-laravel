@@ -255,7 +255,32 @@ class UsuarioController extends Controller
     public function generarReporte()
     {
         $usuarios = Usuario::orderBy('apellido', 'asc')->get();
-        $pdf = PDF::loadView('reporte/usuarioReporte', compact('usuarios'));
+        $bienestar = $usuarios->where('Categoria', 'Bienestar')->count();
+        $coordinador = $usuarios->where('Categoria', 'Coordinador')->count();
+        $maestro = $usuarios->where('Categoria', 'Maestro')->count();
+        $invitado = $usuarios->where('Categoria', 'Invitado')->count();
+        $total = $usuarios->count();
+
+
+        $porcentajeBienestar = $total > 0 ? ($bienestar / $total) * 100 : 0;
+        $porcentajeCoordinador = $total > 0 ? ($coordinador / $total) * 100 : 0;
+        $porcentajeMaestro = $total > 0 ? ($maestro / $total) * 100 : 0;
+        $porcentajeInvitado = $total > 0 ? ($invitado / $total) * 100 : 0;
+
+        $pdf = PDF::loadView(
+            'reporte/usuarioReporte',
+            compact(
+                'usuarios',
+                'bienestar',
+                'coordinador',
+                'maestro',
+                'invitado',
+                'porcentajeBienestar',
+                'porcentajeCoordinador',
+                'porcentajeMaestro',
+                'porcentajeInvitado'
+            )
+        );
 
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
