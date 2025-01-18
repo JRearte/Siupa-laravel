@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sala;
 use App\Http\Requests\SalaRequest;
 use App\Traits\RegistraHistorial;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -15,53 +16,58 @@ class SalaController extends Controller
     /**
      * Este método:
      * → Obtiene todas las salas con sus infantes asociados.
-     * → Proporciona la cantidad de infantes que tiene la sala actualmente.
+     * → Brinda un filtro por: nombre, apellido y categoría.
      * → Proporciona datos estadisticos de las salas segun su capacidad.
      * → Prepara los datos para mostrarlos en una vista general.
      * 
      * @return View → Retorna la vista con las salas y sus infantes.
      */
-    public function listar(): View
+    public function listar(Request $regla): View
     {
+        $buscar = $regla->input('buscar');
         $salas = Sala::all();
         $datos = [];
-    
+
         foreach ($salas as $index => $sala) {
             if (!$sala) {
-                return null;
+                continue;
             }
-    
-            // Procesamos la información de cada sala
-            $sala->infante = $sala->infante()->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala' . ($index + 1));
-            $sala->cantidad = $sala->infante->total();
+
+            // ==================== Estadísticas generales ====================
+            $sala->cantidad = $sala->infante()->count();
             $sala->habilitados = $sala->infante()->where('Habilitado', 1)->count();
             $sala->deshabilitados = $sala->cantidad - $sala->habilitados;
             $sala->ingresantes = $sala->infante()->where('Categoria', 'Ingresante')->count();
             $sala->readmitidos = $sala->cantidad - $sala->ingresantes;
-    
-            // Cálculo de porcentajes
+
             $sala->porcentajeCapacidad = ($sala->Capacidad > 0) ? ($sala->habilitados / $sala->Capacidad) * 100 : 0;
             $sala->porcentajeHabilitados = ($sala->cantidad > 0) ? ($sala->habilitados / $sala->cantidad) * 100 : 0;
             $sala->porcentajeDeshabilitados = ($sala->cantidad > 0) ? ($sala->deshabilitados / $sala->cantidad) * 100 : 0;
             $sala->porcentajeIngresantes = ($sala->cantidad > 0) ? ($sala->ingresantes / $sala->cantidad) * 100 : 0;
             $sala->porcentajeReadmitidos = ($sala->cantidad > 0) ? ($sala->readmitidos / $sala->cantidad) * 100 : 0;
-    
-            // Guardamos la sala en el array
+
+            // ==================== Filtro de búsqueda ====================
+            if ($buscar) {
+                $sala->infante = $sala->infante()
+                    ->where(function ($query) use ($buscar) {
+                        $query->where('Nombre', 'LIKE', "%$buscar%")
+                            ->orWhere('Apellido', 'LIKE', "%$buscar%")
+                            ->orWhere('Categoria', 'LIKE', "%$buscar%");
+                    })->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala' . ($index + 1));
+            } else {
+                $sala->infante = $sala->infante()->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala' . ($index + 1));
+            }
+
+            $sala->infante->appends(['buscar' => $buscar]);
             $datos['sala' . ($index + 1)] = $sala;
         }
-    
-        // Asignamos las salas de forma explícita
+
         $sala1 = $datos['sala1'] ?? null;
         $sala2 = $datos['sala2'] ?? null;
         $sala3 = $datos['sala3'] ?? null;
-    
-        // Retornamos la vista
-        return view('sala.index', compact('sala1', 'sala2', 'sala3'));
-    }
-    
-    
-    
 
+        return view('sala.index', compact('sala1', 'sala2', 'sala3', 'buscar'));
+    }
 
 
     /**

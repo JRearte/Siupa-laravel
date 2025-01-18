@@ -14,7 +14,7 @@
                 <div class="estadistica" 
                     data-id="chartSala1_1" 
                     data-porcentaje="{{ $sala1->porcentajeCapacidad }}"
-                    data-colores="#77DD77,#FAD7A0" 
+                    data-colores="{{ $sala1->porcentajeCapacidad >= 100 ? '#FF6347,#FAD7A0' : '#77DD77,#FAD7A0' }}" 
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala1_1" class="grafico"></canvas>
@@ -100,7 +100,7 @@
                 <div class="estadistica" 
                     data-id="chartSala1_2" 
                     data-porcentaje="{{ $sala2->porcentajeCapacidad }}"
-                    data-colores="#77DD77,#FAD7A0" 
+                    data-colores="{{ $sala2->porcentajeCapacidad >= 100 ? '#FF6347,#FAD7A0' : '#77DD77,#FAD7A0' }}" 
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala1_2" class="grafico"></canvas>
@@ -186,7 +186,7 @@
                 <div class="estadistica" 
                     data-id="chartSala1_3" 
                     data-porcentaje="{{ $sala3->porcentajeCapacidad }}"
-                    data-colores="#77DD77,#FAD7A0" 
+                    data-colores="{{ $sala3->porcentajeCapacidad >= 100 ? '#FF6347,#FAD7A0' : '#77DD77,#FAD7A0' }}" 
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala1_3" class="grafico"></canvas>

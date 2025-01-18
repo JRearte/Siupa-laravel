@@ -34,10 +34,16 @@
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('usuario.agregar') }}"><i class="fas fa-user-plus"></i>
-                                Agregar</a></li>
-                        <li><a class="dropdown-item" href="{{ route('usuario.reporte') }}"><i
-                                    class="fa-solid fa-file-lines"></i> Reporte</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('usuario.agregar') }}">
+                                <i class="fas fa-user-plus"></i> Agregar
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('usuario.reporte') }}">
+                                <i class="fa-solid fa-file-lines"></i> Reporte
+                            </a>
+                        </li>
                         <li>
                             <a class="dropdown-item text-danger" href="{{ route('usuario.logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
