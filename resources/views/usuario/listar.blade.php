@@ -11,7 +11,7 @@
                 @foreach ($usuarios as $usuario)
                     @php
                         $nombreCompleto = $usuario->Nombre;
-                        $primerNombre = explode(' ', $nombreCompleto)[0]; 
+                        $primerNombre = explode(' ', $nombreCompleto)[0];
                         $apellidoCompleto = $usuario->Apellido;
                         $primerApellido = explode(' ', $apellidoCompleto)[0];
                     @endphp
@@ -31,13 +31,13 @@
                                 </div>
                                 <div class="categoria">
                                     @if ($usuario->Categoria == 'Bienestar')
-                                        <i class="fa-solid fa-crown" style="color: rgb(0, 0, 0);"></i> Bienestar
+                                        <i class="fa-solid fa-crown icon"></i> Bienestar
                                     @elseif($usuario->Categoria == 'Coordinador')
-                                        <i class="fa-solid fa-user-tie" style="color: #000000;"></i> Coordinador
+                                        <i class="fa-solid fa-user-tie icon"></i> Coordinador
                                     @elseif($usuario->Categoria == 'Maestro')
-                                        <i class="fa-solid fa-chalkboard-teacher" style="color: #000000;"></i> Maestro
+                                        <i class="fa-solid fa-chalkboard-teacher icon"></i> Maestro
                                     @else
-                                        <i class="fa-solid fa-user" style="color: #000000;"></i> Invitado
+                                        <i class="fa-solid fa-user icon"></i> Invitado
                                     @endif
                                 </div>
                             </div>
@@ -62,6 +62,11 @@
                         </td>
                     </tr>
                 @endforeach
+                @if ($usuarios->isEmpty())
+                    <tr>
+                        <td colspan="2" class="text-center">No hay usuarios.</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>

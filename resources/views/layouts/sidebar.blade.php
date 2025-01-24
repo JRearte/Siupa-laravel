@@ -51,7 +51,7 @@
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.index') }}" class="nav-link">
+            <a href="{{ route('tutor.index') }}" class="nav-link">
                 <i class="fas fa-user-tie icon"></i>
                 <p class="nav-text">Tutor</p>
             </a>

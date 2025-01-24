@@ -55,9 +55,9 @@
                                         </div>
                                         <div class="categoria">
                                             @if ($infante->Categoria == 'Ingresante')
-                                                <i class="fa-solid fa-user-plus"></i> Ingresante
+                                                <i class="fa-solid fa-user-plus icon"></i> Ingresante
                                             @else
-                                                <i class="fa-solid fa-user-check"></i> Readmitido
+                                                <i class="fa-solid fa-user-check icon"></i> Readmitido
                                             @endif
                                         </div>
                                     </div>
@@ -151,9 +151,9 @@
                                         </div>
                                         <div class="categoria">
                                             @if ($infante->Categoria == 'Ingresante')
-                                                <i class="fa-solid fa-user-plus"></i> Ingresante
+                                                <i class="fa-solid fa-user-plus icon"></i> Ingresante
                                             @else
-                                                <i class="fa-solid fa-user-check"></i> Readmitido
+                                                <i class="fa-solid fa-user-check icon"></i> Readmitido
                                             @endif
                                         </div>
                                     </div>
@@ -246,9 +246,9 @@
                                         </div>
                                         <div class="categoria">
                                             @if ($infante->Categoria == 'Ingresante')
-                                                <i class="fa-solid fa-user-plus"></i> Ingresante
+                                                <i class="fa-solid fa-user-plus icon"></i> Ingresante
                                             @else
-                                                <i class="fa-solid fa-user-check"></i> Readmitido
+                                                <i class="fa-solid fa-user-check icon"></i> Readmitido
                                             @endif
                                         </div>
                                     </div>

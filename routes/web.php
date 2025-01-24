@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\SalaController;
+use App\Http\Controllers\TutorController;
 
 
 
@@ -25,7 +26,7 @@ Route::controller(UsuarioController::class)->middleware('auth')->group(function 
 
 
 Route::controller(SalaController::class)->middleware('auth')->group(function () {
-    Route::get('/sala', 'listar')->name('sala.index');
+    Route::get('/salas', 'listar')->name('sala.index');
     Route::get('sala/formulario', 'formularioRegistrar')->name('sala.agregar');
     Route::post('sala/registrar', 'registrar')->name('sala.registrar');
     Route::get('sala/formulario/{id}', 'formularioModificar')->name('sala.editar');
@@ -34,6 +35,12 @@ Route::controller(SalaController::class)->middleware('auth')->group(function () 
     Route::delete('sala/eliminar/{id}', 'eliminar')->name('sala.eliminar');
 });
 
+Route::controller(TutorController::class)->middleware('auth')->group(function () {
+    Route::get('/tutores', [TutorController::class, 'listar'])->name('tutor.index');
+});
+
+
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
 Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout')->middleware('auth');
 Route::get('/', [LoginController::class, 'inicio'])->name('login');//no aplicar seguridad o no existira forma de acceder 
+

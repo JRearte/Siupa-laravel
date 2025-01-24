@@ -61,7 +61,7 @@ class Tutor extends Model
     /**
      * Relación de uno a muchos con el modelo Infante
      */
-    public function infante()
+    public function infantes()
     {
         return $this->hasMany(Infante::class);
     }
