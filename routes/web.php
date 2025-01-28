@@ -37,10 +37,10 @@ Route::controller(SalaController::class)->middleware('auth')->group(function () 
 
 Route::controller(TutorController::class)->middleware('auth')->group(function () {
     Route::get('/tutores', [TutorController::class, 'listar'])->name('tutor.index');
+    Route::get('tutor/presentacion/{id}', 'presentar')->name('tutor.presentacion');    
 });
 
 
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
 Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout')->middleware('auth');
 Route::get('/', [LoginController::class, 'inicio'])->name('login');//no aplicar seguridad o no existira forma de acceder 
-

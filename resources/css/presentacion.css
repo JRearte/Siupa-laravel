@@ -1,63 +1,180 @@
-/* Contenedor principal de la presentación */
+/* ==================== Contenedor Principal ==================== */
 .presentacion .container {
-    max-width: 550px; /* Incrementado un 10% de 500px */
+    max-width: 400px;
     margin: 0 auto;
-    padding: 44px; /* Incrementado un 10% de 40px */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos de la tarjeta */
-.presentacion .card {
-    border: 1px solid #0000007b;
-    border-radius: 8.8px; /* Incrementado un 10% de 8px */
-    box-shadow: 0 4.4px 8.8px rgba(0, 0, 0, 0.5); /* Incrementado un 10% de 4px y 8px */
-    overflow: hidden;
-    background-color: #f8f9fa7f;
-    backdrop-filter: blur(3px);
+/* ==================== Encabezado ==================== */
+.presentacion .header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 1rem;
 }
 
-/* Encabezado de la tarjeta */
-.presentacion .card-header {
-    background-color: #b5b7bacf;
+.presentacion .icon-container {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.585);
+    background: linear-gradient(135deg, #f8d5b5, #f6a687);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.presentacion .icon {
+    font-size: 2rem;
     color: #000000;
-    padding: 16.5px; /* Incrementado un 10% de 15px */
-    font-size: 1.32rem; /* Incrementado un 10% de 1.2rem */
-    font-weight: bold;
-    text-align: center;
 }
 
-/* Cuerpo de la tarjeta */
-.presentacion .card-body {
-    padding: 22px 22px 0px 22px; /* Incrementado un 10% de 20px */
+.presentacion .datos p {
+    margin: 0;
+    margin-left: 20px;
+    font-size: 0.8rem;
+    color: #555555;
 }
 
-/* Texto de la tarjeta */
-.presentacion .card-text {
-    font-size: 0.99rem; /* Incrementado un 10% de 0.9rem */
-    margin-bottom: 6.6px; /* Incrementado un 10% de 6px */
-    color: #495057;
-}
-
-/* Estilo del botón de retorno */
-.presentacion .btn-primary {
-    width: 90%; /* Incrementado un 10% de 100px */
-    text-align: center;
-    margin: 0 auto;
-    margin-bottom: 11px; /* Incrementado un 10% de 10px */
-    padding: 11px; /* Incrementado un 10% de 10px */
-    font-size: 0.88rem; /* Incrementado un 10% de 0.8rem */
-    font-weight: bold;
+/* ==================== Separador ==================== */
+.presentacion .separador {
     border: none;
-    border-radius: 5.5px; /* Incrementado un 10% de 5px */
-    background-color: #6c757d;
+    border-top: 2px solid #471400;
+    margin: 0.5rem 0;
+}
+
+/* ==================== Contenido del Usuario ==================== */
+.presentacion .content {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.presentacion .column {
+    flex: 1;
+}
+
+.presentacion .column p {
+    margin: 5px 0;
+    font-size: 0.75rem;
+    color: #333333;
+}
+
+.presentacion .column p strong {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.8rem;
+    color: #000000;
+}
+
+/* ==================== Historial ==================== */
+.presentacion .historial {
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f9f9f900;
+    border: 1px solid #dddddd00;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.presentacion .historial p {
+    margin: 5px 0;
+    font-size: 0.65rem;
+    color: #333333;
+}
+
+.presentacion .historial .separator {
+    border: none;
+    border-top: 1.5px solid #000000;
+    margin: 10px 0;
+}
+
+/* ==================== Botón ==================== */
+.presentacion .btn-primary {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
     color: #ffffff;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    background-color: #6e2c20;
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
 }
 
 .presentacion .btn-primary:hover {
-    background-color: #5a6268;
+    background-color: #5a241a;
 }
 
-/* Estilo de los elementos de texto importante */
-.presentacion .card-text strong {
-    color: #343a40;
+/* ==================== Cuota ==================== */
+/* Contenedor principal de las cuotas */
+.cuotas-container {
+
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+/* Título principal */
+.cuotas-container h6 {
+    text-align: center;
+    color: #000000;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid #f6a687;
+    padding-bottom: 5px;
+}
+
+/* Cabecera de las columnas */
+.cuotas-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #333;
+}
+
+/* Contenedor de las cuotas */
+.cuotas {
+    display: grid;
+}
+
+.cuota-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilo de los textos */
+.cuota-item p {
+    margin: 0;
+    font-size: 0.65rem;
+    color: #000000;
+}
+
+/* Última fila sin borde */
+.cuota-item:last-child {
+    border-bottom: none;
+}
+
+
+
+/* ==================== Responsivo ==================== */
+@media only screen and (max-width: 768px) {
+    .presentacion .container {
+        margin-bottom: 120px;
+    }
+
+    .presentacion .historial {
+        max-height: 320px;
+    }
 }

@@ -25,4 +25,12 @@ class Usuario extends Model implements Authenticacion
     {
         return $this->hasMany(Asistencia::class);
     }
+
+    /**
+     * Relación uno a muchos con el modelo Historial
+     */
+    public function historiales()
+    {
+        return $this->hasMany(Historial::class, 'usuario_id');
+    }
 }

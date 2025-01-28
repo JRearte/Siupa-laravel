@@ -96,10 +96,7 @@ class SalaController extends Controller
      */
     public function registrar(SalaRequest $regla): RedirectResponse
     {
-        $usuarioAutenticado = auth()->user();
-        if ($usuarioAutenticado->Categoria !== "Bienestar") {
-            return redirect()->route('sala.index')->with('error', 'No tienes permiso para registrar salas.');
-        }
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar salas.", "sala.index");
 
         if (Sala::count() >= 3) {
             return redirect()->route('sala.index')->with('error', 'Solo se puedes tener un máximo de 3 salas.');
@@ -139,11 +136,7 @@ class SalaController extends Controller
      */
     public function modificar(SalaRequest $regla, Sala $sala): RedirectResponse
     {
-        $usuarioAutenticado = auth()->user();
-        if ($usuarioAutenticado->Categoria !== "Bienestar") {
-            return redirect()->route('sala.index')->with('error', 'No tienes permiso para modificar salas.');
-        }
-
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar salas.", "sala.index");
         $datos = $regla->validated();
         $sala->update($datos);
         $this->registrarAccion(auth()->id(), 'Sala modificada', "Se modificó la sala {$sala->Nombre}");
@@ -176,20 +169,18 @@ class SalaController extends Controller
      */
     public function eliminar(int $id): RedirectResponse
     {
-        try {
-            $sala = Sala::find($id);
-            if (!$sala) {
-                return redirect()->route('sala.index')->with('error', 'La sala no existe.');
-            }
-            if ($sala->infante()->count() > 0) {
-                return redirect()->route('sala.index')->with('error', 'La sala aún tiene infantes asignados y no se puede eliminar.');
-            }
-            $nombre = $sala->Nombre;
-            $sala->delete();
-            $this->registrarAccion(auth()->id(), 'Sala eliminada', "Se eliminó la sala {$nombre}");
-            return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->route('sala.index')->with('error', 'Hubo un problema al intentar eliminar la sala.');
+
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar salas.", "sala.index");
+        $sala = Sala::find($id);
+        if (!$sala) {
+            return redirect()->route('sala.index')->with('error', 'La sala no existe.');
         }
+        if ($sala->infante()->count() > 0) {
+            return redirect()->route('sala.index')->with('error', 'La sala aún tiene infantes asignados y no se puede eliminar.');
+        }
+        $nombre = $sala->Nombre;
+        $sala->delete();
+        $this->registrarAccion(auth()->id(), 'Sala eliminada', "Se eliminó la sala {$nombre}");
+        return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
     }
 }

@@ -77,6 +77,7 @@ class UsuarioController extends Controller
     /**
      * Este método:
      * → Recupera la información detallada de un usuario por su identificador único.
+     * → Recupera el historial de acciones del usuario.
      * 
      * @param int $id → Identificador único del usuario.
      * @return View → Retorna la vista usuario.presentacion con los datos del usuario.
@@ -84,7 +85,8 @@ class UsuarioController extends Controller
     public function presentar(int $id): View
     {
         $usuario = Usuario::findOrFail($id);
-        return view('usuario.presentacion', compact('usuario'));
+        $historial = Historial::where('usuario_id', $id)->orderBy('created_at', 'desc')->get();
+        return view('usuario.presentacion', compact('usuario', 'historial'));
     }
 
 
@@ -113,14 +115,11 @@ class UsuarioController extends Controller
      */
     public function registrar(UsuarioRequest $regla): RedirectResponse
     {
-        $usuarioAutenticado = auth()->user();
-        if ($usuarioAutenticado->Categoria !== "Bienestar") {
-            return redirect()->route('usuario.index')->with('error', 'No tienes permiso para registrar usuarios.');
-        }
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar usuarios.", "usuario.index");
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario = Usuario::create($datos);
-        $this->registrarAccion(auth()->id(), 'Usuario registrado', "Se registro el usuario {$usuario->Nombre} {$usuario->Apellido} con la categoría {$usuario->Categoria} ");
+        $this->registrarAccion(auth()->id(), 'Registrar usuario', "Registro al usuario {$usuario->Nombre} {$usuario->Apellido} ");
         return redirect()->route('usuario.index')->with('success', 'El usuario fue registrado exitosamente.');
     }
 
@@ -153,14 +152,11 @@ class UsuarioController extends Controller
      */
     public function modificar(UsuarioRequest $regla, Usuario $usuario): RedirectResponse
     {
-        $usuarioAutenticado = auth()->user();
-        if ($usuarioAutenticado->Categoria !== "Bienestar") {
-            return redirect()->route('usuario.index')->with('error', 'No tienes permiso para modificar usuarios.');
-        }
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar usuarios.", "usuario.index");
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario->update($datos);
-        $this->registrarAccion(auth()->id(), 'Usuario modificado', "Se modifico el usuario {$usuario->Nombre} {$usuario->Apellido} ");
+        $this->registrarAccion(auth()->id(), 'Modificar usuario', "Modifico el usuario {$usuario->Nombre} {$usuario->Apellido} ");
         return redirect()->route('usuario.index')->with('success', 'El usuario fue modificado exitosamente');
     }
 
@@ -189,20 +185,13 @@ class UsuarioController extends Controller
      */
     public function eliminar(int $id): RedirectResponse
     {
-        try {
-            $usuarioAutenticado = auth()->user();
-            if ($usuarioAutenticado->Categoria !== "Bienestar") {
-                return redirect()->route('usuario.index')->with('error', 'No tienes permiso para eliminar usuarios.');
-            }
-            $usuario = Usuario::find($id);
-            $nombre = $usuario->Nombre;
-            $apellido = $usuario->Apellido;
-            $usuario->delete();
-            $this->registrarAccion(auth()->id(), 'Usuario eliminado', "Se eliminó el usuario {$nombre} {$apellido} ");
-            return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');
-        } catch (\Exception $e) {
-            return redirect()->route('usuario.index')->with('error', 'Hubo un problema al intentar eliminar al usuario.');
-        }
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar usuarios.", "usuario.index");
+        $usuario = Usuario::find($id);
+        $nombre = $usuario->Nombre;
+        $apellido = $usuario->Apellido;
+        $usuario->delete();
+        $this->registrarAccion(auth()->id(), 'Eliminar usuario', "Eliminó el usuario {$nombre} {$apellido} ");
+        return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');
     }
 
     /**

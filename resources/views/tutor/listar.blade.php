@@ -57,7 +57,7 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-content">
-                                                <a class="dropdown-item">
+                                                <a class="dropdown-item" href="{{ route('tutor.presentacion', $trabajador->id) }}">
                                                     <i class="fas fa-user icon"></i> Presentación
                                                 </a>
                                                 <a class="dropdown-item">
@@ -163,7 +163,7 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-content">
-                                                <a class="dropdown-item">
+                                                <a class="dropdown-item" href="{{ route('tutor.presentacion', $alumno->id) }}">
                                                     <i class="fas fa-user icon"></i> Presentación
                                                 </a>
                                                 <a class="dropdown-item">

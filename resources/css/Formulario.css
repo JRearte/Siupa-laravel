@@ -1,136 +1,265 @@
-/* Estilo general para la sección del formulario */
+/* ==================== Contenedor Principal ==================== */
 .formulario {
-    padding: 10px;                                          /* Espacio alrededor del formulario */
+    margin: 0 auto;
+    max-width: 600px;
+    
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Ajuste del diseño de la tarjeta */
-.formulario .card {
-    border-radius: 8px;                                     /* Bordes redondeados */
-    background-color: rgba(255, 255, 255, 0.9);           /* Color de fondo blanco con opacidad */
-    border: 1px solid rgba(0, 0, 0, 0.1);                 /* Borde gris claro y sutil */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);             /* Sombra más pronunciada */
-    overflow: hidden;                                       /* Evita que el contenido sobresalga */
+/* ==================== Encabezado del Formulario ==================== */
+.form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
 }
 
-/* Estilo del encabezado de la tarjeta */
-.formulario .card-header {
-    background-color: #343a40;                            /* Fondo oscuro para el encabezado */
-    color: #ffffff;                                       /* Texto blanco */
-    padding: 10px;                                          /* Espacio interno reducido */
-    font-size: 1.1rem;                                      /* Tamaño de fuente ligeramente mayor */
-    font-weight: bold;                                      /* Texto en negrita */
-    text-align: center;                                     /* Centra el texto */
+.form-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-/* Estilo del título de la tarjeta */
-.formulario .card-title {
-    font-size: 1rem;                                        /* Tamaño de fuente del título */
+.form-title .icon {
+    font-size: 1.25rem;
+    color: #ff6f00;
 }
 
-.formulario .icon{
-    padding-right: 5px;
+/* ==================== Cuerpo del Formulario ==================== */
+.form-body {
+    padding: 1rem;
 }
 
-/* Estilo del cuerpo de la tarjeta */
-.formulario .card-body {
-    padding: 15px;                                          /* Espacio interno reducido */
+/* ==================== Controles de Formulario ==================== */
+.contenido .form-group {
+    margin-bottom: 1rem;
 }
 
-/* Ajuste del diseño del formulario para un estilo compacto en horizontal */
-.formulario .form-group {
-    position: relative;                                     /* Posicionamiento relativo para manejar etiquetas flotantes */
-    margin-bottom: 1.5rem !important;                                  /* Espacio debajo de cada grupo de formulario */
+.contenido .form-label {
+    margin-bottom: 2px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #444444;
 }
 
-/* Estilo para las etiquetas de formulario flotantes */
-.formulario .form-label {
-    position: absolute;                                     /* Posicionamiento absoluto dentro del contenedor relativo */
-    top: 0;                                                 /* Pegado al borde superior del contenedor del campo */
-    left: 0;                                                /* Pegado al borde izquierdo del contenedor del campo */
-    background-color: rgb(255, 255, 255);                 /* Fondo blanco para que se vea bien sobre el campo */
-    border: 1px solid #ced4da;
-    border-bottom: none;
-    border-top-left-radius: 4px;                            /* Radio de borde superior izquierdo */
-    border-top-right-radius: 4px;                           /* Radio de borde superior derecho */
-    border-right-width: -7px;
-    padding: 0 0.5rem;                                      /* Espacio alrededor del texto de la etiqueta */
-    font-size: 0.75rem;                                     /* Tamaño de fuente más pequeño */
-    font-family: 'Times New Roman', Times, serif;
-    color: #495057;                                       /* Color de texto gris oscuro */
-    transform: translateY(-50%);                            /* Mueve la etiqueta hacia arriba un poco */
-    pointer-events: none;                                   /* Evita que la etiqueta interfiera con el clic en el campo */
-    z-index: 1;                                             /* Asegura que la etiqueta esté encima del campo */
+.contenido .form-control {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
 }
 
-/* Pseudo-elemento para ocultar el borde inferior derecho */
-.formulario .form-label::after {
-    content: '';
+.contenido .form-control:focus {
+    border-color: #ff6f00;
+    outline: none;
+    box-shadow: 0 0 4px rgba(255, 111, 0, 0.3);
+}
+
+
+.mensaje-container {
+    position: relative; 
+}
+
+.mensaje-error {
+    background-color: #f8d7da00;
+    color: #721c24;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    display: none; 
     position: absolute;
-    bottom: 0;
-    right: -1px;
-    width: 50%;                                             /* Ajusta el ancho del área que oculta */
-    height: 50%;                                            /* Ajusta la altura del área que oculta */
-    background-color: rgb(255, 255, 255);                 /* Color de fondo para ocultar el borde */
-    z-index: -1;                                            /* Asegura que el pseudo-elemento esté detrás del borde */
-}
-
-/* Estilo para los campos de formulario */
-.formulario .form-control,
-.formulario .form-select {
-    font-size: 0.75rem;                                     /* Tamaño de fuente más pequeño */
-    padding: 0.7rem 0.75rem;                                /* Espacio interno reducido */
-    border: 1px solid #ced4da;                            /* Borde gris claro */
-    background-color: #ffffff;                            /* Fondo blanco */
-    line-height: 1.25;                                      /* Ajusta la altura de línea para reducir la altura del campo */
-}
-
-.formulario .form-control:focus,
-.formulario .form-select:focus
-{
-    box-shadow: 0 0 5px green;
-}
-
-.formulario .opcion{
-    background: #e1e5ea;
-}
-
-/* Estilo para los mensajes de error */
-.formulario .invalid-feedback {
-    font-size: 0.75rem;                                     /* Tamaño de fuente más pequeño */
-    margin-top: 0.25rem;                               /* Espacio encima del mensaje de error */
-}
-
-.formulario .form-control.is-invalid:focus{
-    box-shadow: 0 0 5px rgb(247, 1, 1);
+    bottom: -29px; 
+    left: -12;
+    width: 100%;
+    z-index: 1;
 }
 
 
-/* Estilo para los botones dentro del formulario */
-.formulario .btn {
-    font-size: 0.875rem;                                    /* Tamaño de fuente más pequeño */
-    padding: 0.5rem 1rem;                                   /* Espacio interno reducido */
-    border-radius: 4px;                                     /* Bordes redondeados */
-    border: none;                                           /* Quitar borde predeterminado */
-    cursor: pointer;                                        /* Cursor de puntero al pasar por encima */
-    transition: background-color 0.3s ease;                 /* Transición suave para el color de fondo */
+.mensaje-container .mensaje-error.show {
+    display: block;
 }
 
-/* Estilo para el botón primario dentro del formulario */
-.formulario .btn-primary {
-    background-color: #007bff;                            /* Color azul */
-    color: #ffffff;                                       /* Texto blanco */
+.mensaje-error i {
+    font-size: 16px;
+    margin-right: 8px;
 }
 
-.formulario .btn-primary:hover {
-    background-color: #0056b3;                            /* Azul más oscuro al pasar el ratón */
+
+/* ==================== Tooltip ==================== */
+.tooltip-list {
+    text-align: left;
+    font-size: 0.74rem;
 }
 
-/* Estilo para el botón de cancelación dentro del formulario */
-.formulario .btn-secondary {
-    background-color: #6c757d;                            /* Color gris */
-    color: #ffffff;                                       /* Texto blanco */
+.tooltip-inner {
+    min-width: 250px;
 }
 
-.formulario .btn-secondary:hover {
-    background-color: #5a6268;                            /* Gris más oscuro al pasar el ratón */
+.tooltip-icon {
+    font-size: 0.7rem;
+    color: #888888;
+    cursor: pointer;
+    margin-left: 0rem;
+}
+
+.tooltip-icon:hover {
+    color: #ff6f00;
+}
+
+/* ==================== Categoría (Select) ==================== */
+.contenido .form-select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem !important;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+}
+
+.contenido .form-select:focus {
+    border-color: #ff6f00;
+    outline: none;
+    box-shadow: 0 0 4px rgba(255, 111, 0, 0.3);
+}
+
+/* ==================== Contraseña ==================== */
+.contenido .input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 0 !important;
+}
+
+.contenido .form-control {
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    font-size: 0.8rem;
+}
+
+.contenido .btn-visibility {
+    min-height: 36.5px;
+    min-width: 40px;
+    background-color: #be484800;
+    border: 1px solid #cccccc;
+    border-left: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.contenido .btn-visibility:hover {
+    background-color: #eed4d4;
+}
+
+.contenido .btn-visibility .icon {
+    position: absolute; 
+    left: 50%; 
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #444444;
+    font-size: 0.8rem;
+    pointer-events: none; 
+}
+
+
+/* ==================== Switch ==================== */
+.contenido .form-check-input {
+    min-width: 40px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.contenido .form-check-label{
+    font-size: 0.8rem;
+    margin-top: 20px;
+}
+
+.contenido .form-check-input:checked {
+    background-color: #ff6f00;
+    border-color: #ff6f00;
+}
+
+/* ==================== Botones ==================== */
+.contenido .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.contenido .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 265px;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contenido .btn-primary {
+    background-color: #ff6f00;
+    color: #ffffff;
+}
+
+.contenido .btn-primary:hover {
+    background-color: #d35800;
+}
+
+.contenido .btn-secondary {
+    background-color: #e0e0e0;
+    color: #444444;
+}
+
+.contenido .btn-secondary:hover {
+    background-color: #cccccc;
+}
+
+/* ==================== Adaptabilidad ==================== */
+@media (max-width: 768px) {
+    .contenido .form-group.row {
+        flex-direction: column;
+    }
+
+    .contenido .col-12.col-md-6 {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .contenido .form-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .formulario {
+        max-height: 720px;
+        margin-bottom: 120px;
+    }
+
 }

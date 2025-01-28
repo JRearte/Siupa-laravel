@@ -9,7 +9,6 @@ class Tutor extends Model
     protected $table = 'tutor'; // Nombre de la tabla en la base de datos
     protected $primaryKey = 'id'; // Nombre de la clave primaria en la tabla
     protected $fillable = ['Legajo','Nombre','Apellido','Genero','Fecha_de_nacimiento','Numero_documento','Tipo_documento','Tipo_tutor','Habilitado','domicilio_id'];
-
     /**
      * Relación inversa uno a uno con el modelo Domicilio.
      */
@@ -53,7 +52,7 @@ class Tutor extends Model
     /**
      * Relación de uno a muchos con el modelo Correo.
      */
-    public function correo()
+    public function correos()
     {
         return $this->hasMany(Correo::class);
     }
@@ -65,5 +64,4 @@ class Tutor extends Model
     {
         return $this->hasMany(Infante::class);
     }
-
 }

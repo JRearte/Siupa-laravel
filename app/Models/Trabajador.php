@@ -8,8 +8,8 @@ class Trabajador extends Model
 {
     protected $table = 'trabajador';
     protected $primaryKey = 'id';
-    protected $fillable = ['Hora','Cargo','Tipo','tutor_id'];
-    
+    protected $fillable = ['Hora', 'Cargo', 'Tipo', 'tutor_id'];
+
     /**
      * Relación inversa uno a uno con el modelo Tutor.
      */
@@ -19,10 +19,10 @@ class Trabajador extends Model
     }
 
     /**
-     * Relacion uno a mucho con el modelo Cuota
+     * Relación de uno a muchos con el modelo cuota
      */
-    public function cuota()
+    public function cuotas()
     {
-        return $this->hasMany(Cuota::class);
+        return $this->hasMany(Infante::class);
     }
 }
