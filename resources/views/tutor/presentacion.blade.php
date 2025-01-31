@@ -57,13 +57,26 @@
 
                     <!-- Datos de Trabajador -->
                     @if ($tutor->Tipo_tutor === 'Trabajador' && $trabajador)
-                    <div class="trabajador">
-                        <p><strong>Tipo de Tutor:</strong></p>
-                        <p>{{ $tutor->Tipo_tutor }} {{ $trabajador?->Tipo }}</p>
-                        <p><strong>Horas de trabajo:</strong></p>
-                        <p> {{ $trabajador?->Hora }} </p>
-                    </div>
+                        <div class="trabajador">
+                            <p><strong>Tipo de Tutor:</strong></p>
+                            <p>{{ $tutor->Tipo_tutor }} {{ $trabajador?->Tipo }}</p>
+                            <p><strong>Horas de trabajo:</strong></p>
+                            <p>{{ $trabajador?->Hora }}</p>
+                        </div>
+                        <a href="{{ route('tutor.editar-trabajador', $tutor?->id) }}"
+                            class="btn btn-dark ms-2">
+                            <i class="fas fa-user-plus"></i>
+                        </a>
+                        
+                         
+                    @else
+                        <a href="{{ route('tutor.agregar-trabajador', $tutor?->id) }}"
+                            class="btn btn-dark ms-2">
+                            <i class="fas fa-user-plus"></i>
+                        </a>
                     @endif
+
+
 
                     <!-- Datos de Alumno -->
                     @if ($tutor->Tipo_tutor === 'Alumno')

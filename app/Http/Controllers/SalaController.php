@@ -120,7 +120,7 @@ class SalaController extends Controller
      */
     public function formularioModificar(int $id): View
     {
-        $sala = Sala::find($id);
+        $sala = Sala::findOrFail($id);
         return view('sala.editar', compact('sala'));
     }
 
@@ -171,7 +171,7 @@ class SalaController extends Controller
     {
 
         $this->validarPermiso("Bienestar", "No tienes permiso para eliminar salas.", "sala.index");
-        $sala = Sala::find($id);
+        $sala = Sala::findOrFail($id);
         if (!$sala) {
             return redirect()->route('sala.index')->with('error', 'La sala no existe.');
         }

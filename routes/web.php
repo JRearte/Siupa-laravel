@@ -37,11 +37,17 @@ Route::controller(SalaController::class)->middleware('auth')->group(function () 
 
 Route::controller(TutorController::class)->middleware('auth')->group(function () {
     Route::get('/tutores', [TutorController::class, 'listar'])->name('tutor.index');
-    Route::get('tutor/presentacion/{id}', 'presentar')->name('tutor.presentacion'); 
+    Route::get('tutor/presentacion/{id}', 'presentar')->name('tutor.presentacion');
     Route::get('tutor/formulario', 'formularioRegistrar')->name('tutor.agregar');
-    Route::post('tutor/registrar', 'registrar')->name('tutor.registrar');   
+    Route::post('tutor/registrar', 'registrar')->name('tutor.registrar');
     Route::get('tutor/formulario/{id}', 'formularioModificar')->name('tutor.editar');
     Route::patch('tutor/modificar/{tutor}', 'modificar')->name('tutor.modificar');
+
+    // Rutas para CRUD trabajador universitario
+    Route::get('tutor/{tutor_id}/formulario-registrar-trabajador', 'formularioRegistrarTrabajador')->name('tutor.agregar-trabajador');
+    Route::post('tutor/{tutor_id}/registrar-trabajador', 'registrarTrabajador')->name('tutor.registrar-trabajador');
+    Route::get('tutor/{tutor_id}/formulario-modificar-trabajador', 'formularioModificarTrabajador')->name('tutor.editar-trabajador');
+    Route::patch('tutor/trabajador-modificar/{trabajador}', 'modificarTrabajador')->name('tutor.modificar-trabajador');
 });
 
 

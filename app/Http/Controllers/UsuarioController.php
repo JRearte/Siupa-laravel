@@ -134,7 +134,7 @@ class UsuarioController extends Controller
      */
     public function formularioModificar(int $id): View
     {
-        $usuario = Usuario::find($id);
+        $usuario = Usuario::findOrFail($id);
         return view('usuario.editar', compact('usuario'));
     }
 
@@ -186,7 +186,7 @@ class UsuarioController extends Controller
     public function eliminar(int $id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para eliminar usuarios.", "usuario.index");
-        $usuario = Usuario::find($id);
+        $usuario = Usuario::findOrFail($id);
         $nombre = $usuario->Nombre;
         $apellido = $usuario->Apellido;
         $usuario->delete();

@@ -10,6 +10,7 @@ use App\Models\Carrera;
 use App\Models\Asignatura;
 use App\Http\Requests\TutorRequest;
 use App\Http\Requests\CorreoRequest;
+use App\Http\Requests\TrabajadorRequest;
 use App\Traits\RegistraHistorial;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -116,7 +117,7 @@ class TutorController extends Controller
      */
     public function formularioModificar(int $id): View
     {
-        $tutor = Tutor::find($id);
+        $tutor = Tutor::findOrFail($id);
         return view('tutor.editar', compact('tutor'));
     }
 
@@ -126,8 +127,8 @@ class TutorController extends Controller
      * → Solo permite la modificación a usuarios con categoría "Bienestar".
      * → Registra la acción en el historial.
      * 
-     * @param UsuarioRequest $regla → Datos validados del tutor a modificar.
-     * @param Usuario $tutor → Objeto tutor con la estructura y datos actuales.
+     * @param TutorRequest $regla → Datos validados del tutor a modificar.
+     * @param Tutor $tutor → Objeto tutor con la estructura y datos actuales.
      * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
      */
     public function modificar(TutorRequest $regla, Tutor $tutor): RedirectResponse
@@ -137,5 +138,87 @@ class TutorController extends Controller
         $tutor->update($datos);
         $this->registrarAccion(auth()->id(), 'Modificar tutor', "Modifico el tutor {$tutor->Nombre} {$tutor->Apellido} ");
         return redirect()->route('tutor.index')->with('success', 'El tutor fue modificado exitosamente');
+    }
+
+
+    
+
+
+
+    /* ==================== Trabajador ==================== */
+
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar los datos de un trabajador.
+     * → Prepara un objeto trabajador vacío con el ID del tutor preasignado.
+     *
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @return View → Retorna la vista tutor.agregar-trabajador con el objeto trabajador.
+     */
+    public function formularioRegistrarTrabajador(int $tutor_id): View
+    {
+        $trabajador = new Trabajador(['tutor_id' => $tutor_id]);
+        return view('tutor.agregar-trabajador', compact('trabajador', 'tutor_id'));
+    }
+
+    /**
+     * Este método:
+     * → Registra los datos de un trabajador con validaciones.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     *
+     * @param TrabajadorRequest $regla → Datos validados del trabajador a registrar.
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito o error.
+     */
+    public function registrarTrabajador(TrabajadorRequest $regla, int $tutor_id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar datos de trabajador.", "tutor.index");
+
+        $datos = $regla->validated();
+        $datos['tutor_id'] = $tutor_id;
+        Trabajador::create($datos);
+
+        $tutor = Tutor::findOrFail($tutor_id);
+        $this->registrarAccion(auth()->id(), 'Registrar trabajador', "Registró los datos del trabajador {$tutor->Nombre} {$tutor->Apellido}");
+
+        return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El trabajador fue registrado exitosamente.');
+    }
+
+    /**
+     * Este método:
+     * → Recupera los datos de un trabajador por el identificador del tutor.
+     * → Redirige al formulario de edición con la información del trabajador cargada.
+     * 
+     * @param int $tutor_id → Identificador único del tutor.
+     * @return View → Retorna la vista tutor.editar-trabajador con los datos del trabajador.
+     */
+    public function formularioModificarTrabajador(int $tutor_id): View
+    {
+        $trabajador = Trabajador::where('tutor_id', $tutor_id)->firstOrFail();
+        return view('tutor.editar-trabajador', compact('trabajador', 'tutor_id'));
+    }
+
+    /**
+     * Este método:
+     * → Modifica la información de un trabajador y su tutor asociado en la base de datos con datos validados.
+     * → Solo permite la modificación a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     * 
+     * @param TrabajadorRequest $regla → Datos validados del trabajador a modificar.
+     * @param Trabajador $trabajador → Objeto trabajador con la estructura y datos actuales.
+     * @return RedirectResponse → Redirige a la página de presentación del tutor con un mensaje de éxito o error.
+     */
+    public function modificarTrabajador(TrabajadorRequest $regla, Trabajador $trabajador): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar trabajadores.", "tutor.index");
+
+        $datos = $regla->validated();
+        $trabajador->update($datos);
+
+        $tutor = Tutor::findOrFail($trabajador->tutor_id);
+        $this->registrarAccion(auth()->id(), 'Modificar trabajador', "Modificó al trabajador {$tutor->Nombre} {$tutor->Apellido}");
+
+        return redirect()->route('tutor.presentacion', ['id' => $tutor->id])->with('success', 'El trabajador fue modificado exitosamente.');
     }
 }
