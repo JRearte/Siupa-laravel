@@ -60,7 +60,7 @@
                                                 <a class="dropdown-item" href="{{ route('tutor.presentacion', $trabajador->id) }}">
                                                     <i class="fas fa-user icon"></i> Presentación
                                                 </a>
-                                                <a class="dropdown-item">
+                                                <a class="dropdown-item" href="{{ route('tutor.editar', $trabajador->id) }}">
                                                     <i class="fa-solid fa-pencil icon"></i> Editar
                                                 </a>
                                                 <a class="dropdown-item">
@@ -166,7 +166,7 @@
                                                 <a class="dropdown-item" href="{{ route('tutor.presentacion', $alumno->id) }}">
                                                     <i class="fas fa-user icon"></i> Presentación
                                                 </a>
-                                                <a class="dropdown-item">
+                                                <a class="dropdown-item" href="{{ route('tutor.editar', $alumno->id) }}">
                                                     <i class="fa-solid fa-pencil icon"></i> Editar
                                                 </a>
                                                 <a class="dropdown-item">

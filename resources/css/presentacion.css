@@ -166,6 +166,12 @@
     border-bottom: none;
 }
 
+.trabajador.oculto {
+    display: none;
+}
+.trabajador.activo {
+    display: block;
+}
 
 
 /* ==================== Responsivo ==================== */

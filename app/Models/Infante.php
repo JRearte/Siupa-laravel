@@ -8,15 +8,8 @@ class Infante extends Model
 {
     protected $table = 'infante';
     protected $primaryKey = 'id';
-    protected $fillable = ['Nombre','Apellido','Genero','Fecha_de_nacimiento','Numero_documento','Tipo_documento','Categoria','Fecha_de_asignacion','Habilitado','domicilio_id','tutor_id','sala_id'];
+    protected $fillable = ['Nombre','Apellido','Genero','Fecha_de_nacimiento','Numero_documento','Tipo_documento','Categoria','Fecha_de_asignacion','Habilitado','tutor_id','sala_id'];
 
-    /**
-     * Relación inversa uno a uno con el modelo Domicilio
-     */
-    public function domicilio()
-    {
-        return $this->belongsTo(Domicilio::class);
-    }
 
     /**
      * Relación inversa uno a uno con el modelo Tutor

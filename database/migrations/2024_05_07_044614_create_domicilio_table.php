@@ -18,8 +18,11 @@ return new class extends Migration
             $table->integer('Codigo_postal');
             $table->string('Barrio', 35);
             $table->string('Calle', 40);
-            $table->string('Numero',25)->comment('Ejemplo especial: Manzana 129 Lote 4');
+            $table->string('Numero', 25)->comment('Ejemplo especial: Manzana 129 Lote 4');
+            $table->unsignedBigInteger('tutor_id');
             $table->timestamps();
+    
+            $table->foreign('tutor_id')->references('id')->on('tutor')->onDelete('cascade');
         });
     }
 

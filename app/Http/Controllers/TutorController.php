@@ -22,19 +22,28 @@ class TutorController extends Controller
 
     public function listar(): View
     {
-
-        $trabajadores = Tutor::with('infantes')->where('Tipo_tutor', 'Trabajador')->paginate(7, ['*'], 'page_trabajador');
-        $alumnos = Tutor::with('infantes')->where('Tipo_tutor', 'Alumno')->paginate(7, ['*'], 'page_alumno');
-
+        $trabajadores = Tutor::with('infantes')->where('Tipo_tutor', 'Trabajador')->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_trabajador');
+        $alumnos = Tutor::with('infantes')->where('Tipo_tutor', 'Alumno')->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_alumno');
         return view('tutor.index', compact('trabajadores', 'alumnos'));
     }
 
+
+    /**
+     * Este método:
+     * → Recupera la información detallada de un tutor por su identificador único.
+     * → Calcula la edad a través de su fecha de nacimiento.
+     * → Calcula el total de las cuotas registradas.
+     * 
+     * @param int $id → Identificador único del tutor.
+     * @return View → Retorna la vista tutor.presentacion con los datos del tutor.
+     */
     public function presentar(int $id): View
     {
         $tutor = Tutor::with(['domicilio', 'infantes', 'correos', 'telefonos'])->findOrFail($id);
         $edad = Carbon::parse($tutor->Fecha_de_nacimiento)->age;
         $trabajador = null;
         $cuotas = null;
+        $total = 0;
         $carrera = null;
         $asignaturas = null;
 
@@ -55,12 +64,78 @@ class TutorController extends Controller
         return view('tutor.presentacion', [
             'tutor' => $tutor,
             'edad' => $edad,
-            'trabajador' => $trabajador,  // Si es Trabajador, pasamos los datos de trabajador
-            'cuotas' => $cuotas,          // Si es Trabajador, pasamos las cuotas
+            'trabajador' => $trabajador,
+            'cuotas' => $cuotas,
             'total' => $total,
-            'infantes' => $tutor->infantes,  // Los infantes del tutor, siempre
-            'carrera' => $carrera,        // Si es Alumno, pasamos la carrera
-            'asignaturas' => $asignaturas, // Si es Alumno, pasamos las asignaturas
+            'infantes' => $tutor->infantes,
+            'carrera' => $carrera,
+            'asignaturas' => $asignaturas
         ]);
+    }
+
+
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar un nuevo tutor.
+     * → Prepara un objeto tutor vacío para su carga inicial.
+     * 
+     * @return View → Retorna la vista tutor.agregar con el objeto tutor.
+     */
+    public function formularioRegistrar(): View
+    {
+        $tutor = new Tutor();
+        return view('tutor.agregar', compact('tutor'));
+    }
+
+
+    /**
+     * Este método:
+     * → Registra un nuevo tutor en la base de datos con datos validados.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     * 
+     * @param TutorRequest $regla → Datos validados del tutor a registrar.
+     * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
+     */
+    public function registrar(TutorRequest $regla): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar tutores.", "tutor.index");
+        $datos = $regla->validated();
+        $tutor = Tutor::create($datos);
+        $this->registrarAccion(auth()->id(), 'Registrar tutor', "Registro el tutor {$tutor->Nombre} {$tutor->Apellido} ");
+        return redirect()->route('tutor.index')->with('success', 'El tutor fue registrado exitosamente.');
+    }
+
+    /**
+     * Este método:
+     * → Recupera los datos de un tutor por su identificador único.
+     * → Redirige al formulario de edición con la información del tutor cargada.
+     * 
+     * @param int $id → Identificador único del tutor.
+     * @return View → Retorna la vista tutor.editar con los datos del tutor.
+     */
+    public function formularioModificar(int $id): View
+    {
+        $tutor = Tutor::find($id);
+        return view('tutor.editar', compact('tutor'));
+    }
+
+    /**
+     * Este método:
+     * → Modifica la información de un tutor en la base de datos con datos validados.
+     * → Solo permite la modificación a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     * 
+     * @param UsuarioRequest $regla → Datos validados del tutor a modificar.
+     * @param Usuario $tutor → Objeto tutor con la estructura y datos actuales.
+     * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
+     */
+    public function modificar(TutorRequest $regla, Tutor $tutor): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar tutores.", "tutor.index");
+        $datos = $regla->validated();
+        $tutor->update($datos);
+        $this->registrarAccion(auth()->id(), 'Modificar tutor', "Modifico el tutor {$tutor->Nombre} {$tutor->Apellido} ");
+        return redirect()->route('tutor.index')->with('success', 'El tutor fue modificado exitosamente');
     }
 }

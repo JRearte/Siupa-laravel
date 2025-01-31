@@ -8,7 +8,7 @@ class Domicilio extends Model
 {
     protected $table = 'domicilio';
     protected $primaryKey = 'id';
-    protected $fillable = ['Provincia','Localidad','Codigo_postal','Barrio','Calle','Numero'];
+    protected $fillable = ['Provincia','Localidad','Codigo_postal','Barrio','Calle','Numero','tutor_id'];
 
     /**
      * Relación uno a uno con el modelo Tutor.

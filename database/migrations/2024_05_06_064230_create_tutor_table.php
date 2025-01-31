@@ -22,10 +22,7 @@ return new class extends Migration
             $table->string('Tipo_documento', 20);
             $table->string('Tipo_tutor', 10)->comment('Alumno, Trabajador');
             $table->tinyInteger('Habilitado');
-            $table->unsignedBigInteger('domicilio_id');
             $table->timestamps();
-
-            $table->foreign('domicilio_id')->references('id')->on('domicilio')->onDelete('cascade');
         });
     }
 

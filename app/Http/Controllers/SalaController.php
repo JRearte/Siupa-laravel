@@ -105,7 +105,7 @@ class SalaController extends Controller
         $datos = $regla->validated();
         $sala = Sala::create($datos);
 
-        $this->registrarAccion(auth()->id(), 'Sala registrada', "Se registró la sala {$sala->Nombre}");
+        $this->registrarAccion(auth()->id(), 'Registrar sala', "Registro la sala {$sala->Nombre}");
         return redirect()->route('sala.index')->with('success', 'La sala fue creada exitosamente.');
     }
 
@@ -139,7 +139,7 @@ class SalaController extends Controller
         $this->validarPermiso("Bienestar", "No tienes permiso para modificar salas.", "sala.index");
         $datos = $regla->validated();
         $sala->update($datos);
-        $this->registrarAccion(auth()->id(), 'Sala modificada', "Se modificó la sala {$sala->Nombre}");
+        $this->registrarAccion(auth()->id(), 'Modificar sala', "Modifico la sala {$sala->Nombre}");
         return redirect()->route('sala.index')->with('success', 'La sala fue modificada exitosamente.');
     }
 
@@ -180,7 +180,7 @@ class SalaController extends Controller
         }
         $nombre = $sala->Nombre;
         $sala->delete();
-        $this->registrarAccion(auth()->id(), 'Sala eliminada', "Se eliminó la sala {$nombre}");
+        $this->registrarAccion(auth()->id(), 'Eliminar sala', "Elimino la sala {$nombre}");
         return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
     }
 }
