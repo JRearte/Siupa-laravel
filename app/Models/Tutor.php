@@ -15,7 +15,7 @@ class Tutor extends Model
      */
     public function domicilio()
     {
-        return $this->belongsTo(Domicilio::class);
+        return $this->hasOne(Domicilio::class, 'tutor_id');
     }
 
     /**

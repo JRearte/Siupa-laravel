@@ -27,6 +27,7 @@
 
             <!-- Información del Tutor -->
             <div class="content">
+
                 <div class="column">
                     <p><strong>Legajo:</strong></p>
                     <p>{{ $tutor->Legajo }}</p>
@@ -48,6 +49,24 @@
 
                 </div>
                 <div class="column">
+
+                    @if ($tutor->Tipo_tutor === 'Trabajador' && $trabajador)
+                        <div class="opciones" data-tipo="{{ strtolower($tutor->Tipo_tutor) }}">
+                            <a href="{{ route('tutor.editar-trabajador', $tutor?->id) }}" class="btn btn-dark ms-2">
+                                <i class="original fa-regular fa-id-card"></i>
+                                <i class="cambio fa-solid fa-pencil"></i>
+                            </a>
+                        </div>
+                    @else
+                        <div class="opciones" data-tipo="{{ strtolower($tutor->Tipo_tutor) }}">
+                            <a href="{{ route('tutor.agregar-trabajador', $tutor?->id) }}" class="btn btn-dark ms-2">
+                                <i class="original fa-regular fa-id-card"></i>
+                                <i class="cambio fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+                    @endif
+
+
                     <p><strong>Documento:</strong></p>
                     <p>{{ $tutor->Tipo_documento }}: {{ $tutor->Numero_documento }}</p>
                     <p><strong>Género:</strong></p>
@@ -63,20 +82,7 @@
                             <p><strong>Horas de trabajo:</strong></p>
                             <p>{{ $trabajador?->Hora }}</p>
                         </div>
-                        <a href="{{ route('tutor.editar-trabajador', $tutor?->id) }}"
-                            class="btn btn-dark ms-2">
-                            <i class="fas fa-user-plus"></i>
-                        </a>
-                        
-                         
-                    @else
-                        <a href="{{ route('tutor.agregar-trabajador', $tutor?->id) }}"
-                            class="btn btn-dark ms-2">
-                            <i class="fas fa-user-plus"></i>
-                        </a>
                     @endif
-
-
 
                     <!-- Datos de Alumno -->
                     @if ($tutor->Tipo_tutor === 'Alumno')
@@ -91,21 +97,39 @@
 
             <!-- Información de Domicilio y Contacto -->
             <div class="content">
+
                 <div class="column">
-                    <h5><i class="fa-solid fa-house"></i> Domicilio</h5>
-                    <p><strong>Provincia:</strong></p>
-                    <p>{{ $tutor->domicilio?->Provincia }}</p>
-                    <p><strong>Localidad:</strong></p>
-                    <p>{{ $tutor->domicilio?->Localidad }}</p>
-                    <p><strong>Barrio:</strong></p>
-                    <p>{{ $tutor->domicilio?->Barrio }}</p>
-                    <p><strong>Calle:</strong></p>
-                    <p>{{ $tutor->domicilio?->Calle }}</p>
-                    <p><strong>Numero:</strong></p>
-                    <p>{{ $tutor->domicilio?->Numero }}</p>
-                    <p><strong>Código postal:</strong></p>
-                    <p>{{ $tutor->domicilio?->Codigo_postal }}</p>
+                    @if ($tutor->domicilio)
+                        <div class="opciones domicilio">
+                            <a href="{{ route('tutor.editar-domicilio', $tutor?->id) }}" class="btn btn-dark ms-2">
+                                <i class="original fa-solid fa-house"></i>
+                                <i class="cambio fa-solid fa-pencil"></i>
+                            </a>
+                            <h5>Domicilio</h5>
+                        </div>
+                        <p><strong>Provincia:</strong></p>
+                        <p>{{ $tutor->domicilio?->Provincia }}</p>
+                        <p><strong>Localidad:</strong></p>
+                        <p>{{ $tutor->domicilio?->Localidad }}</p>
+                        <p><strong>Barrio:</strong></p>
+                        <p>{{ $tutor->domicilio?->Barrio }}</p>
+                        <p><strong>Calle:</strong></p>
+                        <p>{{ $tutor->domicilio?->Calle }}</p>
+                        <p><strong>Numero:</strong></p>
+                        <p>{{ $tutor->domicilio?->Numero }}</p>
+                        <p><strong>Código postal:</strong></p>
+                        <p>{{ $tutor->domicilio?->Codigo_postal }}</p>
+                    @else
+                        <div class="opciones domicilio">
+                            <a href="{{ route('tutor.agregar-domicilio', $tutor?->id) }}" class="btn btn-dark ms-2">
+                                <i class="original fa-solid fa-house"></i>
+                                <i class="cambio fa-solid fa-plus"></i>
+                            </a>
+                            <h5>Domicilio</h5>
+                        </div>
+                    @endif
                 </div>
+
                 <div class="column">
                     <h5><i class="fa-solid fa-address-book"></i> Contactos</h5>
                     <p><strong>Correo:</strong></p>

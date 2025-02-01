@@ -34,8 +34,7 @@
 }
 
 .presentacion .datos p {
-    margin: 0;
-    margin-left: 20px;
+    margin: 0 0 0 20px;
     font-size: 0.8rem;
     color: #555555;
 }
@@ -114,14 +113,11 @@
 }
 
 /* ==================== Cuota ==================== */
-/* Contenedor principal de las cuotas */
 .cuotas-container {
-
     background-color: #ffffff;
     border-radius: 8px;
 }
 
-/* Título principal */
 .cuotas-container h6 {
     text-align: center;
     color: #000000;
@@ -131,7 +127,6 @@
     padding-bottom: 5px;
 }
 
-/* Cabecera de las columnas */
 .cuotas-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -140,7 +135,6 @@
     color: #333;
 }
 
-/* Contenedor de las cuotas */
 .cuotas {
     display: grid;
 }
@@ -149,37 +143,94 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     text-align: center;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    padding: 5px 0;
     border-bottom: 1px solid #ddd;
 }
 
-/* Estilo de los textos */
 .cuota-item p {
     margin: 0;
     font-size: 0.65rem;
     color: #000000;
 }
 
-/* Última fila sin borde */
 .cuota-item:last-child {
     border-bottom: none;
 }
 
+/* ==================== Opciones ==================== */
 .trabajador.oculto {
     display: none;
 }
+
 .trabajador.activo {
     display: block;
 }
 
+.opciones {
+    position: relative;
+}
+
+.opciones a {
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    background-color: #ffffff;
+    color: #3c3c3c;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    z-index: 10;
+}
+
+.domicilio a {
+    top: -5px;
+    left: -8px;
+    width: 30px;
+    height: 30px;
+}
+.domicilio h5 {
+    padding-left: 35px;
+}
+
+.opciones i {
+    font-size: 18px;
+    margin: 0;
+}
+
+.opciones a:hover {
+    background-color: #655443;
+    color: #fff;
+    border-color: #3e2723;
+}
+
+.opciones .cambio {
+    display: none;
+}
+
+.opciones a:hover .cambio {
+    display: block;
+}
+
+.opciones a:hover .original {
+    display: none;
+}
+
+.opciones[data-tipo="alumno"] {
+    display: none;
+}
 
 /* ==================== Responsivo ==================== */
 @media only screen and (max-width: 768px) {
     .presentacion .container {
         margin-bottom: 120px;
     }
-
     .presentacion .historial {
         max-height: 320px;
     }
