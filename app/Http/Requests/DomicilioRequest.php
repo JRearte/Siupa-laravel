@@ -22,11 +22,11 @@ class DomicilioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Provincia'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
-            'Localidad'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
+            'Provincia'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/'],
+            'Localidad'     => ['required', 'string', 'max:30', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/'],
             'Codigo_postal' => ['required', 'integer', 'digits:4'],
-            'Barrio'        => ['required', 'string', 'max:35', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
-            'Calle'         => ['required', 'string', 'max:40', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
+            'Barrio'        => ['required', 'string', 'max:35', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/'],
+            'Calle'         => ['required', 'string', 'max:40', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/'],
             'Numero'        => ['required', 'string', 'max:25', 'regex:/^[a-zA-Z0-9 ]+$/'],
         ];
     }

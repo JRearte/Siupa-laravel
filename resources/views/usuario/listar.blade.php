@@ -42,23 +42,15 @@
                                 </div>
                             </div>
 
-                            <!-- Botón de opciones -->
-                            <div class="dropdown @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                <button class="btn btn-sm btn-secondary dropbtn">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-content">
-                                    <a class="dropdown-item" href="{{ route('usuario.presentacion', $usuario->id) }}">
-                                        <i class="fas fa-user icon"></i> Presentación
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('usuario.editar', $usuario->id) }}">
-                                        <i class="fa-solid fa-pencil icon"></i> Editar
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('usuario.confirmar', $usuario->id) }}">
-                                        <i class="fa fa-fw fa-trash icon"></i> Eliminar
-                                    </a>
-                                </div>
+                            <!-- Botón de presentacion -->
+                            <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
+                                <a href="{{ route('usuario.presentacion', $usuario->id) }}">
+                                    <div class="presentacion">
+                                        <i class="fa-solid fa-gear"></i>
+                                    </div>
+                                </a>
                             </div>
+                            
                         </td>
                     </tr>
                 @endforeach

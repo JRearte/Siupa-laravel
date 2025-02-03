@@ -12,13 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sala', function (Blueprint $table) {
-            $table->id();                                                                       // Columna 'id' de tipo integer autoincremental
-            $table->string('Nombre', 30)->unique();                                                       // Columna 'Nombre_de_sala' de tipo varchar(30)
-            $table->integer('Edad');                                                            // Columna 'Rango_de_edad' de tipo integer
-            $table->integer('Capacidad');                                                       // Columna 'Capacidad' de tipo integer
-            $table->timestamps();                                                               // Columnas para las marcas de tiempo de creación y actualización
+            $table->id();
+            $table->string('Nombre', 30)->unique();
+            $table->integer('Edad');
+            $table->integer('Capacidad');
+            $table->timestamps();
         });
-        
     }
 
     /**

@@ -54,11 +54,8 @@
 
     <!-- Botones -->
     <div class="form-buttons">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
             {{ __('Aceptar') }}
         </button>
-        <a class="btn btn-secondary" href="{{ route('tutor.presentacion', ['id' => $tutor_id]) }}">
-            {{ __('Cancelar') }}
-        </a>
     </div>
 </div>

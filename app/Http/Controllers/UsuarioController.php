@@ -176,7 +176,7 @@ class UsuarioController extends Controller
 
     /**
      * Este método:
-     * → Elimina un usuario de la base de datos por su identificador único.
+     * → Elimina un usuario de la base de datos por su identificador único | Excepto al super usuario.
      * → Solo permite la eliminación a usuarios con categoría "Bienestar".
      * → Registra la acción de eliminación en el historial.
      * 
@@ -189,6 +189,11 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $nombre = $usuario->Nombre;
         $apellido = $usuario->Apellido;
+
+        if ($usuario->id == 1) {
+            return redirect()->route('usuario.index')->with('error', 'No puedes eliminar al super usuario');
+        }
+
         $usuario->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar usuario', "Eliminó el usuario {$nombre} {$apellido} ");
         return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');

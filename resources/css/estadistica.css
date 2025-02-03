@@ -9,7 +9,7 @@
 
 .estadistica {
     flex: 1;
-    min-width: 247px;
+    min-width: 245px;
     max-height: 120px;
     background: #ffffff31;
     backdrop-filter: blur(10px);
@@ -125,10 +125,10 @@ h3 {
 
 /* ==================== Contenedor individual ==================== */
 .estadistica-sala .sala-contenedor {
-    max-width: 331px;
+    min-width: 326px;
+    max-width: 326px;
     height: 350px;
     border-radius: 8px;
-    background: linear-gradient(to bottom, #eb8c8c6e, #d09be200);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
@@ -182,7 +182,7 @@ h3 {
 }
 
 .estadistica-sala .cantidad-adentro {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     margin-bottom: 6px;
 }
 

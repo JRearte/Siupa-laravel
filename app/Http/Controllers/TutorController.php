@@ -105,8 +105,13 @@ class TutorController extends Controller
         $this->validarPermiso("Bienestar", "No tienes permiso para registrar tutores.", "tutor.index");
         $datos = $regla->validated();
         $tutor = Tutor::create($datos);
-        $this->registrarAccion(auth()->id(), 'Registrar tutor', "Registro el tutor {$tutor->Nombre} {$tutor->Apellido} ");
-        return redirect()->route('tutor.index')->with('success', 'El tutor fue registrado exitosamente.');
+
+        if ($tutor->Tipo_tutor === 'Trabajador') {
+            $this->registrarAccion(auth()->id(), 'Registrar tutor', "Registro al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
+            return redirect()->route('tutor.agregar-trabajador', $tutor?->id);
+        }
+        $this->registrarAccion(auth()->id(), 'Registrar tutor', "Registro al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
+        return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El tutor fue registrado exitosamente.');
     }
 
     /**
@@ -138,70 +143,13 @@ class TutorController extends Controller
         $this->validarPermiso("Bienestar", "No tienes permiso para modificar tutores.", "tutor.index");
         $datos = $regla->validated();
         $tutor->update($datos);
-        $this->registrarAccion(auth()->id(), 'Modificar tutor', "Modifico el tutor {$tutor->Nombre} {$tutor->Apellido} ");
+        if ($tutor->Tipo_tutor === 'Trabajador') {
+            $this->registrarAccion(auth()->id(), 'Modificar tutor', "Modifico al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
+            return redirect()->route('tutor.editar-trabajador', $tutor?->id);
+        }
+        $this->registrarAccion(auth()->id(), 'Modificar tutor', "Modifico al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
         return redirect()->route('tutor.index')->with('success', 'El tutor fue modificado exitosamente');
     }
-
-    /* ==================== Domicilio ==================== */
-
-    public function formularioRegistrarDomicilio(int $tutor_id): View
-    {
-        $domicilio = new Domicilio(['tutor_id' => $tutor_id]);
-        return view('tutor.agregar-domicilio', compact('domicilio', 'tutor_id'));
-    }
-
-    public function registrarDomicilio(DomicilioRequest $regla, int $tutor_id): RedirectResponse
-    {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar datos de domicilio.", "tutor.index");
-
-        $datos = $regla->validated();
-        $datos['tutor_id'] = $tutor_id;
-        Domicilio::create($datos);
-
-        $tutor = Tutor::findOrFail($tutor_id);
-        $this->registrarAccion(auth()->id(), 'Registrar domicilio', "Registró los datos del domicilio de {$tutor->Nombre} {$tutor->Apellido}");
-
-        return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El domicilio fue registrado exitosamente.');
-    }
-
-
-        /**
-     * Este método:
-     * → Recupera los datos de un trabajador por el identificador del tutor.
-     * → Redirige al formulario de edición con la información del trabajador cargada.
-     * 
-     * @param int $tutor_id → Identificador único del tutor.
-     * @return View → Retorna la vista tutor.editar-trabajador con los datos del trabajador.
-     */
-    public function formularioModificarDomicilio(int $tutor_id): View
-    {
-        $domicilio = Domicilio::where('tutor_id', $tutor_id)->firstOrFail();
-        return view('tutor.editar-domicilio', compact('domicilio', 'tutor_id'));
-    }
-
-    /**
-     * Este método:
-     * → Modifica la información de un trabajador y su tutor asociado en la base de datos con datos validados.
-     * → Solo permite la modificación a usuarios con categoría "Bienestar".
-     * → Registra la acción en el historial.
-     * 
-     * @param TrabajadorRequest $regla → Datos validados del trabajador a modificar.
-     * @param Trabajador $trabajador → Objeto trabajador con la estructura y datos actuales.
-     * @return RedirectResponse → Redirige a la página de presentación del tutor con un mensaje de éxito o error.
-     */
-    public function modificarDomicilio(DomicilioRequest $regla, Domicilio $domicilio): RedirectResponse
-    {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar domicilios.", "tutor.index");
-
-        $datos = $regla->validated();
-        $domicilio->update($datos);
-
-        $tutor = Tutor::findOrFail($domicilio->tutor_id);
-        $this->registrarAccion(auth()->id(), 'Modificar trabajador', "Modificó el domicilio de {$tutor->Nombre} {$tutor->Apellido}");
-
-        return redirect()->route('tutor.presentacion', ['id' => $tutor->id])->with('success', 'El domicilio fue modificado exitosamente.');
-    }
-
 
     /* ==================== Trabajador ==================== */
 
@@ -236,10 +184,6 @@ class TutorController extends Controller
         $datos = $regla->validated();
         $datos['tutor_id'] = $tutor_id;
         Trabajador::create($datos);
-
-        $tutor = Tutor::findOrFail($tutor_id);
-        $this->registrarAccion(auth()->id(), 'Registrar trabajador', "Registró los datos del trabajador {$tutor->Nombre} {$tutor->Apellido}");
-
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El trabajador fue registrado exitosamente.');
     }
 
@@ -270,13 +214,85 @@ class TutorController extends Controller
     public function modificarTrabajador(TrabajadorRequest $regla, Trabajador $trabajador): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para modificar trabajadores.", "tutor.index");
-
         $datos = $regla->validated();
         $trabajador->update($datos);
+        return redirect()->route('tutor.presentacion', ['id' => $trabajador->tutor_id])->with('success', 'El trabajador fue modificado exitosamente.');
+    }
 
-        $tutor = Tutor::findOrFail($trabajador->tutor_id);
-        $this->registrarAccion(auth()->id(), 'Modificar trabajador', "Modificó al trabajador {$tutor->Nombre} {$tutor->Apellido}");
 
-        return redirect()->route('tutor.presentacion', ['id' => $tutor->id])->with('success', 'El trabajador fue modificado exitosamente.');
+
+    /* ==================== Domicilio ==================== */
+
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar los datos de un domicilio.
+     * → Prepara un objeto domicilio vacío con el ID del tutor preasignado.
+     *
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @return View → Retorna la vista tutor.agregar-domicilio con el objeto domicilio.
+     */
+    public function formularioRegistrarDomicilio(int $tutor_id): View
+    {
+        $domicilio = new Domicilio(['tutor_id' => $tutor_id]);
+        return view('tutor.agregar-domicilio', compact('domicilio', 'tutor_id'));
+    }
+
+    /**
+     * Este método:
+     * → Registra los datos de un domicilio con validaciones.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     *
+     * @param DomicilioRequest $regla → Datos validados del domicilio a registrar.
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito o error.
+     */
+    public function registrarDomicilio(DomicilioRequest $regla, int $tutor_id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar datos de domicilio.", "tutor.index");
+
+        $datos = $regla->validated();
+        $datos['tutor_id'] = $tutor_id;
+        Domicilio::create($datos);
+
+        $tutor = Tutor::findOrFail($tutor_id);
+        $this->registrarAccion(auth()->id(), 'Registrar domicilio', "Registró los datos del domicilio de {$tutor->Nombre} {$tutor->Apellido}");
+
+        return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El domicilio fue registrado exitosamente.');
+    }
+
+    /**
+     * Este método:
+     * → Recupera los datos de un domicilio por el identificador del tutor.
+     * → Redirige al formulario de edición con la información del domicilio cargada.
+     *
+     * @param int $tutor_id → Identificador único del tutor.
+     * @return View → Retorna la vista tutor.editar-domicilio con los datos del domicilio.
+     */
+    public function formularioModificarDomicilio(int $tutor_id): View
+    {
+        $domicilio = Domicilio::where('tutor_id', $tutor_id)->firstOrFail();
+        return view('tutor.editar-domicilio', compact('domicilio', 'tutor_id'));
+    }
+
+    /**
+     * Este método:
+     * → Modifica la información de un domicilio y su tutor asociado en la base de datos con datos validados.
+     * → Solo permite la modificación a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     *
+     * @param DomicilioRequest $regla → Datos validados del domicilio a modificar.
+     * @param Domicilio $domicilio → Objeto domicilio con la estructura y datos actuales.
+     * @return RedirectResponse → Redirige a la página de presentación del tutor con un mensaje de éxito o error.
+     */
+    public function modificarDomicilio(DomicilioRequest $regla, Domicilio $domicilio): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar domicilios.", "tutor.index");
+        $datos = $regla->validated();
+        $domicilio->update($datos);
+        $tutor = Tutor::findOrFail($domicilio->tutor_id);
+        $this->registrarAccion(auth()->id(), 'Modificar domicilio', "Modificó el domicilio de {$tutor->Nombre} {$tutor->Apellido}");
+
+        return redirect()->route('tutor.presentacion', ['id' => $tutor->id])->with('success', 'El domicilio fue modificado exitosamente.');
     }
 }

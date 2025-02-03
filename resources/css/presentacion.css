@@ -12,6 +12,7 @@
 .presentacion .header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 20px;
     margin-bottom: 1rem;
 }
@@ -23,20 +24,21 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.585);
+    border: 2px solid #471400;
     background: linear-gradient(135deg, #f8d5b5, #f6a687);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .presentacion .icon {
     font-size: 2rem;
-    color: #000000;
+    color: #471400;
 }
 
 .presentacion .datos p {
-    margin: 0 0 0 20px;
+    margin: 0;
     font-size: 0.8rem;
-    color: #555555;
+    color: #333333;
+    text-align: left;
 }
 
 /* ==================== Separador ==================== */
@@ -49,12 +51,14 @@
 /* ==================== Contenido del Usuario ==================== */
 .presentacion .content {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 20px;
 }
 
 .presentacion .column {
-    flex: 1;
+    position: relative;
+    flex: 1 1 45%;
 }
 
 .presentacion .column p {
@@ -66,8 +70,8 @@
 .presentacion .column p strong {
     display: block;
     margin-bottom: 2px;
-    font-size: 0.8rem;
-    color: #000000;
+    font-size: 0.85rem;
+    color: #471400;
 }
 
 /* ==================== Historial ==================== */
@@ -75,21 +79,31 @@
     max-height: 250px;
     overflow-y: auto;
     padding: 10px;
-    background-color: #f9f9f900;
-    border: 1px solid #dddddd00;
+    background-color: #fdf2e9;
+    border: 1px solid #f6a687;
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
 .presentacion .historial p {
     margin: 5px 0;
-    font-size: 0.65rem;
-    color: #333333;
+    font-size: 0.7rem;
+    color: #471400;
+    padding-left: 10px;
+    position: relative;
+}
+
+.presentacion .historial p::before {
+    content: '\2022';
+    position: absolute;
+    left: 0;
+    color: #471400;
+    font-weight: bold;
 }
 
 .presentacion .historial .separator {
     border: none;
-    border-top: 1.5px solid #000000;
+    border-top: 1px solid #f6a687;
     margin: 10px 0;
 }
 
@@ -98,140 +112,126 @@
     display: block;
     width: 100%;
     text-align: center;
-    padding: 10px;
-    font-size: 0.8rem;
+    padding: 12px;
+    font-size: 0.85rem;
     font-weight: bold;
     color: #ffffff;
     background-color: #6e2c20;
     border: none;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .presentacion .btn-primary:hover {
     background-color: #5a241a;
 }
 
-/* ==================== Cuota ==================== */
-.cuotas-container {
-    background-color: #ffffff;
-    border-radius: 8px;
-}
-
-.cuotas-container h6 {
-    text-align: center;
-    color: #000000;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-bottom: 2px solid #f6a687;
-    padding-bottom: 5px;
-}
-
-.cuotas-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    text-align: center;
-    font-size: 0.75rem;
-    color: #333;
-}
-
-.cuotas {
-    display: grid;
-}
-
-.cuota-item {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    text-align: center;
-    padding: 5px 0;
-    border-bottom: 1px solid #ddd;
-}
-
-.cuota-item p {
-    margin: 0;
-    font-size: 0.65rem;
-    color: #000000;
-}
-
-.cuota-item:last-child {
-    border-bottom: none;
-}
-
 /* ==================== Opciones ==================== */
-.trabajador.oculto {
-    display: none;
-}
-
-.trabajador.activo {
-    display: block;
-}
-
-.opciones {
-    position: relative;
-}
-
 .opciones a {
-    position: absolute;
-    top: 5px;
-    right: 0px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
     background-color: #ffffff;
-    color: #3c3c3c;
-    border: 1px solid #000000;
-    border-radius: 5px;
+    color: #471400;
+    border: 2px solid #471400;
+    border-radius: 50%;
     transition: all 0.3s ease;
     text-decoration: none;
-    z-index: 10;
-}
-
-.domicilio a {
-    top: -5px;
-    left: -8px;
-    width: 30px;
-    height: 30px;
-}
-.domicilio h5 {
-    padding-left: 35px;
-}
-
-.opciones i {
-    font-size: 18px;
-    margin: 0;
+    cursor: pointer;
 }
 
 .opciones a:hover {
-    background-color: #655443;
-    color: #fff;
-    border-color: #3e2723;
+    background-color: #471400;
+    color: #ffffff;
 }
 
-.opciones .cambio {
+.opciones .editar {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.titulo {
+    text-align: center;
+}
+
+.opciones .cambio{
     display: none;
 }
 
-.opciones a:hover .cambio {
+
+.domicilio {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 8px;
+    padding: 2px 20px;
+    border-radius: 3px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.domicilio:hover{
+    background-color: #471400;
+    color: #ffffff;
+}
+
+
+/* ==================== Cuotas ==================== */
+.cuotas-container {
+    background-color: #ffffff;
+}
+
+.cuotas-container .cuotas {
+    margin-top: 0px;
+}
+
+.cuotas-container .cuota-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 1px solid #f6a687;
+    font-size: 0.75rem;
+}
+
+.cuotas-container .cuota-item p {
+    margin: 0;
+}
+
+.cuotas-container .cuota-item:last-child {
+   border-bottom: 2px solid rgb(255, 180, 59); 
+}
+
+.cuotas-container strong {
+    font-weight: bold;
+    color: #000000;
+}
+
+.oculto {
+    display: none;
+}
+
+.activo {
     display: block;
 }
 
-.opciones a:hover .original {
-    display: none;
-}
-
-.opciones[data-tipo="alumno"] {
-    display: none;
-}
 
 /* ==================== Responsivo ==================== */
 @media only screen and (max-width: 768px) {
     .presentacion .container {
-        margin-bottom: 120px;
+        max-height: 100%;
+        margin-bottom: 105px;
+        padding-bottom: 15px;
     }
     .presentacion .historial {
-        max-height: 320px;
+        max-height: 350px;
     }
+
 }

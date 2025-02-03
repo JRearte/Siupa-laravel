@@ -77,11 +77,11 @@ class SalaController extends Controller
      * 
      * @return View → Retorna la vista sala.agregar con el objeto sala.
      */
-    public function formularioRegistrar(): View
+    /*public function formularioRegistrar(): View
     {
         $sala = new Sala();
         return view('sala.agregar', compact('sala'));
-    }
+    }*/
 
 
     /**
@@ -94,7 +94,7 @@ class SalaController extends Controller
      * @param SalaRequest $regla → Datos validados de la sala a registrar.
      * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
      */
-    public function registrar(SalaRequest $regla): RedirectResponse
+    /*public function registrar(SalaRequest $regla): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para registrar salas.", "sala.index");
 
@@ -107,7 +107,7 @@ class SalaController extends Controller
 
         $this->registrarAccion(auth()->id(), 'Registrar sala', "Registro la sala {$sala->Nombre}");
         return redirect()->route('sala.index')->with('success', 'La sala fue creada exitosamente.');
-    }
+    }*/
 
 
     /**
@@ -152,11 +152,11 @@ class SalaController extends Controller
      * @param int $id → Identificador único del usuario a eliminar.
      * @return View → Retorna la vista sala.advertencia con los datos de la sala.
      */
-    public function advertirEliminacion(int $id): View
+    /*public function advertirEliminacion(int $id): View
     {
         $sala = Sala::findOrFail($id);
         return view('sala.advertencia', compact('sala'));
-    }
+    }*/
 
     /**
      * Este método:
@@ -167,7 +167,7 @@ class SalaController extends Controller
      * @param int $id → Identificador único de la sala a eliminar.
      * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
      */
-    public function eliminar(int $id): RedirectResponse
+    /*public function eliminar(int $id): RedirectResponse
     {
 
         $this->validarPermiso("Bienestar", "No tienes permiso para eliminar salas.", "sala.index");
@@ -182,5 +182,5 @@ class SalaController extends Controller
         $sala->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar sala', "Elimino la sala {$nombre}");
         return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
-    }
+    }*/
 }

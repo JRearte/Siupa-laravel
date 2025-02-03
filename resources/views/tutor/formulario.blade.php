@@ -184,6 +184,24 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tipoTutorSelect = document.querySelector("select[name='Tipo_tutor']");
+        const submitButton = document.querySelector(".form-buttons button[type='submit']");
+
+        if (!tipoTutorSelect || !submitButton) return; // Verifica que los elementos existen
+
+        function actualizarTextoBoton() {
+            submitButton.textContent = tipoTutorSelect.value === "Trabajador" ? "Siguiente" : "Aceptar";
+        }
+
+        tipoTutorSelect.addEventListener("change", actualizarTextoBoton);
+        actualizarTextoBoton(); // Ejecutar al cargar la página por si ya hay un valor seleccionado
+    });
+</script>
+
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -193,3 +211,5 @@
         })
     });
 </script>
+
+

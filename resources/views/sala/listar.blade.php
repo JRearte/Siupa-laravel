@@ -23,9 +23,7 @@
                                         <a class="dropdown-item" href="{{ route('sala.editar', $sala1->id) }}">
                                             <i class="fa-solid fa-pencil icon"></i> Editar
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('sala.confirmar', $sala1->id) }}">
-                                            <i class="fa fa-fw fa-trash icon"></i> Eliminar
-                                        </a>
+                                        
                                     </div>
                                 </div>
                             </th>
@@ -119,9 +117,7 @@
                                         <a class="dropdown-item" href="{{ route('sala.editar', $sala2->id) }}">
                                             <i class="fa-solid fa-pencil icon"></i> Editar
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('sala.confirmar', $sala2->id) }}">
-                                            <i class="fa fa-fw fa-trash icon"></i> Eliminar
-                                        </a>
+                                        
                                     </div>
                                 </div>
                             </th>
@@ -215,9 +211,7 @@
                                         <a class="dropdown-item" href="{{ route('sala.editar', $sala3->id) }}">
                                             <i class="fa-solid fa-pencil icon"></i> Editar
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('sala.confirmar', $sala3->id) }}">
-                                            <i class="fa fa-fw fa-trash icon"></i> Eliminar
-                                        </a>
+                                        
                                     </div>
                                 </div>
                             </th>

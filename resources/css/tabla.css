@@ -140,6 +140,40 @@
     }
 }
 
+/* ==================== Boton Presentación ==================== */
+.user .presentacion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    background-color: #000000;
+    color: white;
+    width: 35px;
+    height: 32px;
+    padding: 3px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.user .presentacion:hover {
+    background-color: #495057;
+    transform: scale(0.9);
+    box-shadow: none;
+}
+
+.user .presentacion a {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.user .presentacion i {
+    font-size: 18px;
+}
+
 /* ==================== Iconos ==================== */
 .user .fas, .user .fa-solid, .user .fa-fw {
     margin-right: 8px;
@@ -208,6 +242,7 @@
 .tabla-salas .dropdown-content{
     top: 0px;
 }
+
 
 /* ==================== Tabla de tutor ==================== */
 .opt .dropbtn{

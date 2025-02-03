@@ -4,8 +4,10 @@
     @vite(['resources/css/presentacion.css'])
     <div class="presentacion">
         <div class="container">
-            <!-- Encabezado -->
+
+            <!-- ==================== Encabezado ==================== -->
             <div class="header">
+                <!-- Icono según el tipo de tutor -->
                 <div class="icon-container">
                     @if ($tutor->Tipo_tutor == 'Trabajador')
                         <i class="fa-solid fa-briefcase icon"></i>
@@ -15,19 +17,24 @@
                         <i class="fa-solid fa-user icon"></i>
                     @endif
                 </div>
+                <!-- Fechas de creación y modificación -->
                 <div class="datos">
                     <p><strong>Creación:</strong></p>
                     <p>{{ $tutor->created_at->translatedFormat('d F Y \a \l\a\s H:i') }}</p>
                     <p><strong>Modificación:</strong></p>
                     <p>{{ $tutor->updated_at->translatedFormat('d F Y \a \l\a\s H:i') }}</p>
                 </div>
+                <!-- Opción de eliminar -->
+                <div class="opciones">
+                    <a class="eliminar" href="">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </div>
             </div>
-
             <hr class="separador">
 
-            <!-- Información del Tutor -->
+            <!-- ==================== Información del Tutor ==================== -->
             <div class="content">
-
                 <div class="column">
                     <p><strong>Legajo:</strong></p>
                     <p>{{ $tutor->Legajo }}</p>
@@ -38,35 +45,15 @@
                     <p><strong>Edad:</strong></p>
                     <p>{{ $edad }} años</p>
 
-                    <!-- Datos de Trabajador -->
+                    <!-- Información adicional si es Trabajador -->
                     @if ($tutor->Tipo_tutor === 'Trabajador' && $trabajador)
                         <div class="trabajador">
                             <p><strong>Cargo:</strong></p>
                             <p>{{ $trabajador->Cargo }}</p>
                         </div>
                     @endif
-
-
                 </div>
                 <div class="column">
-
-                    @if ($tutor->Tipo_tutor === 'Trabajador' && $trabajador)
-                        <div class="opciones" data-tipo="{{ strtolower($tutor->Tipo_tutor) }}">
-                            <a href="{{ route('tutor.editar-trabajador', $tutor?->id) }}" class="btn btn-dark ms-2">
-                                <i class="original fa-regular fa-id-card"></i>
-                                <i class="cambio fa-solid fa-pencil"></i>
-                            </a>
-                        </div>
-                    @else
-                        <div class="opciones" data-tipo="{{ strtolower($tutor->Tipo_tutor) }}">
-                            <a href="{{ route('tutor.agregar-trabajador', $tutor?->id) }}" class="btn btn-dark ms-2">
-                                <i class="original fa-regular fa-id-card"></i>
-                                <i class="cambio fa-solid fa-plus"></i>
-                            </a>
-                        </div>
-                    @endif
-
-
                     <p><strong>Documento:</strong></p>
                     <p>{{ $tutor->Tipo_documento }}: {{ $tutor->Numero_documento }}</p>
                     <p><strong>Género:</strong></p>
@@ -74,7 +61,7 @@
                     <p><strong>Estado:</strong></p>
                     <p>{{ $tutor->Habilitado ? 'Habilitado' : 'Deshabilitado' }}</p>
 
-                    <!-- Datos de Trabajador -->
+                    <!-- Información de trabajador -->
                     @if ($tutor->Tipo_tutor === 'Trabajador' && $trabajador)
                         <div class="trabajador">
                             <p><strong>Tipo de Tutor:</strong></p>
@@ -84,54 +71,49 @@
                         </div>
                     @endif
 
-                    <!-- Datos de Alumno -->
+                    <!-- Información de alumno -->
                     @if ($tutor->Tipo_tutor === 'Alumno')
                         <p><strong>Tipo de Tutor:</strong></p>
                         <p>{{ $tutor->Tipo_tutor }}</p>
                     @endif
 
+                    <!-- Botón de edición -->
+                    <div class="opciones editar">
+                        <a class="editar" href="{{ route('tutor.editar', $tutor?->id) }}">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-
             <hr class="separador">
 
-            <!-- Información de Domicilio y Contacto -->
+            <!-- ==================== Información de Domicilio y Contacto ==================== -->
             <div class="content">
-
                 <div class="column">
-                    @if ($tutor->domicilio)
-                        <div class="opciones domicilio">
-                            <a href="{{ route('tutor.editar-domicilio', $tutor?->id) }}" class="btn btn-dark ms-2">
-                                <i class="original fa-solid fa-house"></i>
-                                <i class="cambio fa-solid fa-pencil"></i>
-                            </a>
-                            <h5>Domicilio</h5>
-                        </div>
-                        <p><strong>Provincia:</strong></p>
-                        <p>{{ $tutor->domicilio?->Provincia }}</p>
-                        <p><strong>Localidad:</strong></p>
-                        <p>{{ $tutor->domicilio?->Localidad }}</p>
-                        <p><strong>Barrio:</strong></p>
-                        <p>{{ $tutor->domicilio?->Barrio }}</p>
-                        <p><strong>Calle:</strong></p>
-                        <p>{{ $tutor->domicilio?->Calle }}</p>
-                        <p><strong>Numero:</strong></p>
-                        <p>{{ $tutor->domicilio?->Numero }}</p>
-                        <p><strong>Código postal:</strong></p>
-                        <p>{{ $tutor->domicilio?->Codigo_postal }}</p>
-                    @else
-                        <div class="opciones domicilio">
-                            <a href="{{ route('tutor.agregar-domicilio', $tutor?->id) }}" class="btn btn-dark ms-2">
-                                <i class="original fa-solid fa-house"></i>
-                                <i class="cambio fa-solid fa-plus"></i>
-                            </a>
-                            <h5>Domicilio</h5>
-                        </div>
-                    @endif
+                    <!-- Encabezado del domicilio -->
+                    <a href="{{ route($tutor->domicilio ? 'tutor.editar-domicilio' : 'tutor.agregar-domicilio', $tutor?->id) }}"
+                        class="domicilio">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Domicilio</span>
+                        <i class="fa-solid {{ $tutor->domicilio ? 'fa-pencil' : 'fa-plus' }}"></i>
+                    </a>
+                    <!-- Datos del domicilio -->
+                    <p><strong>Provincia:</strong></p>
+                    <p>{{ $tutor->domicilio?->Provincia }}</p>
+                    <p><strong>Localidad:</strong></p>
+                    <p>{{ $tutor->domicilio?->Localidad }}</p>
+                    <p><strong>Barrio:</strong></p>
+                    <p>{{ $tutor->domicilio?->Barrio }}</p>
+                    <p><strong>Calle:</strong></p>
+                    <p>{{ $tutor->domicilio?->Calle }}</p>
+                    <p><strong>Número:</strong></p>
+                    <p>{{ $tutor->domicilio?->Numero }}</p>
+                    <p><strong>Código postal:</strong></p>
+                    <p>{{ $tutor->domicilio?->Codigo_postal }}</p>
                 </div>
-
                 <div class="column">
-                    <h5><i class="fa-solid fa-address-book"></i> Contactos</h5>
+                    <!-- Encabezado de contactos -->
+                    <span class="domicilio"><i class="fa-solid fa-address-book"></i> Contactos</span>
                     <p><strong>Correo:</strong></p>
                     @foreach ($tutor->correos as $correo)
                         <p>{{ $correo?->Mail }}</p>
@@ -145,27 +127,20 @@
             </div>
             <hr class="separador">
 
+            <!-- ==================== Información de Cuotas ==================== -->
             <div class="trabajador {{ $tutor->Tipo_tutor === 'Trabajador' ? 'activo' : 'oculto' }}">
-                <!-- Cuotas de trabajador -->
                 <div class="cuotas-container">
-                    <h6><i class="fa-solid fa-piggy-bank"></i> Cuotas</h6>
+                    <h6 class="titulo"><i class="fa-solid fa-piggy-bank"></i> Cuotas</h6>
+                    <hr class="separador">
                     @if ($tutor->Tipo_tutor === 'Trabajador')
                         @if ($cuotas)
                             <div class="cuotas">
-                                <div class="cuotas-header">
-                                    <p><strong>Valor</strong></p>
-                                    <p><strong>Fecha</strong></p>
-                                </div>
                                 @foreach ($cuotas as $cuota)
                                     <div class="cuota-item">
                                         <p>${{ number_format($cuota?->Valor, 2) }}</p>
                                         <p>{{ \Carbon\Carbon::parse($cuota?->Fecha)->translatedFormat('d F Y') }}</p>
                                     </div>
                                 @endforeach
-                                <div class="cuota-item">
-                                    <p>${{ number_format($total, 2) }}</p>
-                                    <p><strong>Recaudación total </strong> </p>
-                                </div>
                             </div>
                         @else
                             <p>No tiene cuotas registradas.</p>
@@ -174,12 +149,7 @@
                 </div>
             </div>
 
-
-
-
-
-
-
+            <!-- ==================== COSAS POR HACER ==================== -->
 
 
             @if ($tutor->Tipo_tutor === 'Alumno')
@@ -204,7 +174,8 @@
                 @endforeach
             </ul>
 
-            <!-- Botón -->
+
+            <!-- ==================== Botón de retorno ==================== -->
             <a href="{{ route('tutor.index') }}" class="btn btn-primary">Volver</a>
         </div>
     </div>

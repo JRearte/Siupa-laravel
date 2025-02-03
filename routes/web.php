@@ -27,12 +27,12 @@ Route::controller(UsuarioController::class)->middleware('auth')->group(function 
 
 Route::controller(SalaController::class)->middleware('auth')->group(function () {
     Route::get('/salas', 'listar')->name('sala.index');
-    Route::get('sala/formulario', 'formularioRegistrar')->name('sala.agregar');
-    Route::post('sala/registrar', 'registrar')->name('sala.registrar');
+    //Route::get('sala/formulario', 'formularioRegistrar')->name('sala.agregar');
+    //Route::post('sala/registrar', 'registrar')->name('sala.registrar');
     Route::get('sala/formulario/{id}', 'formularioModificar')->name('sala.editar');
     Route::patch('sala/modificar/{sala}', 'modificar')->name('sala.modificar');
-    Route::get('sala/advertencia/{id}', 'advertirEliminacion')->name('sala.confirmar');
-    Route::delete('sala/eliminar/{id}', 'eliminar')->name('sala.eliminar');
+    //Route::get('sala/advertencia/{id}', 'advertirEliminacion')->name('sala.confirmar');
+    //Route::delete('sala/eliminar/{id}', 'eliminar')->name('sala.eliminar');
 });
 
 Route::controller(TutorController::class)->middleware('auth')->group(function () {

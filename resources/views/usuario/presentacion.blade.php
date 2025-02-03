@@ -23,6 +23,11 @@
                     <p><strong>Modificación:</strong></p>
                     <p>{{ $usuario->updated_at->translatedFormat('d F Y \a \l\a\s H:i') }}</p>
                 </div>
+                <div class="opciones">
+                    <a class="eliminar" href="{{ route('usuario.confirmar', $usuario->id) }}">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </div>
             </div>
             <hr class="separador">
 
@@ -39,17 +44,29 @@
                     <p>{{ $usuario->Categoria }}</p>
                     <p><strong>Estado:</strong></p>
                     <p>{{ $usuario->Habilitado ? 'Habilitado' : 'Deshabilitado' }}</p>
+                    <div class="opciones editar">
+                        <a class="editar" href="{{ route('usuario.editar', $usuario->id) }}">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            
+
             <!-- Historial del Usuario -->
             <hr class="separador">
+            <h6 class="titulo"><i class="fa-solid fa-book"></i> Historial</h6>
             <div class="historial">
                 @foreach ($historial as $registro)
                     <p>{{ $registro->detalles }}</p>
                     <hr class="separator">
                 @endforeach
+                @if ($historial->isEmpty())
+                    <tr>
+                        <td colspan="2" class="text-center">No hay historial.</td>
+                    </tr>
+                @endif
             </div>
+
             <!-- Botón -->
             <a href="{{ route('usuario.index') }}" class="btn btn-primary">Volver</a>
         </div>

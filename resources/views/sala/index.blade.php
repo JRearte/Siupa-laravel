@@ -19,14 +19,6 @@
                 </form>
                 
 
-                <!-- Botones de acciones -->
-                <div class="acciones d-flex  @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                    <a href="{{ route('sala.agregar') }}" class="btn btn-dark ms-2">
-                        <i class="fas fa-user-plus"></i> <span>{{ __('Agregar') }}</span>
-                    </a>
-
-                </div>
-
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
