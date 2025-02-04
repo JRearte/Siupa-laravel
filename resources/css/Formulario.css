@@ -2,7 +2,6 @@
 .formulario {
     margin: 0 auto;
     max-width: 600px;
-    
     padding: 1.5rem;
     background-color: #f9f9f9;
     border-radius: 12px;
@@ -241,6 +240,10 @@
     background-color: #cccccc;
 }
 
+.contenido .doble{
+    min-width: 100%;
+}
+
 /* ==================== Adaptabilidad ==================== */
 @media (max-width: 768px) {
     .contenido .form-group.row {
@@ -258,7 +261,7 @@
     }
 
     .formulario {
-        max-height: 720px;
+        max-height: 880px;
         margin-bottom: 120px;
     }
 

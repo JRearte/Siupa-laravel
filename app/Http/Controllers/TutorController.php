@@ -151,6 +151,33 @@ class TutorController extends Controller
         return redirect()->route('tutor.index')->with('success', 'El tutor fue modificado exitosamente');
     }
 
+    public function advertirEliminacion(int $id): View
+    {
+        $tutor = Tutor::findOrFail($id);
+        return view('tutor.advertencia', compact('tutor'));
+    }
+
+    public function eliminar(int $id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar tutores.", "tutor.index");
+    
+        $tutor = Tutor::findOrFail($id);
+        $nombre = $tutor->Nombre;
+        $apellido = $tutor->Apellido;
+        $ultimoTutor = Tutor::latest('id')->value('id') === $tutor->id;
+        $tutor->delete();
+        
+        if ($ultimoTutor) {
+            $this->registrarAccion(auth()->id(), 'Deshacer acción', "Deshizo el registro del tutor {$nombre} {$apellido}");
+            return redirect()->route('tutor.index');
+        }
+    
+        $this->registrarAccion(auth()->id(), 'Eliminar tutor', "Eliminó al tutor {$nombre} {$apellido}");
+        return redirect()->route('tutor.index')->with('success', 'El tutor fue eliminado exitosamente');
+    }
+    
+    
+
     /* ==================== Trabajador ==================== */
 
     /**

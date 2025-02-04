@@ -25,10 +25,6 @@
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('sala.agregar') }}">
-                            <i class="fas fa-user-plus"></i>Agregar</a>
-                        </li>
                                     
                         <li>
                             <a class="dropdown-item text-danger" href="{{ route('usuario.logout') }}"

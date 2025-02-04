@@ -51,11 +51,4 @@
             @endif
         </div>
     </div>
-
-    <!-- Botones -->
-    <div class="form-buttons">
-        <button type="submit" class="btn btn-primary" style="width: 100%;">
-            {{ __('Aceptar') }}
-        </button>
-    </div>
 </div>

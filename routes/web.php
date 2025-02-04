@@ -42,6 +42,8 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::post('tutor/registrar', 'registrar')->name('tutor.registrar');
     Route::get('tutor/formulario/{id}', 'formularioModificar')->name('tutor.editar');
     Route::patch('tutor/modificar/{tutor}', 'modificar')->name('tutor.modificar');
+    Route::get('tutor/advertencia/{id}', 'advertirEliminacion')->name('tutor.confirmar');
+    Route::delete('tutor/eliminar/{id}', 'eliminar')->name('tutor.eliminar');
 
     // Rutas para Registrar y Modificar domicilio
     Route::get('tutor/{tutor_id}/formulario-registrar-domicilio', 'formularioRegistrarDomicilio')->name('tutor.agregar-domicilio');

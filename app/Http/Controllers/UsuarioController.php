@@ -36,7 +36,8 @@ class UsuarioController extends Controller
         // ==================== Filtro de usuarios ====================
         $buscar = $regla->input('buscar');
         $usuarios = Usuario::when($buscar, function ($query, $buscar) {
-            $query->where('Nombre', 'LIKE', "%$buscar%")
+            $query->where('Legajo', 'LIKE', "%$buscar%")
+                ->orWhere('Nombre', 'LIKE', "%$buscar%")
                 ->orWhere('Apellido', 'LIKE', "%$buscar%")
                 ->orWhere('Categoria', 'LIKE', "%$buscar%");
         })->orderBy('apellido', 'asc')->paginate(7);
@@ -191,7 +192,10 @@ class UsuarioController extends Controller
         $apellido = $usuario->Apellido;
 
         if ($usuario->id == 1) {
-            return redirect()->route('usuario.index')->with('error', 'No puedes eliminar al super usuario');
+            return redirect()->route('usuario.presentacion', 1)->with('error', 'No puedes eliminar al super usuario');
+        }
+        if (auth()->id() == $id) {
+            return redirect()->route('usuario.presentacion', auth()->id())->with('error', 'No puedes autoeliminarte');
         }
 
         $usuario->delete();

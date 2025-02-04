@@ -26,7 +26,7 @@
                 </div>
                 <!-- Opción de eliminar -->
                 <div class="opciones">
-                    <a class="eliminar" href="">
+                    <a class="eliminar" href="{{ route('tutor.confirmar', $tutor->id) }}">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
                 </div>
