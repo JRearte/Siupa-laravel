@@ -56,6 +56,12 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::post('tutor/{tutor_id}/registrar-trabajador', 'registrarTrabajador')->name('tutor.registrar-trabajador');
     Route::get('tutor/{tutor_id}/formulario-modificar-trabajador', 'formularioModificarTrabajador')->name('tutor.editar-trabajador');
     Route::patch('tutor/trabajador-modificar/{trabajador}', 'modificarTrabajador')->name('tutor.modificar-trabajador');
+    
+    // Rutas para Registrar y eliminar cuotas
+    Route::get('tutor/{tutor_id}/formulario-registrar-cuota', 'formularioCuota')->name('tutor.agregar-cuota');
+    Route::post('tutor/{trabajador_id}/registrar-cuota', 'registrarCuota')->name('tutor.registrar-cuota');
+    Route::delete('tutor/{tutor_id}/eliminar-cuota/{cuota_id}', 'eliminarCuota')->name('tutor.eliminar-cuota');
+
 });
 
 

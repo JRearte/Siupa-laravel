@@ -41,7 +41,7 @@
                     <p><strong>Nombre:</strong></p>
                     <p>{{ $tutor->Nombre }} {{ $tutor->Apellido }}</p>
                     <p><strong>Fecha de nacimiento:</strong></p>
-                    <p> {{ \Carbon\Carbon::parse($tutor->Fecha_de_nacimiento)->translatedFormat('d F Y') }}</p>
+                    <p>{{ $tutor->Fecha_de_nacimiento->translatedFormat('d F Y') }}</p>
                     <p><strong>Edad:</strong></p>
                     <p>{{ $edad }} años</p>
 
@@ -130,7 +130,13 @@
             <!-- ==================== Información de Cuotas ==================== -->
             <div class="trabajador {{ $tutor->Tipo_tutor === 'Trabajador' ? 'activo' : 'oculto' }}">
                 <div class="cuotas-container">
-                    <h6 class="titulo"><i class="fa-solid fa-piggy-bank"></i> Cuotas</h6>
+
+                    <a href="{{ route('tutor.agregar-cuota', $tutor->id) }}" class="cuota-boton">
+                        <i class="fa-solid fa-piggy-bank"></i>
+                        <span>Cuotas</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+                    
                     <hr class="separador">
                     @if ($tutor->Tipo_tutor === 'Trabajador')
                         @if ($cuotas)
@@ -138,9 +144,19 @@
                                 @foreach ($cuotas as $cuota)
                                     <div class="cuota-item">
                                         <p>${{ number_format($cuota?->Valor, 2) }}</p>
-                                        <p>{{ \Carbon\Carbon::parse($cuota?->Fecha)->translatedFormat('d F Y') }}</p>
+                                        <p>{{ $cuota->Fecha->translatedFormat('d F Y') }}</p>
+                                        <form action="{{ route('tutor.eliminar-cuota', [$tutor->id, $cuota->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="eliminar btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                                        </form>
                                     </div>
                                 @endforeach
+                                <div class="cuota-item recaudacion-total">
+                                    <p>${{ number_format($total, 2) }}</p>
+                                    <strong>Recaudación total</strong>
+                                </div>
                             </div>
                         @else
                             <p>No tiene cuotas registradas.</p>

@@ -23,6 +23,6 @@ class Trabajador extends Model
      */
     public function cuotas()
     {
-        return $this->hasMany(Infante::class);
+        return $this->hasMany(Cuota::class);
     }
 }

@@ -10,6 +10,10 @@ class Cuota extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['Valor','Fecha','trabajador_id'];
 
+    protected $casts = [
+        'Fecha' => 'date',
+    ];
+    
     /**
      * Relación inversa uno a uno con el modelo Trabajador.
      */

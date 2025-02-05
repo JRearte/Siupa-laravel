@@ -10,6 +10,11 @@ class Tutor extends Model
     protected $primaryKey = 'id'; // Nombre de la clave primaria en la tabla
     protected $fillable = ['Legajo','Nombre','Apellido','Genero','Fecha_de_nacimiento','Numero_documento','Tipo_documento','Tipo_tutor','Habilitado'];
     
+    protected $casts = [
+        'Fecha_de_nacimiento' => 'date',
+    ];
+
+
     /**
      * Relación inversa uno a uno con el modelo Domicilio.
      */

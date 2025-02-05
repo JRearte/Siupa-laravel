@@ -194,10 +194,8 @@
 .cuotas-container .cuota-item {
     display: flex;
     justify-content: space-between;
-    padding: 2px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-bottom: 1px solid #f6a687;
+    border-bottom: 1px solid #ccc;
+    padding: 6px;
     font-size: 0.75rem;
 }
 
@@ -214,12 +212,79 @@
     color: #000000;
 }
 
+.recaudacion-total {
+    background-color: #ffeebaaf; 
+    font-weight: bold;
+    border-top: 2px solid #f1ca53;
+}
+
+
 .oculto {
     display: none;
 }
 
 .activo {
     display: block;
+}
+
+.eliminar {
+    border: 0.5px solid rgb(44, 44, 44);
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
+    font-size: 0.6rem;
+    margin-top: 0;
+    background-color: rgb(177, 7, 7);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.eliminar:hover {
+    background-color: rgb(150, 5, 5);
+}
+
+.eliminar i {
+    font-size: 0.8rem;
+}
+
+
+.btn-secondary {
+    background: gray;
+    color: white;
+    border-radius: 5px;
+}
+
+.btn-danger {
+    background: red;
+    color: white;
+    border-radius: 5px;
+}
+
+
+
+.cuota-boton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 5px 15px;
+    border-radius: 3px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    width: 100%;
+}
+
+.cuota-boton i {
+    display: flex;
+    align-items: center;
+}
+
+.cuota-boton:hover {
+    background-color: #471400;
+    color: #ffffff;
 }
 
 

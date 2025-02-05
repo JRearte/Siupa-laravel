@@ -51,23 +51,12 @@
                                     </div>
 
                                     <!-- Botón de opciones -->
-                                    <div class="opt">
-                                        <div class="dropdown @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                            <button class="btn btn-sm btn-secondary dropbtn">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <div class="dropdown-content">
-                                                <a class="dropdown-item" href="{{ route('tutor.presentacion', $trabajador->id) }}">
-                                                    <i class="fas fa-user icon"></i> Presentación
-                                                </a>
-                                                <a class="dropdown-item" href="{{ route('tutor.editar', $trabajador->id) }}">
-                                                    <i class="fa-solid fa-pencil icon"></i> Editar
-                                                </a>
-                                                <a class="dropdown-item">
-                                                    <i class="fa fa-fw fa-trash icon"></i> Eliminar
-                                                </a>
+                                    <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
+                                        <a href="{{ route('tutor.presentacion',$trabajador->id)}}">
+                                            <div class="presentacion">
+                                                <i class="fa-solid fa-gear"></i>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -155,25 +144,14 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Botón de opciones -->
-                                    <div class="opt">
-                                        <div class="dropdown @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                            <button class="btn btn-sm btn-secondary dropbtn">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <div class="dropdown-content">
-                                                <a class="dropdown-item" href="{{ route('tutor.presentacion', $alumno->id) }}">
-                                                    <i class="fas fa-user icon"></i> Presentación
-                                                </a>
-                                                <a class="dropdown-item" href="{{ route('tutor.editar', $alumno->id) }}">
-                                                    <i class="fa-solid fa-pencil icon"></i> Editar
-                                                </a>
-                                                <a class="dropdown-item">
-                                                    <i class="fa fa-fw fa-trash icon"></i> Eliminar
-                                                </a>
+                                    <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
+                                        <a href="{{ route('tutor.presentacion',$alumno->id)}}">
+                                            <div class="presentacion">
+                                                <i class="fa-solid fa-gear"></i>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
