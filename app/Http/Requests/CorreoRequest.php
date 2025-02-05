@@ -23,7 +23,7 @@ class CorreoRequest extends FormRequest
     {
         return [
             'Mail.required'       => 'El correo electrónico es obligatorio.',
-            'Mail.email'          => 'El correo electrónico debe ser válido.',
+            'Mail.email'          => 'El correo electrónico debe contener un "@".',
             'Mail.max'            => 'El correo electrónico no puede tener más de :max caracteres.',
             'tutor_id.required'   => 'El tutor es obligatorio.',
             'tutor_id.exists'     => 'El tutor seleccionado no es válido.',

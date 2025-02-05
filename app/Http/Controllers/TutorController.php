@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tutor;
 use App\Models\Domicilio;
+use App\Models\Telefono;
 use App\Models\Correo;
 use App\Models\Cuota;
 use App\Models\Trabajador;
@@ -11,6 +12,7 @@ use App\Models\Carrera;
 use App\Models\Asignatura;
 use App\Http\Requests\TutorRequest;
 use App\Http\Requests\DomicilioRequest;
+use App\Http\Requests\TelefonoRequest;
 use App\Http\Requests\CorreoRequest;
 use App\Http\Requests\CuotaRequest;
 use App\Http\Requests\TrabajadorRequest;
@@ -192,6 +194,63 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Eliminar tutor', "Eliminó al tutor {$nombre} {$apellido}");
         return redirect()->route('tutor.index')->with('success', 'El tutor fue eliminado exitosamente');
     }
+
+    /* ==================== Contacto ==================== */
+
+    public function formularioTelefono($tutor_id): View
+    {
+        $telefono = new Telefono(['tutor_id' => $tutor_id]);
+        return view('tutor.formulario-telefono', compact('telefono', 'tutor_id'));
+    }
+    
+    public function registrarTelefono(TelefonoRequest $regla, int $tutor_id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar contactos.", "tutor.index");
+        $datos = $regla->validated();
+        $datos['tutor_id'] = $tutor_id;
+        Telefono::create($datos);
+        $tutor = Tutor::findOrFail($tutor_id);
+        $this->registrarAccion(auth()->id(), 'Registrar teléfono', "Registró contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
+        return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El teléfono fue registrado exitosamente.');
+    }
+    
+    public function eliminarTelefono(int $id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar contactos.", "tutor.index");
+        $telefono = Telefono::findOrFail($id);
+        $tutor = Tutor::findOrFail($telefono->tutor_id);
+        $telefono->delete();
+        $this->registrarAccion(auth()->id(), 'Eliminar teléfono', "Eliminó un contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
+        return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El teléfono fue eliminado exitosamente');
+    }
+    
+    public function formularioCorreo($tutor_id): View
+    {
+        $correo = new Correo(['tutor_id' => $tutor_id]);
+        return view('tutor.formulario-correo', compact('correo', 'tutor_id'));
+    }
+    
+    public function registrarCorreo(CorreoRequest $regla, int $tutor_id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar contactos.", "tutor.index");
+        $datos = $regla->validated();
+        $datos['tutor_id'] = $tutor_id;
+        Correo::create($datos);
+        $tutor = Tutor::findOrFail($tutor_id);
+        $this->registrarAccion(auth()->id(), 'Registrar correo', "Registró contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
+        return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El correo fue registrado exitosamente.');
+    }
+    
+    public function eliminarCorreo(int $id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar contactos.", "tutor.index");
+        $correo = Correo::findOrFail($id);
+        $tutor = Tutor::findOrFail($correo->tutor_id);
+        $correo->delete();
+        $this->registrarAccion(auth()->id(), 'Eliminar correo', "Eliminó un contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
+        return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El correo fue eliminado exitosamente');
+    }
+
 
     /* ==================== Domicilio ==================== */
 

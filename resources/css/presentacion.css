@@ -158,7 +158,7 @@
     text-align: center;
 }
 
-.opciones .cambio{
+.opciones .cambio {
     display: none;
 }
 
@@ -176,7 +176,7 @@
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-.domicilio:hover{
+.domicilio:hover {
     background-color: #471400;
     color: #ffffff;
 }
@@ -204,7 +204,7 @@
 }
 
 .cuotas-container .cuota-item:last-child {
-   border-bottom: 2px solid rgb(255, 180, 59); 
+    border-bottom: 2px solid rgb(255, 180, 59);
 }
 
 .cuotas-container strong {
@@ -213,7 +213,7 @@
 }
 
 .recaudacion-total {
-    background-color: #ffeebaaf; 
+    background-color: #ffeebaaf;
     font-weight: bold;
     border-top: 2px solid #f1ca53;
 }
@@ -234,7 +234,6 @@
     border-radius: 5px;
     font-size: 0.6rem;
     margin-top: 0;
-    background-color: rgb(177, 7, 7);
     color: white;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.1s ease;
@@ -287,6 +286,74 @@
     color: #ffffff;
 }
 
+/* ==================== Drepdown de Contacto ==================== */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 165px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown-item {
+    border-bottom: 1px solid black;
+    padding: 4px 8px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.dropdown-item:hover {
+    background-color: #441300;
+    color: white;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+/* ==================== Contactos ==================== */
+.contactos-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.contactos-item:hover {
+    background-color: rgba(238, 216, 119, 0.438);
+}
+
+
+.contactos-item p {
+    margin: 0;
+    font-weight: normal;
+    padding-left: 4px;
+}
+
+.correo p {
+    word-wrap: break-word;
+    font-size: 0.4rem;
+    max-width: 140px;
+}
+
+.contactos-item form {
+    margin: 0;
+}
+
 
 /* ==================== Responsivo ==================== */
 @media only screen and (max-width: 768px) {
@@ -295,6 +362,7 @@
         margin-bottom: 105px;
         padding-bottom: 15px;
     }
+
     .presentacion .historial {
         max-height: 350px;
     }

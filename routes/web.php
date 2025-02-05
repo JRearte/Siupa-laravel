@@ -44,6 +44,15 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::patch('tutor/modificar/{tutor}', 'modificar')->name('tutor.modificar');
     Route::get('tutor/advertencia/{id}', 'advertirEliminacion')->name('tutor.confirmar');
     Route::delete('tutor/eliminar/{id}', 'eliminar')->name('tutor.eliminar');
+    
+    // Rutas para registrar y eliminar contactos
+    Route::get('tutor/{tutor_id}/formulario-registrar-telefono', 'formularioTelefono')->name('tutor.agregar-telefono');
+    Route::post('tutor/{tutor_id}/registrar-telefono', 'registrarTelefono')->name('tutor.registrar-telefono');
+    Route::delete('tutor/eliminar-telefono/{id}', 'eliminarTelefono')->name('tutor.eliminar-telefono');
+    
+    Route::get('tutor/{tutor_id}/formulario-registrar-correo', 'formularioCorreo')->name('tutor.agregar-correo');
+    Route::post('tutor/{tutor_id}/registrar-correo', 'registrarCorreo')->name('tutor.registrar-correo');
+    Route::delete('tutor/eliminar-correo/{id}', 'eliminarCorreo')->name('tutor.eliminar-correo');
 
     // Rutas para Registrar y Modificar domicilio
     Route::get('tutor/{tutor_id}/formulario-registrar-domicilio', 'formularioRegistrarDomicilio')->name('tutor.agregar-domicilio');

@@ -113,15 +113,43 @@
                 </div>
                 <div class="column">
                     <!-- Encabezado de contactos -->
-                    <span class="domicilio"><i class="fa-solid fa-address-book"></i> Contactos</span>
-                    <p><strong>Correo:</strong></p>
+                    <div class="dropdown">
+                        <span class="domicilio dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fa-solid fa-address-book"></i> Contactos
+                        </span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="{{ route('tutor.agregar-telefono', $tutor->id) }}"><i
+                                        class="fa-solid fa-phone"></i> Teléfono</a></li>
+                            <li><a class="dropdown-item" href="{{ route('tutor.agregar-correo', $tutor->id) }}"><i
+                                        class="fa-regular fa-envelope"></i> Correo</a></li>
+                        </ul>
+                    </div>
+
+                    <p><strong><i class="fa-regular fa-envelope"></i> Correo:</strong></p>
                     @foreach ($tutor->correos as $correo)
-                        <p>{{ $correo?->Mail }}</p>
+                        <div class="contactos-item correo">
+                            <p>{{ $correo?->Mail }}</p>
+                            <form action="{{ route('tutor.eliminar-correo', $correo->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="eliminar btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </form>
+                        </div>
                     @endforeach
+                    
                     <hr class="separador">
-                    <p><strong>Teléfono:</strong></p>
+                    <p><strong><i class="fa-solid fa-phone"></i> Teléfono:</strong></p>
                     @foreach ($tutor->telefonos as $telefono)
-                        <p>{{ $telefono?->Numero }}</p>
+                        <div class="contactos-item">
+                            <p>{{ $telefono?->Numero }}</p>
+                            <form action="{{ route('tutor.eliminar-telefono', $telefono->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="eliminar btn-danger"><i
+                                        class="fa-solid fa-trash-can"></i></button>
+                            </form>
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -136,7 +164,7 @@
                         <span>Cuotas</span>
                         <i class="fa-solid fa-plus"></i>
                     </a>
-                    
+
                     <hr class="separador">
                     @if ($tutor->Tipo_tutor === 'Trabajador')
                         @if ($cuotas)
@@ -149,7 +177,8 @@
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="eliminar btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                                            <button type="submit" class="eliminar btn-danger"><i
+                                                    class="fa-solid fa-trash-can"></i></button>
                                         </form>
                                     </div>
                                 @endforeach
