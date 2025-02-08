@@ -87,6 +87,23 @@
             </div>
             <hr class="separador">
 
+            <!-- ==================== Información del Infante ==================== -->
+
+            <div class="infantes-container">
+                @foreach ($infantes as $infante)
+                    <div class="infante-item">
+                        <p class="infante-nombre">
+                            <i class="fa-solid {{ $infante->Genero === 'Masculino' ? 'fa-child' : 'fa-child-dress' }}"></i>
+                            {{ $infante->Nombre }} {{ $infante->Apellido }}
+                        </p>
+                        <p class="infante-sala"><i class="fa-solid fa-house"></i> {{ $infante->sala->Nombre }}</p>
+                    </div>
+                @endforeach
+            </div>
+
+            <hr class="separador">
+
+
             <!-- ==================== Información de Domicilio y Contacto ==================== -->
             <div class="content">
                 <div class="column">
@@ -133,11 +150,12 @@
                             <form action="{{ route('tutor.eliminar-correo', $correo->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="eliminar btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                                <button type="submit" class="eliminar btn-danger"><i
+                                        class="fa-solid fa-trash-can"></i></button>
                             </form>
                         </div>
                     @endforeach
-                    
+
                     <hr class="separador">
                     <p><strong><i class="fa-solid fa-phone"></i> Teléfono:</strong></p>
                     @foreach ($tutor->telefonos as $telefono)
@@ -194,30 +212,53 @@
                 </div>
             </div>
 
-            <!-- ==================== COSAS POR HACER ==================== -->
+
+            <!-- ==================== Datos Académico del Alumno ==================== -->
 
 
             @if ($tutor->Tipo_tutor === 'Alumno')
-                <!-- Datos de Alumno -->
-                <h3>Datos de Alumno</h3>
-                <p><strong>Carrera:</strong> {{ $carrera?->Nombre }}</p>
-
-                <h4>Asignaturas</h4>
-                <ul>
-                    @foreach ($asignaturas as $asignatura)
-                        <li>{{ $asignatura?->Nombre }} - Condición: {{ $asignatura?->Condicion }} - Calificación:
-                            {{ $asignatura?->Calificacion }}</li>
+            <div class="datos-academicos">
+                <h2 class="titulo"><i class="fa-solid fa-graduation-cap"></i> Datos Académicos</h2>
+                <hr class="separador">
+                <div class="carrera">
+                    <span class="codigo">{{ $carrera?->Codigo }}</span>
+                    <span class="nombre">{{ $carrera?->Nombre }}</span>
+                </div>
+        
+                @if (!$carrera || $carrera->asignaturas->isEmpty())
+                    <p class="mensaje">No hay asignaturas registradas.</p>
+                @else
+                    @foreach ($carrera->asignaturas as $asignatura)
+                        <div class="asignatura">
+                            <div class="contenido">
+                                <div><strong>Código:</strong> {{ $asignatura->Codigo }}</div>
+                                <div><strong>Nombre:</strong> {{ $asignatura->Nombre }}</div>
+                                <div><strong>Condición:</strong> {{ $asignatura->Condicion }}</div>
+                                <div><strong>Fecha:</strong> {{ $asignatura->Fecha->format('d/m/Y') }}</div>
+                                <div><strong>Calificación:</strong> {{ $asignatura->Calificacion }}</div>
+                            </div>
+                            <div class="acciones">
+                                <button type="submit" class="eliminar editar"><i class="fa-solid fa-pencil"></i></button>
+                                <hr class="separador">
+                                <button type="submit" class="eliminar btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                        </div>
                     @endforeach
-                </ul>
-            @endif
+        
+                    <div class="pie">
+                        <div class="contenido">
+                            <strong>Cumplimiento académico:</strong> {{ number_format($porcentaje, 2) }}%
+                        </div>
+                        @if($porcentaje >= 50)
+                            <i class="fa-solid fa-thumbs-up"></i>
+                        @endif
+                    </div>
+                    
+                @endif
+            </div>
+        @endif
+        
 
-            <!-- Infantes -->
-            <h3>Infantes</h3>
-            <ul>
-                @foreach ($infantes as $infante)
-                    <li>{{ $infante?->Nombre }} {{ $infante?->Apellido }} - {{ $infante?->Categoria }}</li>
-                @endforeach
-            </ul>
 
 
             <!-- ==================== Botón de retorno ==================== -->

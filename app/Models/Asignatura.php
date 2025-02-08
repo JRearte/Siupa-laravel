@@ -10,6 +10,10 @@ class Asignatura extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['Codigo','Nombre','Fecha','Condicion','Calificacion','tutor_id','carrera_id'];
 
+    protected $casts = [
+        'Fecha' => 'date',
+    ];
+
     /**
      * Relación inversa uno a muchos con el modelo Tutor.
      */

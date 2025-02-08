@@ -45,13 +45,14 @@ class TutorController extends Controller
      */
     public function presentar(int $id): View
     {
-        $tutor = Tutor::with(['domicilio', 'infantes', 'correos', 'telefonos'])->findOrFail($id);
+        $tutor = Tutor::with(['domicilio', 'infantes.sala', 'correos', 'telefonos'])->findOrFail($id);
         $edad = Carbon::parse($tutor->Fecha_de_nacimiento)->age;
         $trabajador = null;
         $cuotas = null;
         $total = 0;
         $carrera = null;
         $asignaturas = null;
+        $porcentaje = 0;
 
         if ($tutor->Tipo_tutor === 'Trabajador') {
             $trabajador = Trabajador::where('tutor_id', $id)->first();
@@ -65,6 +66,9 @@ class TutorController extends Controller
         if ($tutor->Tipo_tutor === 'Alumno') {
             $carrera = Carrera::where('tutor_id', $id)->first();
             $asignaturas = Asignatura::where('tutor_id', $id)->get();
+            $condicion = $asignaturas->whereIn('Condicion', ['Regular', 'Aprobado'])->count();
+            $totalAsignaturas = $asignaturas->count();
+            $porcentaje = $totalAsignaturas > 0 ? ($condicion / $totalAsignaturas) * 100 : 0;
         }
 
         return view('tutor.presentacion', [
@@ -75,7 +79,8 @@ class TutorController extends Controller
             'total' => $total,
             'infantes' => $tutor->infantes,
             'carrera' => $carrera,
-            'asignaturas' => $asignaturas
+            'asignaturas' => $asignaturas,
+            'porcentaje' => $porcentaje
         ]);
     }
 
@@ -197,12 +202,30 @@ class TutorController extends Controller
 
     /* ==================== Contacto ==================== */
 
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar un nuevo teléfono asociado a un tutor.
+     * → Prepara un objeto teléfono vacío con el tutor asignado para su carga inicial.
+     * 
+     * @param int $tutor_id → Identificador único del tutor al que se asociará el teléfono.
+     * @return View → Retorna la vista tutor.formulario-telefono con el objeto teléfono y el tutor_id.
+     */
     public function formularioTelefono($tutor_id): View
     {
         $telefono = new Telefono(['tutor_id' => $tutor_id]);
         return view('tutor.formulario-telefono', compact('telefono', 'tutor_id'));
     }
-    
+
+    /**
+     * Este método:
+     * → Registra un nuevo teléfono en la base de datos con datos validados.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     * 
+     * @param TelefonoRequest $regla → Datos validados del teléfono a registrar.
+     * @param int $tutor_id → Identificador único del tutor al que se asociará el teléfono.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito.
+     */
     public function registrarTelefono(TelefonoRequest $regla, int $tutor_id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para registrar contactos.", "tutor.index");
@@ -213,7 +236,16 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Registrar teléfono', "Registró contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El teléfono fue registrado exitosamente.');
     }
-    
+
+    /**
+     * Este método:
+     * → Elimina un teléfono registrado en la base de datos.
+     * → Solo permite la eliminación a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     *
+     * @param int $id → Identificador único del teléfono a eliminar.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito.
+     */
     public function eliminarTelefono(int $id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para eliminar contactos.", "tutor.index");
@@ -223,13 +255,31 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Eliminar teléfono', "Eliminó un contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El teléfono fue eliminado exitosamente');
     }
-    
+
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar un nuevo correo electrónico asociado a un tutor.
+     * → Prepara un objeto correo vacío con el tutor asignado para su carga inicial.
+     * 
+     * @param int $tutor_id → Identificador único del tutor al que se asociará el correo.
+     * @return View → Retorna la vista tutor.formulario-correo con el objeto correo y el tutor_id.
+     */
     public function formularioCorreo($tutor_id): View
     {
         $correo = new Correo(['tutor_id' => $tutor_id]);
         return view('tutor.formulario-correo', compact('correo', 'tutor_id'));
     }
-    
+
+    /**
+     * Este método:
+     * → Registra un nuevo correo electrónico en la base de datos con datos validados.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     * 
+     * @param CorreoRequest $regla → Datos validados del correo a registrar.
+     * @param int $tutor_id → Identificador único del tutor al que se asociará el correo.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito.
+     */
     public function registrarCorreo(CorreoRequest $regla, int $tutor_id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para registrar contactos.", "tutor.index");
@@ -240,7 +290,16 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Registrar correo', "Registró contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El correo fue registrado exitosamente.');
     }
-    
+
+    /**
+     * Este método:
+     * → Elimina un correo registrado en la base de datos.
+     * → Solo permite la eliminación a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial.
+     *
+     * @param int $id → Identificador único del correo a eliminar.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito.
+     */
     public function eliminarCorreo(int $id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para eliminar contactos.", "tutor.index");
@@ -454,4 +513,10 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Eliminar cuota', "Eliminó la cuota creada el {$fecha} del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La cuota fue eliminada exitosamente');
     }
+
+    /* ==================== Académico ==================== */
+    
+
 }
+
+

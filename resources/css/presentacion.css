@@ -112,6 +112,7 @@
     display: block;
     width: 100%;
     text-align: center;
+    margin-top: 15px;
     padding: 12px;
     font-size: 0.85rem;
     font-weight: bold;
@@ -286,10 +287,94 @@
     color: #ffffff;
 }
 
+/* ==================== Carrera ==================== */
+.datos-academicos {
+    font-family: Arial, sans-serif;
+    font-size: 0.75rem;
+    width: 100%;
+    margin: 0;
+}
+
+.datos-academicos .titulo {
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: none;
+    min-height: 15px;
+
+}
+
+.datos-academicos .carrera {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.datos-academicos .codigo {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.datos-academicos .asignatura {
+    display: flex;
+    border-top: 1px solid #ccc;
+    padding: 5px 5px;
+    align-items: center;
+}
+
+.datos-academicos .asignatura:hover {
+    background-color: rgba(175, 159, 159, 0.192);
+}
+
+.datos-academicos .contenido {
+    flex: 1;
+}
+
+.datos-academicos .acciones {
+    width: 30px;
+    text-align: center;
+}
+
+.datos-academicos .btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.datos-academicos .editar {
+    color: #000000;
+}
+
+.datos-academicos .editar:hover {
+    color: #ffffff;
+    background-color: #5a241a;
+}
+
+.datos-academicos .pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid black;
+    border-top: 1px solid rgba(0, 0, 0, 0.466);
+    font-size: 0.9rem;
+}
+
+.datos-academicos .mensaje {
+    text-align: center;
+    font-size: 1rem;
+}
+
+
 /* ==================== Drepdown de Contacto ==================== */
 .dropdown {
     position: relative;
     display: inline-block;
+    cursor: pointer;
 }
 
 
@@ -334,7 +419,7 @@
 }
 
 .contactos-item:hover {
-    background-color: rgba(238, 216, 119, 0.438);
+    background-color: rgba(175, 159, 159, 0.192);
 }
 
 
@@ -351,6 +436,29 @@
 }
 
 .contactos-item form {
+    margin: 0;
+}
+
+/* ==================== Infante ==================== */
+.infantes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.infante-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    height: 15px;
+}
+
+.infante-nombre, .infante-sala {
+    font-size: 0.8rem;
+    color: #333;
     margin: 0;
 }
 
