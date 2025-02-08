@@ -88,7 +88,9 @@
         <label for="fecha_nacimiento" class="form-label">{{ __('Fecha de Nacimiento') }}</label>
         <input type="date" name="Fecha_de_nacimiento"
             class="form-control @error('Fecha_de_nacimiento') is-invalid @enderror"
-            value="{{ old('Fecha_de_nacimiento', $tutor?->Fecha_de_nacimiento) }}" id="fecha_nacimiento">
+            value="{{ old('Fecha_de_nacimiento', optional($tutor)->Fecha_de_nacimiento ? $tutor->Fecha_de_nacimiento->format('Y-m-d') : '') }}"
+            id="fecha_nacimiento">
+
 
         <!-- Contenedor de mensaje de error -->
         <div class="mensaje-container">
@@ -176,29 +178,17 @@
     <!-- Botones -->
     <div class="form-buttons">
         <button type="submit" class="btn btn-primary">
-            {{ __('Aceptar') }}
+            {{ __('Siguiente') }}
         </button>
-        <a class="btn btn-secondary" href="{{ route('tutor.index') }}">
+
+
+        <a class="btn btn-secondary"
+            href="{{ $tutor?->id == null ? route('tutor.index') : route('tutor.presentacion', $tutor->id) }}">
             {{ __('Cancelar') }}
         </a>
+
     </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const tipoTutorSelect = document.querySelector("select[name='Tipo_tutor']");
-        const submitButton = document.querySelector(".form-buttons button[type='submit']");
-
-        if (!tipoTutorSelect || !submitButton) return; // Verifica que los elementos existen
-
-        function actualizarTextoBoton() {
-            submitButton.textContent = tipoTutorSelect.value === "Trabajador" ? "Siguiente" : "Aceptar";
-        }
-
-        tipoTutorSelect.addEventListener("change", actualizarTextoBoton);
-        actualizarTextoBoton(); // Ejecutar al cargar la página por si ya hay un valor seleccionado
-    });
-</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -208,5 +198,3 @@
         })
     });
 </script>
-
-

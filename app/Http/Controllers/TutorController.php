@@ -14,6 +14,8 @@ use App\Http\Requests\TutorRequest;
 use App\Http\Requests\DomicilioRequest;
 use App\Http\Requests\TelefonoRequest;
 use App\Http\Requests\CorreoRequest;
+use App\Http\Requests\CarreraRequest;
+use App\Http\Requests\AsignaturaRequest;
 use App\Http\Requests\CuotaRequest;
 use App\Http\Requests\TrabajadorRequest;
 use App\Traits\RegistraHistorial;
@@ -115,11 +117,12 @@ class TutorController extends Controller
         $tutor = Tutor::create($datos);
 
         if ($tutor->Tipo_tutor === 'Trabajador') {
-            $this->registrarAccion(auth()->id(), 'Registrar tutor', "Registro al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
+            $this->registrarAccion(auth()->id(), 'Registrar tutor trabajador', "Registro al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
             return redirect()->route('tutor.agregar-trabajador', $tutor?->id);
+        } else {
+            $this->registrarAccion(auth()->id(), 'Registrar tutor alumno', "Registro al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
+            return redirect()->route('tutor.agregar-carrera', $tutor?->id);
         }
-        $this->registrarAccion(auth()->id(), 'Registrar tutor', "Registro al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
-        return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El tutor fue registrado exitosamente.');
     }
 
     /**
@@ -151,12 +154,22 @@ class TutorController extends Controller
         $this->validarPermiso("Bienestar", "No tienes permiso para modificar tutores.", "tutor.index");
         $datos = $regla->validated();
         $tutor->update($datos);
+
         if ($tutor->Tipo_tutor === 'Trabajador') {
-            $this->registrarAccion(auth()->id(), 'Modificar tutor', "Modifico al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
-            return redirect()->route('tutor.editar-trabajador', $tutor?->id);
+            $trabajador = Trabajador::where('tutor_id', $tutor->id)->exists();
+
+            if ($trabajador) {
+                return redirect()->route('tutor.editar-trabajador', $tutor->id);
+            }
+            return redirect()->route('tutor.agregar-trabajador', $tutor->id);
+        } else {
+            $carrera = Carrera::where('tutor_id', $tutor->id)->exists();
+
+            if ($carrera) {
+                return redirect()->route('tutor.editar-carrera', $tutor->id);
+            }
+            return redirect()->route('tutor.agregar-carrera', $tutor->id);
         }
-        $this->registrarAccion(auth()->id(), 'Modificar tutor', "Modifico al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
-        return redirect()->route('tutor.index')->with('success', 'El tutor fue modificado exitosamente');
     }
 
     /**
@@ -463,13 +476,18 @@ class TutorController extends Controller
      * @param int $tutor_id → Identificador único del tutor.
      * @return View → Retorna la vista tutor.formulario-cuota con el objeto cuota y el ID del trabajador.
      */
-    public function formularioCuota(int $tutor_id): View
+    public function formularioCuota(int $tutor_id)
     {
-        $trabajador = Trabajador::where('tutor_id', $tutor_id)->firstOrFail();
+        $trabajador = Trabajador::where('tutor_id', $tutor_id)->first();
+    
+        if (!$trabajador) {
+            return redirect()->route('tutor.presentacion', $tutor_id)->with('error', 'Termine de completar los datos del tutor.');
+        }
+    
         $cuota = new Cuota(['trabajador_id' => $trabajador->id]);
-        $trabajador_id = $trabajador->id;
-        return view('tutor.formulario-cuota', compact('cuota', 'trabajador_id'));
+        return view('tutor.formulario-cuota', compact('cuota', 'trabajador'));
     }
+    
 
     /**
      * Este método:
@@ -515,8 +533,34 @@ class TutorController extends Controller
     }
 
     /* ==================== Académico ==================== */
-    
 
+    public function formularioCarrera(int $tutor_id): View
+    {
+        $carrera = new Carrera(['tutor_id' => $tutor_id]);
+        return view('tutor.agregar-carrera', compact('carrera', 'tutor_id'));
+    }
+
+    public function registrarCarrera(CarreraRequest $regla, int $tutor_id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar carrera.", "tutor.index");
+        $datos = $regla->validated();
+        $datos['tutor_id'] = $tutor_id;
+        Carrera::create($datos);
+        return redirect()->route('tutor.presentacion', $tutor_id)->with('success', 'La carrera fue registrada exitosamente.');
+    }
+
+    public function formularioModificarCarrera(int $tutor_id): View
+    {
+        $carrera = Carrera::where('tutor_id', $tutor_id)->firstOrFail();
+        return view('tutor.editar-carrera', compact('carrera', 'tutor_id'));
+    }
+
+
+    public function modificarCarrera(CarreraRequest $regla, Carrera $carrera): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar carreras.", "tutor.index");
+        $datos = $regla->validated();
+        $carrera->update($datos);
+        return redirect()->route('tutor.presentacion', ['id' => $carrera->tutor_id])->with('success', 'La carrera fue modificado exitosamente.');
+    }
 }
-
-

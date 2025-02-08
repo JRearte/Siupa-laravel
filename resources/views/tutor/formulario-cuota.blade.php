@@ -7,12 +7,12 @@
         <header class="form-header">
             <h1 class="form-title">{{ __('Crear cuota') }}</h1>
         </header>
-        <form method="POST" action="{{ route('tutor.registrar-cuota', ['trabajador_id' => $trabajador_id]) }}" role="form"
+        <form method="POST" action="{{ route('tutor.registrar-cuota', ['trabajador_id' => $trabajador->id]) }}" role="form"
             enctype="multipart/form-data" autocomplete="off">
             @csrf
 
             <div class="contenido">
-                <input type="hidden" name="trabajador_id" value="{{ $trabajador_id }}">
+                <input type="hidden" name="trabajador_id" value="{{ $trabajador->id }}">
 
                 <!-- Valor de la cuota -->
                 <div class="form-group mb-3">
@@ -57,7 +57,7 @@
                     <button type="submit" class="btn btn-primary">
                         {{ __('Aceptar') }}
                     </button>
-                    <a class="btn btn-secondary" href="{{ route('tutor.presentacion', $trabajador_id) }}">
+                    <a class="btn btn-secondary" href="{{ route('tutor.presentacion', $trabajador->id) }}">
                         {{ __('Cancelar') }}
                     </a>
                 </div>
