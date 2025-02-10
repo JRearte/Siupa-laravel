@@ -223,7 +223,7 @@ class TutorController extends Controller
      * @param int $tutor_id → Identificador único del tutor al que se asociará el teléfono.
      * @return View → Retorna la vista tutor.formulario-telefono con el objeto teléfono y el tutor_id.
      */
-    public function formularioTelefono($tutor_id): View
+    public function formularioRegistrarTelefono($tutor_id): View
     {
         $telefono = new Telefono(['tutor_id' => $tutor_id]);
         return view('tutor.formulario-telefono', compact('telefono', 'tutor_id'));
@@ -277,7 +277,7 @@ class TutorController extends Controller
      * @param int $tutor_id → Identificador único del tutor al que se asociará el correo.
      * @return View → Retorna la vista tutor.formulario-correo con el objeto correo y el tutor_id.
      */
-    public function formularioCorreo($tutor_id): View
+    public function formularioRegistrarCorreo($tutor_id): View
     {
         $correo = new Correo(['tutor_id' => $tutor_id]);
         return view('tutor.formulario-correo', compact('correo', 'tutor_id'));
@@ -476,18 +476,18 @@ class TutorController extends Controller
      * @param int $tutor_id → Identificador único del tutor.
      * @return View → Retorna la vista tutor.formulario-cuota con el objeto cuota y el ID del trabajador.
      */
-    public function formularioCuota(int $tutor_id)
+    public function formularioRegistrarCuota(int $tutor_id)
     {
         $trabajador = Trabajador::where('tutor_id', $tutor_id)->first();
-    
+
         if (!$trabajador) {
             return redirect()->route('tutor.presentacion', $tutor_id)->with('error', 'Termine de completar los datos del tutor.');
         }
-    
+
         $cuota = new Cuota(['trabajador_id' => $trabajador->id]);
         return view('tutor.formulario-cuota', compact('cuota', 'trabajador'));
     }
-    
+
 
     /**
      * Este método:
@@ -532,14 +532,31 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La cuota fue eliminada exitosamente');
     }
 
-    /* ==================== Académico ==================== */
+    /* ==================== Carrera ==================== */
 
-    public function formularioCarrera(int $tutor_id): View
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar una carrera.
+     * → Prepara un objeto carrera vacío con el ID del tutor preasignado.
+     *
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @return View → Retorna la vista tutor.agregar-carrera con el objeto carrera.
+     */
+    public function formularioRegistrarCarrera(int $tutor_id): View
     {
         $carrera = new Carrera(['tutor_id' => $tutor_id]);
         return view('tutor.agregar-carrera', compact('carrera', 'tutor_id'));
     }
 
+    /**
+     * Este método:
+     * → Registra los datos de una carrera con validaciones.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     *
+     * @param CarreraRequest $regla → Datos validados de la carrera a registrar.
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito o error.
+     */
     public function registrarCarrera(CarreraRequest $regla, int $tutor_id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para registrar carrera.", "tutor.index");
@@ -549,18 +566,87 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', $tutor_id)->with('success', 'La carrera fue registrada exitosamente.');
     }
 
+    /**
+     * Este método:
+     * → Recupera los datos de una carrera por el identificador del tutor.
+     * → Redirige al formulario de edición con la información de la carrera cargada.
+     *
+     * @param int $tutor_id → Identificador único del tutor.
+     * @return View → Retorna la vista tutor.editar-carrera con los datos de la carrera.
+     */
     public function formularioModificarCarrera(int $tutor_id): View
     {
         $carrera = Carrera::where('tutor_id', $tutor_id)->firstOrFail();
         return view('tutor.editar-carrera', compact('carrera', 'tutor_id'));
     }
 
-
+    /**
+     * Este método:
+     * → Modifica la información de una carrera en la base de datos con datos validados.
+     * → Solo permite la modificación a usuarios con categoría "Bienestar".
+     *
+     * @param CarreraRequest $regla → Datos validados de la carrera a modificar.
+     * @param Carrera $carrera → Objeto carrera con la estructura y datos actuales.
+     * @return RedirectResponse → Redirige a la página de presentación del tutor con un mensaje de éxito o error.
+     */
     public function modificarCarrera(CarreraRequest $regla, Carrera $carrera): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para modificar carreras.", "tutor.index");
         $datos = $regla->validated();
         $carrera->update($datos);
-        return redirect()->route('tutor.presentacion', ['id' => $carrera->tutor_id])->with('success', 'La carrera fue modificado exitosamente.');
+        return redirect()->route('tutor.presentacion', ['id' => $carrera->tutor_id])->with('success', 'La carrera fue modificada exitosamente.');
+    }
+
+    /* ==================== Asignatura ==================== */
+
+    public function formularioRegistrarAsignatura(int $tutor_id, int $carrera_id): View|RedirectResponse
+    {
+        $carrera = Carrera::where('tutor_id', $tutor_id)->where('id', $carrera_id)->first();
+        if (!$carrera) {
+            return redirect()->route('tutor.presentacion', $tutor_id)->with('error', 'Termine de completar los datos del tutor.');
+        }
+        $asignatura = new Asignatura(['tutor_id' => $tutor_id, 'carrera_id' => $carrera_id]);
+        return view('tutor.agregar-asignatura', compact('asignatura', 'tutor_id', 'carrera_id'));
+    }
+
+
+    public function registrarAsignatura(AsignaturaRequest $regla, int $tutor_id, int $carrera_id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar asignaturas.", "tutor.index");
+        $datos = $regla->validated();
+        $datos['tutor_id'] = $tutor_id;
+        $datos['carrera_id'] = $carrera_id;
+        $tutor = Tutor::findOrFail($tutor_id);
+        Asignatura::create($datos);
+        $this->registrarAccion(auth()->id(), 'Registrar asignatura', "Registro la asignatura del tutor {$tutor->Nombre} {$tutor->Apellido}");
+        return redirect()->route('tutor.presentacion', $tutor_id)->with('success', 'La asignatura fue registrada exitosamente.');
+    }
+
+    public function formularioModificarAsignatura(int $carrera_id, int $asignatura_id): View
+    {
+        $asignatura = Asignatura::where('id', $asignatura_id)->where('carrera_id', $carrera_id)->firstOrFail();
+        $tutor_id = $asignatura->tutor_id;
+        return view('tutor.editar-asignatura', compact('asignatura', 'carrera_id', 'tutor_id'));
+    }
+
+
+    public function modificarAsignatura(AsignaturaRequest $regla, Asignatura $asignatura): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar asignaturas.", "tutor.index");
+        $datos = $regla->validated();
+        $asignatura->update($datos);
+        $tutor = Tutor::findOrFail($asignatura->tutor_id);
+        $this->registrarAccion(auth()->id(), 'Modificar asignatura', "Modificó la asignatura del tutor {$tutor->Nombre} {$tutor->Apellido}");
+        return redirect()->route('tutor.presentacion', ['id' => $tutor->id])->with('success', 'La asignatura fue modificada exitosamente.');
+    }
+
+    public function eliminarAsignatura(int $tutor_id, int $id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar asignaturas.", "tutor.index");
+        $asignatura = Asignatura::findOrFail($id);
+        $tutor = Tutor::findOrFail($tutor_id);
+        $asignatura->delete();
+        $this->registrarAccion(auth()->id(), 'Eliminar asignatura', "Eliminó la asignatura {$asignatura->Nombre} del tutor {$tutor->Nombre} {$tutor->Apellido}");
+        return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La asignatura fue eliminada exitosamente');
     }
 }

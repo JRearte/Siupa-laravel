@@ -57,7 +57,7 @@
                     <button type="submit" class="btn btn-primary">
                         {{ __('Aceptar') }}
                     </button>
-                    <a class="btn btn-secondary" href="{{ route('tutor.presentacion', $trabajador->id) }}">
+                    <a class="btn btn-secondary" href="{{ route('tutor.presentacion', $trabajador->tutor_id) }}">
                         {{ __('Cancelar') }}
                     </a>
                 </div>

@@ -129,6 +129,7 @@
                     <p>{{ $tutor->domicilio?->Codigo_postal }}</p>
                 </div>
                 <div class="column">
+
                     <!-- Encabezado de contactos -->
                     <div class="dropdown">
                         <span class="domicilio dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown"
@@ -147,12 +148,26 @@
                     @foreach ($tutor->correos as $correo)
                         <div class="contactos-item correo">
                             <p>{{ $correo?->Mail }}</p>
-                            <form action="{{ route('tutor.eliminar-correo', $correo->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="eliminar btn-danger"><i
-                                        class="fa-solid fa-trash-can"></i></button>
-                            </form>
+                            <div class="eliminar-wrapper">
+                                <!-- Botón eliminar -->
+                                <button class="eliminar btn-danger" onclick="toggleDropdown(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                                <!-- Dropdown de advertencia -->
+                                <div class="dropdown-eliminar">
+                                    <p class="mensaje-eliminar">¿Eliminar Correo?</p>
+                                    <div class="botones">
+                                        <form action="{{ route('tutor.eliminar-correo', $correo->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="confirmar btn-danger">Eliminar</button>
+                                        </form>
+                                        <button class="cancelar btn-secondary"
+                                            onclick="toggleDropdown(this)">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
 
@@ -161,14 +176,31 @@
                     @foreach ($tutor->telefonos as $telefono)
                         <div class="contactos-item">
                             <p>{{ $telefono?->Numero }}</p>
-                            <form action="{{ route('tutor.eliminar-telefono', $telefono->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="eliminar btn-danger"><i
-                                        class="fa-solid fa-trash-can"></i></button>
-                            </form>
+                            <div class="eliminar-wrapper">
+                                <!-- Botón eliminar -->
+                                <button class="eliminar btn-danger" onclick="toggleDropdown(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                                <!-- Dropdown de advertencia -->
+                                <div class="dropdown-eliminar">
+                                    <p class="mensaje-eliminar">¿Eliminar Teléfono??</p>
+                                    <div class="botones">
+                                        <form action="{{ route('tutor.eliminar-telefono', $telefono->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="confirmar btn-danger">Eliminar</button>
+                                        </form>
+                                        <button class="cancelar btn-secondary"
+                                            onclick="toggleDropdown(this)">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
+
+
                 </div>
             </div>
             <hr class="separador">
@@ -176,7 +208,6 @@
             <!-- ==================== Información de Cuotas ==================== -->
             <div class="trabajador {{ $tutor->Tipo_tutor === 'Trabajador' ? 'activo' : 'oculto' }}">
                 <div class="cuotas-container">
-
                     <a href="{{ route('tutor.agregar-cuota', $tutor->id) }}" class="cuota-boton">
                         <i class="fa-solid fa-piggy-bank"></i>
                         <span>Cuotas</span>
@@ -191,13 +222,29 @@
                                     <div class="cuota-item">
                                         <p>${{ number_format($cuota?->Valor, 2) }}</p>
                                         <p>{{ $cuota->Fecha->translatedFormat('d F Y') }}</p>
-                                        <form action="{{ route('tutor.eliminar-cuota', [$tutor->id, $cuota->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="eliminar btn-danger"><i
-                                                    class="fa-solid fa-trash-can"></i></button>
-                                        </form>
+
+                                        <div class="eliminar-wrapper">
+                                            <!-- Botón eliminar -->
+                                            <button class="eliminar btn-danger" onclick="toggleDropdown(this)">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+
+                                            <!-- Dropdown de advertencia -->
+                                            <div class="dropdown-eliminar">
+                                                <p class="mensaje-eliminar">¿Eliminar cuota?</p>
+                                                <div class="botones">
+                                                    <form
+                                                        action="{{ route('tutor.eliminar-cuota', [$tutor->id, $cuota->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="confirmar">Eliminar</button>
+                                                    </form>
+                                                    <button class="cancelar"
+                                                        onclick="toggleDropdown(this)">Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endforeach
                                 <div class="cuota-item recaudacion-total">
@@ -213,51 +260,84 @@
             </div>
 
 
+
             <!-- ==================== Datos Académico del Alumno ==================== -->
 
 
             @if ($tutor->Tipo_tutor === 'Alumno')
-            <div class="datos-academicos">
-                <h2 class="titulo"><i class="fa-solid fa-graduation-cap"></i> Datos Académicos</h2>
-                <hr class="separador">
-                <div class="carrera">
-                    <span class="codigo">{{ $carrera?->Codigo }}</span>
-                    <span class="nombre">{{ $carrera?->Nombre }}</span>
-                </div>
-        
-                @if (!$carrera || $carrera->asignaturas->isEmpty())
-                    <p class="mensaje">No hay asignaturas registradas.</p>
-                @else
-                    @foreach ($carrera->asignaturas as $asignatura)
-                        <div class="asignatura">
-                            <div class="contenido">
-                                <div><strong>Código:</strong> {{ $asignatura->Codigo }}</div>
-                                <div><strong>Nombre:</strong> {{ $asignatura->Nombre }}</div>
-                                <div><strong>Condición:</strong> {{ $asignatura->Condicion }}</div>
-                                <div><strong>Fecha:</strong> {{ $asignatura->Fecha->format('d/m/Y') }}</div>
-                                <div><strong>Calificación:</strong> {{ $asignatura->Calificacion }}</div>
-                            </div>
-                            <div class="acciones">
-                                <button type="submit" class="eliminar editar"><i class="fa-solid fa-pencil"></i></button>
-                                <hr class="separador">
-                                <button type="submit" class="eliminar btn-danger"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        </div>
-                    @endforeach
-        
-                    <div class="pie">
-                        <div class="contenido">
-                            <strong>Cumplimiento académico:</strong> {{ number_format($porcentaje, 2) }}%
-                        </div>
-                        @if($porcentaje >= 50)
-                            <i class="fa-solid fa-thumbs-up"></i>
+                <div class="datos-academicos">
+                    <h2 class="titulo"><i class="fa-solid fa-graduation-cap"></i> Datos Académicos</h2>
+                    <hr class="separador">
+                    <div class="carrera">
+                        <span class="codigo">{{ $carrera?->Codigo }}</span>
+                        <span class="nombre">{{ $carrera?->Nombre }}</span>
+
+                        @if (isset($carrera))
+                            <a href="{{ route('tutor.agregar-asignatura', [$tutor->id, $carrera->id]) }}"
+                                class="cuota-boton">
+                                <span>Asignatura</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        @else
+                            <p class="text-danger">Termine de completar los datos del tutor.</p>
                         @endif
                     </div>
-                    
-                @endif
-            </div>
-        @endif
-        
+
+                    @if (!$carrera || $carrera->asignaturas->isEmpty())
+                        <p class="mensaje">No hay asignaturas registradas.</p>
+                    @else
+                    @foreach ($carrera->asignaturas as $asignatura)
+                    <div class="asignatura">
+                        <div class="contenido">
+                            <div><strong>Código:</strong> {{ $asignatura->Codigo }}</div>
+                            <div><strong>Nombre:</strong> {{ $asignatura->Nombre }}</div>
+                            <div><strong>Condición:</strong> {{ $asignatura->Condicion }}</div>
+                            <div><strong>Fecha:</strong> {{ $asignatura->Fecha->format('d/m/Y') }}</div>
+                            <div><strong>Calificación:</strong> {{ $asignatura->Calificacion }}</div>
+                        </div>
+                
+                        <div class="acciones">
+                            <a class="editar" href="{{ route('tutor.editar-asignatura', [$carrera->id, $asignatura->id]) }}">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                            <hr class="separador">
+                            <div class="eliminar-wrapper">
+                                <!-- Botón eliminar -->
+                                <button class="eliminar btn-danger" onclick="toggleDropdown(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                
+                                <!-- Dropdown de advertencia -->
+                                <div class="dropdown-eliminar">
+                                    <p class="mensaje-eliminar">¿Eliminar asignatura?</p>
+                                    <div class="botones">
+                                        <form action="{{ route('tutor.eliminar-asignatura', [$tutor->id, $asignatura->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="confirmar">Eliminar</button>
+                                        </form>
+                                        <button class="cancelar" onclick="toggleDropdown(this)">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                
+
+                        <div class="pie">
+                            <div class="contenido">
+                                <strong>Cumplimiento académico:</strong> {{ number_format($porcentaje, 2) }}%
+                            </div>
+                            @if ($porcentaje >= 50)
+                                <i class="fa-solid fa-thumbs-up"></i>
+                            @endif
+                        </div>
+
+                    @endif
+                </div>
+            @endif
+
 
 
 
@@ -266,3 +346,53 @@
         </div>
     </div>
 @endsection
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const botonesEliminar = document.querySelectorAll(".eliminar");
+
+    botonesEliminar.forEach(boton => {
+        boton.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            // Cerrar todos los dropdowns antes de abrir uno nuevo
+            document.querySelectorAll(".dropdown-eliminar").forEach(drop => {
+                if (drop !== boton.nextElementSibling) {
+                    drop.classList.remove("activo");
+                }
+            });
+
+            // Alternar el dropdown actual
+            const dropdown = boton.nextElementSibling;
+            if (dropdown) {
+                dropdown.classList.toggle("activo");
+            }
+        });
+    });
+
+    // Manejar botón Cancelar para cerrar el dropdown
+    const botonesCancelar = document.querySelectorAll(".cancelar");
+
+    botonesCancelar.forEach(boton => {
+        boton.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            // Buscar el dropdown padre más cercano y cerrarlo
+            const dropdown = boton.closest(".dropdown-eliminar");
+            if (dropdown) {
+                dropdown.classList.remove("activo");
+            }
+        });
+    });
+
+    // Cerrar dropdown si se hace clic fuera
+    document.addEventListener("click", function(event) {
+        if (!event.target.closest(".eliminar-wrapper")) {
+            document.querySelectorAll(".dropdown-eliminar").forEach(drop => {
+                drop.classList.remove("activo");
+            });
+        }
+    });
+});
+
+</script>
