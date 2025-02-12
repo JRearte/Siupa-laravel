@@ -5,7 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\TutorController;
-
+use App\Http\Controllers\InfanteController;
 
 
 //Rutas del usuario
@@ -77,7 +77,7 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::get('tutor/{tutor_id}/formulario-modificar-carrera', 'formularioModificarCarrera')->name('tutor.editar-carrera');
     Route::patch('tutor/carrera-modificar/{carrera}', 'modificarCarrera')->name('tutor.modificar-carrera');
     
-    // Rutas para Registrar y Modificar asignaturas
+    // Rutas para Registrar, Modificar y Eliminar asignaturas
     Route::get('tutor/{tutor_id}/formulario-registrar-asignatura/{carrera_id}', 'formularioRegistrarAsignatura')->name('tutor.agregar-asignatura');
     Route::post('tutor/{tutor_id}/registrar-asignatura/{carrera_id}', 'registrarAsignatura')->name('tutor.registrar-asignatura');
     Route::get('tutor/{carrera_id}/formulario-modificar-asignatura/{asignatura_id}', 'formularioModificarAsignatura')->name('tutor.editar-asignatura');
@@ -85,6 +85,13 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::delete('tutor/{tutor_id}/eliminar-asignatura/{asignatura_id}', 'eliminarAsignatura')->name('tutor.eliminar-asignatura');
 });
 
+Route::controller(InfanteController::class)->middleware('auth')->group(function () {
+    Route::get('infante/presentacion/{id}', 'presentar')->name('infante.presentacion');
+    Route::get('infante/{tutor_id}/formulario-registrar', 'formularioRegistrar')->name('infante.agregar');
+    Route::post('infante/{tutor_id}/registrar', 'registrar')->name('infante.registrar');
+    Route::get('infante/formulario-modificar/{id}', 'formularioModificar')->name('infante.editar');
+    Route::patch('infante/modificar/{infante}', 'modificar')->name('infante.modificar');
+});
 
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware
 Route::post('/', [UsuarioController::class, 'logout'])->name('usuario.logout')->middleware('auth');

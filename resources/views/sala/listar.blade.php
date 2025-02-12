@@ -59,6 +59,13 @@
                                             @endif
                                         </div>
                                     </div>
+                                    <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
+                                        <a href="{{ route('infante.presentacion',$infante->id)}}">
+                                            <div class="presentacion">
+                                                <i class="fa-solid fa-gear"></i>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -153,6 +160,13 @@
                                             @endif
                                         </div>
                                     </div>
+                                    <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
+                                        <a href="{{ route('infante.presentacion',$infante->id)}}">
+                                            <div class="presentacion">
+                                                <i class="fa-solid fa-gear"></i>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -245,6 +259,13 @@
                                                 <i class="fa-solid fa-user-check icon"></i> Readmitido
                                             @endif
                                         </div>
+                                    </div>
+                                    <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
+                                        <a href="{{ route('infante.presentacion',$infante->id)}}">
+                                            <div class="presentacion">
+                                                <i class="fa-solid fa-gear"></i>
+                                            </div>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>

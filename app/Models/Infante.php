@@ -10,6 +10,11 @@ class Infante extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['Nombre','Apellido','Genero','Fecha_de_nacimiento','Numero_documento','Tipo_documento','Categoria','Fecha_de_asignacion','Habilitado','tutor_id','sala_id'];
 
+    protected $casts = [
+        'Fecha_de_nacimiento' => 'date',
+        'Fecha_de_asignacion' => 'date',
+    ];
+
 
     /**
      * Relación inversa uno a uno con el modelo Tutor
@@ -38,7 +43,7 @@ class Infante extends Model
     /**
      * Relación uno a muchos con el modelo Familia
      */
-    public function familia()
+    public function familiares()
     {
         return $this->hasMany(Familia::class);
     }
@@ -46,7 +51,7 @@ class Infante extends Model
     /**
      * Relación uno a muchos con el modelo Medico
      */
-    public function medico()
+    public function medicos()
     {
         return $this->hasMany(Medico::class);
     }
@@ -54,7 +59,7 @@ class Infante extends Model
     /**
      * Relación uno a muchos con el modelo Asistencia
      */
-    public function asistencia()
+    public function asistencias()
     {
         return $this->hasMany(Asistencia::class);
     }

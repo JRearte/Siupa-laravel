@@ -121,7 +121,7 @@ class UsuarioController extends Controller
         $datos['password'] = Hash::make($datos['password']);
         $usuario = Usuario::create($datos);
         $this->registrarAccion(auth()->id(), 'Registrar usuario', "Registro al usuario {$usuario->Nombre} {$usuario->Apellido} ");
-        return redirect()->route('usuario.index')->with('success', 'El usuario fue registrado exitosamente.');
+        return redirect()->route('usuario.presentacion', $usuario->id)->with('success', 'El usuario fue registrado exitosamente.');
     }
 
 
@@ -158,7 +158,7 @@ class UsuarioController extends Controller
         $datos['password'] = Hash::make($datos['password']);
         $usuario->update($datos);
         $this->registrarAccion(auth()->id(), 'Modificar usuario', "Modifico el usuario {$usuario->Nombre} {$usuario->Apellido} ");
-        return redirect()->route('usuario.index')->with('success', 'El usuario fue modificado exitosamente');
+        return redirect()->route('usuario.presentacion', $usuario->id)->with('success', 'El usuario fue modificado exitosamente');
     }
 
     /**

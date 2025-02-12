@@ -10,6 +10,7 @@ use App\Models\Cuota;
 use App\Models\Trabajador;
 use App\Models\Carrera;
 use App\Models\Asignatura;
+use App\Models\Infante;
 use App\Http\Requests\TutorRequest;
 use App\Http\Requests\DomicilioRequest;
 use App\Http\Requests\TelefonoRequest;
@@ -155,6 +156,13 @@ class TutorController extends Controller
         $datos = $regla->validated();
         $tutor->update($datos);
 
+        if ($tutor->Habilitado == 0) {
+            Infante::where('tutor_id', $tutor->id)->update(['Habilitado' => 0]);
+        }
+        else{
+            Infante::where('tutor_id', $tutor->id)->update(['Habilitado' => 1]);
+        }
+
         if ($tutor->Tipo_tutor === 'Trabajador') {
             $trabajador = Trabajador::where('tutor_id', $tutor->id)->exists();
 
@@ -162,6 +170,7 @@ class TutorController extends Controller
                 return redirect()->route('tutor.editar-trabajador', $tutor->id);
             }
             return redirect()->route('tutor.agregar-trabajador', $tutor->id);
+            
         } else {
             $carrera = Carrera::where('tutor_id', $tutor->id)->exists();
 
@@ -599,6 +608,15 @@ class TutorController extends Controller
 
     /* ==================== Asignatura ==================== */
 
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar una asignatura.
+     * → Verifica que la carrera asociada al tutor exista antes de permitir el registro.
+     *
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @param int $carrera_id → Identificador de la carrera asociada.
+     * @return View|RedirectResponse → Retorna la vista de agregar asignatura o redirige si la carrera no existe.
+     */
     public function formularioRegistrarAsignatura(int $tutor_id, int $carrera_id): View|RedirectResponse
     {
         $carrera = Carrera::where('tutor_id', $tutor_id)->where('id', $carrera_id)->first();
@@ -610,6 +628,17 @@ class TutorController extends Controller
     }
 
 
+    /**
+     * Este método:
+     * → Registra una asignatura con validaciones previas.
+     * → Solo permite el registro a usuarios con categoría "Bienestar".
+     * → Registra la acción realizada en el historial del sistema.
+     *
+     * @param AsignaturaRequest $regla → Datos validados de la asignatura a registrar.
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @param int $carrera_id → Identificador de la carrera asociada.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito.
+     */
     public function registrarAsignatura(AsignaturaRequest $regla, int $tutor_id, int $carrera_id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para registrar asignaturas.", "tutor.index");
@@ -622,6 +651,15 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', $tutor_id)->with('success', 'La asignatura fue registrada exitosamente.');
     }
 
+    /**
+     * Este método:
+     * → Recupera los datos de una asignatura por su identificador y el de su carrera.
+     * → Redirige al formulario de edición con la información cargada.
+     *
+     * @param int $carrera_id → Identificador único de la carrera.
+     * @param int $asignatura_id → Identificador único de la asignatura.
+     * @return View → Retorna la vista tutor.editar-asignatura con los datos de la asignatura.
+     */
     public function formularioModificarAsignatura(int $carrera_id, int $asignatura_id): View
     {
         $asignatura = Asignatura::where('id', $asignatura_id)->where('carrera_id', $carrera_id)->firstOrFail();
@@ -630,6 +668,16 @@ class TutorController extends Controller
     }
 
 
+    /**
+     * Este método:
+     * → Modifica la información de una asignatura con datos validados.
+     * → Solo permite la modificación a usuarios con categoría "Bienestar".
+     * → Registra la acción realizada en el historial del sistema.
+     *
+     * @param AsignaturaRequest $regla → Datos validados de la asignatura a modificar.
+     * @param Asignatura $asignatura → Objeto asignatura con la estructura y datos actuales.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito.
+     */
     public function modificarAsignatura(AsignaturaRequest $regla, Asignatura $asignatura): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para modificar asignaturas.", "tutor.index");
@@ -640,6 +688,16 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', ['id' => $tutor->id])->with('success', 'La asignatura fue modificada exitosamente.');
     }
 
+    /**
+     * Este método:
+     * → Elimina una asignatura de la base de datos.
+     * → Solo permite la eliminación a usuarios con categoría "Bienestar".
+     * → Registra la acción realizada en el historial del sistema.
+     *
+     * @param int $tutor_id → Identificador del tutor asociado.
+     * @param int $id → Identificador de la asignatura a eliminar.
+     * @return RedirectResponse → Redirige a la presentación del tutor con un mensaje de éxito.
+     */
     public function eliminarAsignatura(int $tutor_id, int $id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para eliminar asignaturas.", "tutor.index");

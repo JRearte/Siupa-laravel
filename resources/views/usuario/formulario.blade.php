@@ -119,10 +119,12 @@
 
     <!-- Habilitado -->
     <div class="form-check form-switch mb-3">
+        <input type="hidden" name="Habilitado" value="0">
         <input class="form-check-input" type="checkbox" id="habilitado" name="Habilitado" value="1"
             {{ old('Habilitado', $usuario?->Habilitado) == 1 ? 'checked' : '' }}>
         <label class="form-check-label" for="habilitado">{{ __('Habilitado') }}</label>
     </div>
+    
 
     <!-- Botones -->
     <div class="form-buttons">
