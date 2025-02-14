@@ -2,6 +2,7 @@
 @section('title', 'Carta de Tutor')
 @section('content')
     @vite(['resources/css/presentacion.css'])
+    @vite(['resources/js/dropdown.js'])
     <div class="presentacion">
         <div class="container">
 
@@ -26,7 +27,7 @@
                 </div>
                 <!-- Opción de eliminar -->
                 <div class="opciones">
-                    <a class="eliminar" href="{{ route('tutor.confirmar', $tutor->id) }}">
+                    <a href="{{ route('tutor.confirmar', $tutor->id) }}">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
                 </div>
@@ -85,25 +86,6 @@
                     </div>
                 </div>
             </div>
-            <hr class="separador">
-
-            <!-- ==================== Información del Infante ==================== -->
-
-            <div class="infantes-container">
-                @foreach ($infantes as $infante)
-                    <div class="infante-item">
-                        <p class="infante-nombre">
-                            <i class="fa-solid {{ $infante->Genero === 'Masculino' ? 'fa-child' : 'fa-child-dress' }}"></i>
-                            {{ $infante->Nombre }} {{ $infante->Apellido }}
-                        </p>
-                        <p class="infante-sala"><i class="fa-solid fa-house"></i> {{ $infante->sala->Nombre }}</p>
-                    </div>
-                @endforeach
-                <a class="dropdown-item" href="{{ route('infante.agregar', $tutor->id) }}"><i
-                        class="fa-solid fa-phone"></i> Teléfono</a>
-
-            </div>
-
             <hr class="separador">
 
 
@@ -220,6 +202,36 @@
             </div>
             <hr class="separador">
 
+
+            <!-- ==================== Información del Infante ==================== -->
+
+            <div class="infantes-container">
+                @foreach ($infantes as $infante)
+                    <div class="infante-card">
+                        <div class="infante-info">
+                            <p class="infante-nombre">
+                                <i class="fa-solid {{ $infante->Genero === 'Masculino' ? 'fa-child' : 'fa-child-dress' }}"></i>
+                                {{ $infante->Nombre }} {{ $infante->Apellido }}
+                            </p>
+                            <p class="infante-sala"><i class="fa-solid fa-house"></i> {{ $infante->sala->Nombre }}</p>
+                        </div>
+
+                        <a href="{{ route('infante.presentacion', $infante->id) }}" class="infante-opciones">
+                            <i class="fa-solid fa-gear"></i>
+                        </a>
+                    </div>
+                @endforeach
+
+                {{-- Botón solo si hay menos de 2 infantes --}}
+                @if ($infantes->count() < 2)
+                    <a class="agregar-infante" href="{{ route('infante.agregar', $tutor->id) }}">
+                        <i class="fa-solid fa-plus"></i> Agregar Infante
+                    </a>
+                @endif
+            </div>
+
+
+            <hr class="separador">
             <!-- ==================== Información de Cuotas ==================== -->
             <div class="trabajador {{ $tutor->Tipo_tutor === 'Trabajador' ? 'activo' : 'oculto' }}">
                 <div class="cuotas-container">
@@ -373,51 +385,4 @@
     </div>
 @endsection
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const botonesEliminar = document.querySelectorAll(".eliminar");
 
-        botonesEliminar.forEach(boton => {
-            boton.addEventListener("click", function(event) {
-                event.preventDefault();
-
-                // Cerrar todos los dropdowns antes de abrir uno nuevo
-                document.querySelectorAll(".dropdown-eliminar").forEach(drop => {
-                    if (drop !== boton.nextElementSibling) {
-                        drop.classList.remove("activo");
-                    }
-                });
-
-                // Alternar el dropdown actual
-                const dropdown = boton.nextElementSibling;
-                if (dropdown) {
-                    dropdown.classList.toggle("activo");
-                }
-            });
-        });
-
-        // Manejar botón Cancelar para cerrar el dropdown
-        const botonesCancelar = document.querySelectorAll(".cancelar");
-
-        botonesCancelar.forEach(boton => {
-            boton.addEventListener("click", function(event) {
-                event.preventDefault();
-
-                // Buscar el dropdown padre más cercano y cerrarlo
-                const dropdown = boton.closest(".dropdown-eliminar");
-                if (dropdown) {
-                    dropdown.classList.remove("activo");
-                }
-            });
-        });
-
-        // Cerrar dropdown si se hace clic fuera
-        document.addEventListener("click", function(event) {
-            if (!event.target.closest(".eliminar-wrapper")) {
-                document.querySelectorAll(".dropdown-eliminar").forEach(drop => {
-                    drop.classList.remove("activo");
-                });
-            }
-        });
-    });
-</script>

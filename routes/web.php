@@ -91,6 +91,13 @@ Route::controller(InfanteController::class)->middleware('auth')->group(function 
     Route::post('infante/{tutor_id}/registrar', 'registrar')->name('infante.registrar');
     Route::get('infante/formulario-modificar/{id}', 'formularioModificar')->name('infante.editar');
     Route::patch('infante/modificar/{infante}', 'modificar')->name('infante.modificar');
+    Route::get('infante/advertencia/{id}', 'advertirEliminacion')->name('infante.confirmar');
+    Route::delete('infante/eliminar/{id}', 'eliminar')->name('infante.eliminar');
+
+    // Rutas para Registrar y Eliminar asignaturas
+    Route::get('infante/{infante_id}/formulario-registrar-medico', 'formularioRegistrarMedico')->name('infante.agregar-medico');
+    Route::post('infante/{infante_id}/registrar-medico', 'registrarMedico')->name('infante.registrar-medico');
+    Route::delete('infante/eliminar-medico/{id}', 'eliminarMedico')->name('infante.eliminar-medico');
 });
 
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware

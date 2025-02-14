@@ -490,7 +490,7 @@ class TutorController extends Controller
         $trabajador = Trabajador::where('tutor_id', $tutor_id)->first();
 
         if (!$trabajador) {
-            return redirect()->route('tutor.presentacion', $tutor_id)->with('error', 'Termine de completar los datos del tutor.');
+            return redirect()->route('tutor.presentacion', $tutor_id)->with('info', 'Termine de completar los datos del tutor.');
         }
 
         $cuota = new Cuota(['trabajador_id' => $trabajador->id]);

@@ -102,6 +102,12 @@
         font-size: 14px;
     }
 
+    .sidebar .nav-link.active{
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        color: #ff0000;
+    }
+
     /* ==================== BOTON DE CIERRE SESION ==================== */
     .sidebar .btn-danger {
         width: 100%;
@@ -204,9 +210,14 @@
 
     .sidebar .nav-link:hover .nav-text {
         color: #ff0000;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     }
 
+    .sidebar .nav-link.active{
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        color: #ff0000;
+    }
+    
     .sidebar .icon {
         position: relative;
         top: 10px;

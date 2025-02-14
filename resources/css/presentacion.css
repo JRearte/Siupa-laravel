@@ -402,10 +402,6 @@
     display: block;
 }
 
-
-
-
-
 .eliminar {
     border: 0.5px solid rgb(44, 44, 44);
     height: 25px;
@@ -540,22 +536,106 @@
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    max-width: 600px;
+    max-width: 400px;
+    padding: 0px;
 }
 
-.infante-item {
+.infante-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 12px;
-    height: 15px;
+    background: white;
+    border: 2px solid #471400;
+    padding: 6px 13px;
+    border-radius: 6px;
+}
+
+.infante-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 .infante-nombre, .infante-sala {
-    font-size: 0.8rem;
-    color: #333;
+    font-size: 0.85rem;
+    color: #471400;
     margin: 0;
 }
+
+.infante-opciones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    color: #471400;
+    border: 2px solid #471400;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.infante-opciones:hover {
+    background-color: #471400;
+    color: white;
+}
+
+.agregar-infante {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: white;
+    color: #471400;
+    border: 2px solid #471400;
+    padding: 4px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.2s;
+    font-weight: bold;
+}
+
+.agregar-infante:hover {
+    background-color: #471400;
+    color: white;
+}
+
+
+/* ==================== Datos Médicos ==================== */
+.datos-medicos-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 6px;
+    font-size: 0.75rem;
+}
+
+.datos-medicos-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.datos-medicos-info i {
+    color: #471400;
+}
+
+.tipo {
+    font-weight: bold;
+}
+
+.detalle {
+    margin: 0;
+}
+
+.eliminar-wrapper {
+    display: flex;
+    align-items: center;
+}
+
 
 
 /* ==================== Responsivo ==================== */

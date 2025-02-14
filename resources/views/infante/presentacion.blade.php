@@ -2,6 +2,7 @@
 @section('title', 'Carta de Infante')
 @section('content')
     @vite(['resources/css/presentacion.css'])
+    @vite(['resources/js/dropdown.js'])
     <div class="presentacion">
         <div class="container">
 
@@ -25,7 +26,7 @@
                 </div>
                 <!-- Opción de eliminar -->
                 <div class="opciones">
-                    <a class="eliminar">
+                    <a href="{{ route('infante.confirmar', $infante->id) }}">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
                 </div>
@@ -42,9 +43,9 @@
                     <p><strong>Fecha de nacimiento:</strong></p>
                     <p>{{ $infante->Fecha_de_nacimiento->translatedFormat('d F Y') }}</p>
                     <p><strong>Edad:</strong></p>
-                    <p>{{ $edad }} años</p>
-                    
-                    
+                    <p>{{ $edad }}</p>
+
+
                 </div>
                 <div class="column">
                     <p><strong>Documento:</strong></p>
@@ -58,13 +59,73 @@
 
                     <!-- Botón de edición -->
                     <div class="opciones editar">
-                        <a class="editar" href="{{ route('infante.editar', $infante->id)}}">
+                        <a class="editar" href="{{ route('infante.editar', $infante->id) }}">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
                     </div>
                 </div>
             </div>
             <hr class="separador">
+
+
+           <!-- ==================== Datos Médicos ==================== -->
+<!-- ==================== Datos Médicos ==================== -->
+<div class="cuotas-container">
+    <a href="{{ $infante->Habilitado != 0 ? route('infante.agregar-medico', $infante->id) : '#' }}"
+        class="cuota-boton {{ $infante->Habilitado == 0 ? 'disabled' : '' }}"
+        {{ $infante->Habilitado == 0 ? 'aria-disabled=true' : '' }}>
+        <i class="fa-solid fa-kit-medical"></i>
+        <span>Datos Médicos</span>
+        <i class="fa-solid fa-plus"></i>
+    </a>
+
+    <hr class="separador">
+
+    @if ($infante->medicos->isNotEmpty())
+        <div class="cuotas">
+            @foreach ($infante->medicos as $medico)
+                <div class="cuota-item datos-medicos-item">
+                    <!-- Contenedor de la información alineado a la izquierda -->
+                    <div class="datos-medicos-info">
+                        <i class="fa-solid 
+                            {{ $medico->Tipo == 'Vacuna' ? 'fa-syringe' : 
+                            ($medico->Tipo == 'Alergia' ? 'fa-allergies' : 
+                            'fa-wheelchair') }}"></i>
+                        
+                        <p class="tipo">{{ $medico->Tipo }}: </p>
+                        <p class="detalle">{{ $medico->Nombre }}</p>
+                    </div>
+
+                    <!-- Botón alineado a la derecha -->
+                    @if ($infante->Habilitado != 0)
+                        <div class="eliminar-wrapper">
+                            <button class="eliminar btn-danger" onclick="toggleDropdown(this)">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+
+                            <div class="dropdown-eliminar">
+                                <p class="mensaje-eliminar">¿Eliminar dato médico?</p>
+                                <div class="botones">
+                                    <form action="{{ route('infante.eliminar-medico', [$medico->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="confirmar">Eliminar</button>
+                                    </form>
+                                    <button class="cancelar" onclick="toggleDropdown(this)">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    @else
+        <p>No tiene datos médicos registrados.</p>
+    @endif
+</div>
+
+
+
 
 
             <!-- ==================== Botón de retorno ==================== -->

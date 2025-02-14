@@ -39,19 +39,19 @@
     <!-- Listado de Enlaces -->
     <ul class="nav nav-pills mb-auto">
         <li class="nav-item mb-2">
-            <a href="{{ route('usuario.index') }}" class="nav-link">
+            <a href="{{ route('usuario.index') }}" class="nav-link {{ request()->routeIs('usuario.*') ? 'active' : '' }}">
                 <i class="fas fa-user icon"></i>
                 <p class="nav-text">Usuario</p>
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.index') }}" class="nav-link">
+            <a href="{{ route('sala.index') }}" class="nav-link {{ request()->routeIs('sala.*') ? 'active' : '' }}">
                 <i class="fas fa-home icon"></i>
                 <p class="nav-text">Sala</p>
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('tutor.index') }}" class="nav-link">
+            <a href="{{ route('tutor.index') }}" class="nav-link {{ request()->routeIs('tutor.*') ? 'active' : '' }}">
                 <i class="fas fa-user-tie icon"></i>
                 <p class="nav-text">Tutor</p>
             </a>
