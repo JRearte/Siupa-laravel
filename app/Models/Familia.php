@@ -10,6 +10,10 @@ class Familia extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['Nombre','Apellido','Vinculo','Fecha_de_nacimiento','Numero_documento','Tipo_documento','Lugar_de_trabajo','Ingreso','Habilitado','infante_id'];
 
+    protected $casts = [
+        'Fecha_de_nacimiento' => 'date',
+    ];
+
     /**
      * Relación inversa uno a uno con el modelo Infante
      */

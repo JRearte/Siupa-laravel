@@ -298,11 +298,11 @@
 
             @if ($tutor->Tipo_tutor === 'Alumno')
                 <div class="datos-academicos">
-                    <h2 class="titulo"><i class="fa-solid fa-graduation-cap"></i> Datos Académicos</h2>
-                    <hr class="separador">
                     <div class="carrera">
+                    <h2 class="titulo"><i class="fa-solid fa-graduation-cap"></i> Datos Académicos
+                        <hr class="separador">
                         <span class="codigo">{{ $carrera?->Codigo }}</span>
-                        <span class="nombre">{{ $carrera?->Nombre }}</span>
+                        <span class="nombre">{{ $carrera?->Nombre }}</span></h2>
 
                         @if (isset($carrera) && $tutor->Habilitado != 0)
                             <a href="{{ route('tutor.agregar-asignatura', [$tutor->id, $carrera->id]) }}"

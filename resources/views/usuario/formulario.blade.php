@@ -131,7 +131,7 @@
         <button type="submit" class="btn btn-primary">
             {{ __('Aceptar') }}
         </button>
-        <a class="btn btn-secondary" href="{{ route('usuario.index') }}">
+        <a class="btn btn-secondary" href="{{ route('usuario.presentacion', ['id' => $usuario->id]) }}">
             {{ __('Cancelar') }}
         </a>
     </div>

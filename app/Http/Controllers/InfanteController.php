@@ -6,7 +6,9 @@ use App\Models\Infante;
 use App\Models\Sala;
 use App\Models\Tutor;
 use App\Models\Medico;
+use App\Models\Familia;
 use App\Http\Requests\InfanteRequest;
+use App\Http\Requests\FamiliaRequest;
 use App\Http\Requests\MedicoRequest;
 use App\Traits\RegistraHistorial;
 use Illuminate\Http\RedirectResponse;
@@ -28,8 +30,16 @@ class InfanteController extends Controller
      */
     public function presentar(int $id): View
     {
-        $infante = Infante::with(['familiares', 'medicos', 'asistencias'])->findOrFail($id);
+        $infante = Infante::with([
+            'familiares',
+            'medicos' => function ($consulta) {$consulta->orderBy('Tipo', 'asc');},
+            'asistencias'
+        ])->findOrFail($id);
 
+        foreach ($infante->familiares as $familiar) {
+            $familiar->edad = Carbon::parse($familiar->Fecha_de_nacimiento)->age;
+        }
+        
         $fechaNacimiento = Carbon::parse($infante->Fecha_de_nacimiento);
         $edad = $fechaNacimiento->diff(Carbon::now());
 
@@ -176,25 +186,56 @@ class InfanteController extends Controller
 
     /* ==================== Datos Médicos ========== */
 
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar un dato médico.
+     * → Crea una instancia vacía de Medico asociada a un infante.
+     *
+     * @param int $infante_id → Identificador del infante.
+     * @return View → Retorna la vista infante.formulario-medico con la instancia del dato médico.
+     */
     public function formularioRegistrarMedico(int $infante_id): View
     {
         $medico = new Medico(['infante_id' => $infante_id]);
-        return view('infante.agregar-medico', compact('medico', 'infante_id'));
+        return view('infante.formulario-medico', compact('medico', 'infante_id'));
     }
 
+    /**
+     * Este método:
+     * → Registra un dato médico con validaciones previas.
+     * → Asocia el dato médico a un infante.
+     * → Registra la acción realizada en el historial del sistema.
+     *
+     * @param MedicoRequest $regla → Datos validados del dato médico a registrar.
+     * @param int $infante_id → Identificador del infante asociado.
+     * @return RedirectResponse → Redirige a la presentación del infante con un mensaje de éxito.
+     */
     public function registrarMedico(MedicoRequest $regla, int $infante_id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para registrar datos médicos.", "tutor.index");
         $infante = Infante::findOrFail($infante_id);
+
         $datos = $regla->validated();
+        $datos['infante_id'] = $infante_id;
         Medico::create($datos);
+
         $this->registrarAccion(auth()->id(), 'Registrar dato médico', "Registró un dato médico del infante {$infante->Nombre} {$infante->Apellido}");
         return redirect()->route('infante.presentacion', ['id' => $infante_id])->with('success', 'El dato médico fue registrado exitosamente.');
     }
 
+    /**
+     * Este método:
+     * → Elimina un dato médico de la base de datos.
+     * → Solo permite la eliminación a usuarios con categoría "Bienestar".
+     * → Registra la acción realizada en el historial del sistema.
+     *
+     * @param int $id → Identificador del dato médico a eliminar.
+     * @return RedirectResponse → Redirige a la presentación del infante con un mensaje de éxito.
+     */
     public function eliminarMedico(int $id): RedirectResponse
     {
         $this->validarPermiso("Bienestar", "No tienes permiso para eliminar datos médicos.", "tutor.index");
+
         $medico = Medico::findOrFail($id);
         $infante = Infante::findOrFail($medico->infante_id);
         $nombre = $infante->Nombre;
@@ -204,4 +245,100 @@ class InfanteController extends Controller
         $this->registrarAccion(auth()->id(), 'Eliminar dato médico', "Eliminó un dato médico del infante {$nombre} {$apellido}");
         return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El dato médico fue eliminado exitosamente.');
     }
+
+    /* ==================== Familiar ==================== */
+
+    /**
+     * Este método:
+     * → Muestra el formulario para registrar un nuevo familiar.
+     * → Crea una instancia vacía de Familia con el infante asociado.
+     *
+     * @param int $infante_id → Identificador del infante asociado.
+     * @return View → Retorna la vista infante.agregar-familiar con la instancia del familiar.
+     */
+    public function formularioRegistrarFamiliar(int $infante_id): View
+    {
+        $familia = new Familia(['infante_id' => $infante_id]);
+        return view('infante.agregar-familiar', compact('familia', 'infante_id'));
+    }
+
+    /**
+     * Este método:
+     * → Registra un familiar con validaciones previas.
+     * → Asigna el familiar al infante correspondiente.
+     * → Registra la acción en el historial del sistema.
+     *
+     * @param FamiliaRequest $regla → Datos validados del familiar a registrar.
+     * @param int $infante_id → Identificador del infante asociado.
+     * @return RedirectResponse → Redirige a la presentación del infante con un mensaje de éxito.
+     */
+    public function registrarFamiliar(FamiliaRequest $regla, int $infante_id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar familiares.", "tutor.index");
+        $infante = Infante::findOrFail($infante_id);
+        $datos = $regla->validated();
+        $datos['infante_id'] = $infante->id;
+        Familia::create($datos);
+
+        $this->registrarAccion(auth()->id(), 'Registrar familiar', "Registró un familiar del infante {$infante->Nombre} {$infante->Apellido}");
+        return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El familiar fue registrado exitosamente.');
+    }
+
+    /**
+     * Este método:
+     * → Recupera los datos de un familiar para su modificación.
+     *
+     * @param int $id → Identificador del familiar.
+     * @return View → Retorna la vista infante.editar-familiar con los datos del familiar.
+     */
+    public function formularioModificarFamiliar(int $id): View
+    {
+        $familia = Familia::findOrFail($id);
+        return view('infante.editar-familiar', compact('familia'));
+    }
+
+    /**
+     * Este método:
+     * → Modifica los datos de un familiar con validaciones previas.
+     * → Registra la acción en el historial del sistema.
+     *
+     * @param FamiliaRequest $regla → Datos validados del familiar a modificar.
+     * @param Familia $familia → Instancia del familiar con su información actual.
+     * @return RedirectResponse → Redirige a la presentación del infante con un mensaje de éxito.
+     */
+    public function modificarFamiliar(FamiliaRequest $regla, Familia $familia): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar familiares.", "tutor.index");
+        $datos = $regla->validated();
+        $infante = Infante::findOrFail($datos['infante_id']);
+        $familia->update($datos);
+
+        $this->registrarAccion(auth()->id(), 'Modificar familiar', "Modificó un familiar del infante {$infante->Nombre} {$infante->Apellido}");
+        return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El familiar fue modificado exitosamente.');
+    }
+
+    /**
+     * Este método:
+     * → Elimina un familiar de la base de datos.
+     * → Solo permite la eliminación a usuarios con categoría "Bienestar".
+     * → Registra la acción en el historial del sistema.
+     *
+     * @param int $id → Identificador del familiar a eliminar.
+     * @return RedirectResponse → Redirige a la presentación del infante con un mensaje de éxito.
+     */
+    public function eliminarFamiliar(int $id): RedirectResponse
+    {
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar familiares.", "tutor.index");
+
+        $familiar = Familia::findOrFail($id);
+        $infante = Infante::findOrFail($familiar->infante_id);
+        $nombre = $familiar->Nombre;
+        $apellido = $familiar->Apellido;
+        $familiar->delete();
+
+        $this->registrarAccion(auth()->id(), 'Eliminar familiar', "Eliminó al familiar {$nombre} {$apellido} del infante {$infante->Nombre} {$infante->Apellido}");
+        return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El familiar fue eliminado exitosamente.');
+    }
+
+
 }

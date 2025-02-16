@@ -93,7 +93,7 @@
     <!-- Botones -->
     <div class="form-buttons">
         <button type="submit" class="btn btn-primary">
-            {{ __('Siguiente') }}
+            {{ __('Aceptar') }}
         </button>
 
 

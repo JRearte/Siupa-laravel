@@ -32,7 +32,6 @@
                     </div>
                 </div>
 
-
                 <!-- Botones -->
                 <div class="form-buttons">
                     <button type="submit" class="btn btn-primary">

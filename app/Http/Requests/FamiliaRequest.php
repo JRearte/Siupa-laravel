@@ -7,19 +7,21 @@ use Illuminate\Validation\Rule;
 
 class FamiliaRequest extends FormRequest
 {
+    
     public function authorize(): bool
     {
         return true;
     }
-
+    
     public function rules(): array
     {
+        $id = $this->route('familia');
         return [
             'Nombre'             => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
             'Apellido'           => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'],
-            'Vinculo'            => ['required', 'string', 'max:10', 'in:Padre,Madre,Padrastro,Madrastra,Tío,Tía,Primo,Prima,Hermano,Hermana,Abuelo,Abuela'],
+            'Vinculo'            => ['required', 'string', 'max:11', 'in:Padre,Madre,Padrastro,Madrastra,Tío,Tía,Primo,Prima,Hermano,Hermana,Hermanastro,Hermanastra,Abuelo,Abuela'],
             'Fecha_de_nacimiento'=> ['required', 'date'],
-            'Numero_documento'   => ['required', 'integer', 'digits:8', Rule::unique('familia', 'Numero_documento')],
+            'Numero_documento'   => ['required', 'integer', 'digits:8', Rule::unique('familia', 'Numero_documento')->ignore($id)],
             'Tipo_documento'     => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z ]+$/'],
             'Lugar_de_trabajo'   => ['nullable', 'string', 'max:50'],
             'Ingreso'            => ['nullable', 'numeric', 'min:0'],
@@ -38,7 +40,7 @@ class FamiliaRequest extends FormRequest
             'Apellido.regex'             => 'El apellido solo puede contener letras y espacios.',
             'Apellido.max'               => 'El apellido solo puede tener un máximo de :max caracteres.',
             'Vinculo.required'           => 'El vínculo es obligatorio.',
-            'Vinculo.in'                 => 'El vínculo debe ser uno de los siguientes: Padre, Madre, Padrastro, Madrastra, Tío, Tía, Primo, Prima, Hermano, Hermana, Abuelo, Abuela.',
+            'Vinculo.max'                => 'El vinculo puede tener un máximo de :max caracteres.',
             'Fecha_de_nacimiento.required'=> 'La fecha de nacimiento es obligatoria.',
             'Fecha_de_nacimiento.date'   => 'La fecha de nacimiento debe ser válida.',
             'Numero_documento.required'  => 'El número de documento es obligatorio.',

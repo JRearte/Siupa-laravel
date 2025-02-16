@@ -631,10 +631,38 @@
     margin: 0;
 }
 
-.eliminar-wrapper {
-    display: flex;
-    align-items: center;
+/* ==================== Familiar ==================== */
+
+.t-familiar {
+    margin-top: 10px;
+    font-size: 1rem;
 }
+
+.familiar {
+    margin-top: 8px;
+    border: 1px solid #f8d5b5;
+    border-radius: 5px;
+    padding: 10px;
+    background: white;
+    position: relative;
+}
+
+.familiar-vinculo {
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    text-align: left;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.familiar-detalles {
+    padding: 5px;
+    font-size: 0.75rem;
+}
+
 
 
 
