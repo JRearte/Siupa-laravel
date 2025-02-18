@@ -33,7 +33,8 @@ class InfanteController extends Controller
         $infante = Infante::with([
             'familiares',
             'medicos' => function ($consulta) {$consulta->orderBy('Tipo', 'asc');},
-            'asistencias'
+            'asistencias',
+            'tutor'
         ])->findOrFail($id);
 
         foreach ($infante->familiares as $familiar) {

@@ -22,6 +22,7 @@ Route::controller(UsuarioController::class)->middleware('auth')->group(function 
     Route::get('usuario/advertencia/{id}', 'advertirEliminacion')->name('usuario.confirmar');
     Route::delete('usuario/eliminar/{id}', 'eliminar')->name('usuario.eliminar');
     Route::get('/usuario/reporte', 'generarReporte')->name('usuario.reporte');
+    Route::get('/usuario/reporte-especifico/{id}', 'generarReporteEspecifico')->name('usuario.reporte-especifico');
 });
 
 

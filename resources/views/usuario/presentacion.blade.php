@@ -48,6 +48,9 @@
                         <a class="editar" href="{{ route('usuario.editar', $usuario->id) }}">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
+                        <a class="reporte" href="{{ route('usuario.reporte-especifico', $usuario->id) }}">
+                            <i class="fas fa-file-alt"></i>
+                        </a>
                     </div>
                 </div>
             </div>

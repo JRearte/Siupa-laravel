@@ -8,6 +8,7 @@ use App\Models\Historial;
 use App\Traits\RegistraHistorial;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //Metodo de encriptación irreversible 
@@ -273,6 +274,7 @@ class UsuarioController extends Controller
                 'coordinador',
                 'maestro',
                 'invitado',
+                'total',
                 'porcentajeBienestar',
                 'porcentajeCoordinador',
                 'porcentajeMaestro',
@@ -283,6 +285,18 @@ class UsuarioController extends Controller
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         //return $pdf->download('Reporte de usuarios.pdf');
+        return $pdf->stream();
+    }
+
+    public function generarReporteEspecifico(int $id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        $historiales = Historial::where('usuario_id', $id)->orderBy('created_at', 'desc')->get();
+
+        $pdf = PDF::loadView('reporte/usuarioEspecificoReporte', compact('usuario', 'historiales'));
+
+        $pdf->setPaper('A4', 'portrait');
+        $pdf->render();
         return $pdf->stream();
     }
 }

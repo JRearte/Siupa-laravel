@@ -11,6 +11,7 @@ use App\Models\Trabajador;
 use App\Models\Carrera;
 use App\Models\Asignatura;
 use App\Models\Infante;
+use App\Models\Familia;
 use App\Http\Requests\TutorRequest;
 use App\Http\Requests\DomicilioRequest;
 use App\Http\Requests\TelefonoRequest;
@@ -157,11 +158,25 @@ class TutorController extends Controller
         $tutor->update($datos);
 
         if ($tutor->Habilitado == 0) {
-            Infante::where('tutor_id', $tutor->id)->update(['Habilitado' => 0]);
+            $infantes = Infante::where('tutor_id', $tutor->id)->get();
+            
+            foreach ($infantes as $infante) {
+                $infante->Habilitado = 0;
+                $infante->save();
+        
+                Familia::where('infante_id', $infante->id)->update(['Habilitado' => 0]);
+            }
+        } else {
+            $infantes = Infante::where('tutor_id', $tutor->id)->get();
+            
+            foreach ($infantes as $infante) {
+                $infante->Habilitado = 1;
+                $infante->save();
+        
+                Familia::where('infante_id', $infante->id)->update(['Habilitado' => 1]);
+            }
         }
-        else{
-            Infante::where('tutor_id', $tutor->id)->update(['Habilitado' => 1]);
-        }
+        
 
         if ($tutor->Tipo_tutor === 'Trabajador') {
             $trabajador = Trabajador::where('tutor_id', $tutor->id)->exists();

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Reporte de Usuarios</title>
+    <title>Reporte de Usuario Especifico</title>
     <style>
         @page {
             margin: 2.5cm 1.5cm 1.5cm 1.5cm;
@@ -59,7 +59,8 @@
             top: 20px;
         }
 
-        /* ========== TABLAS ========== */
+
+        /* ========== TABLA DE HISTORIAL ========== */
         .arreglo {
             width: 100%;
             border-collapse: collapse;
@@ -74,14 +75,13 @@
             background-color: #f2f2f2;
             border: 1px solid #ddd;
             padding: 10px;
-            text-align: center;
+            text-align: left;
             font-weight: bold;
         }
 
         .arreglo td {
             border: 1px solid #ddd;
             padding: 10px;
-            text-align: center;
         }
 
         .arreglo tbody tr:nth-child(even) {
@@ -104,13 +104,12 @@
 <body>
     <header>
         <img src="{{ public_path('imagen/logo.png') }}" alt="logo" class="imagen">
-        <h2 class="titulo"> Reporte general de los usuarios </h2>
-        <p class="subtitulo">Sistema de información UPA</p>
+        <h2 class="titulo">Reporte del Usuario {{ $usuario->Categoria }}</h2>
+        <p class="subtitulo">Legajo: {{ $usuario->Legajo }} | Nombre: {{ $usuario->Nombre }} {{ $usuario->Apellido }}</p>
+
     </header>
+
     <footer>
-        <div>
-            <span class="fecha">Fecha: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</span>
-        </div>
         <script type="text/php">
             if (isset($pdf)) {
                 $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
@@ -121,65 +120,35 @@
                 $pdf->text($x, $y, $pageText, $font, $size);
             }
         </script>
+        <div>
+            <span class="fecha">Fecha: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</span>
+        </div>
     </footer>
 
     <div class="content">
-        <!-- Tabla de categorías arriba -->
+        <!-- Tabla de historial -->
         <table class="arreglo">
             <thead>
                 <tr>
-                    <th>Categoría</th>
-                    <th>Cantidad</th>
-                    <th>Porcentaje</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Bienestar</td>
-                    <td>{{ $bienestar }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeBienestar, 2) }}%</td>
-                </tr>
-                <tr>
-                    <td>Coordinador</td>
-                    <td>{{ $coordinador }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeCoordinador, 2) }}%</td>
-                </tr>
-                <tr>
-                    <td>Maestro</td>
-                    <td>{{ $maestro }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeMaestro, 2) }}%</td>
-                </tr>
-                <tr>
-                    <td>Invitado</td>
-                    <td>{{ $invitado }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeInvitado, 2) }}%</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Tabla de usuarios -->
-        <table class="arreglo">
-            <thead>
-                <tr>
-                    <th class='numero'>No</th>
-                    <th>Legajo</th>
-                    <th>Nombre Completo</th>
-                    <th>Categoría</th>
+                    <th class="numero">No</th>
+                    <th>Historial de acciones realizadas el año {{$usuario->created_at->format('Y');}}</th>
                 </tr>
             </thead>
             <tbody>
                 @php $i = 0; @endphp
-                @foreach ($usuarios as $usuario)
+                @foreach ($historiales as $historial)
                     <tr>
-                        <td class='contador'>{{ ++$i }}</td>
-                        <td>{{ $usuario->Legajo }}</td>
-                        <td>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
-                        <td>{{ $usuario->Categoria }}</td>
+                        <td class="contador">{{ ++$i }}</td>
+                        <td>{{ $historial->detalles }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
+
+    
+
 </body>
 
 </html>

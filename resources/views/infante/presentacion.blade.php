@@ -67,6 +67,29 @@
             </div>
             <hr class="separador">
 
+            <div class="infantes-container">
+                <div class="infante-card">
+                    <div class="infante-info">
+                        <p class="infante-nombre">
+                            <i class="fa-solid {{ $infante->tutor->Genero === 'Masculino' ? 'fa-child' : 'fa-child-dress' }}"></i>
+                            {{ $infante->tutor->Nombre }} {{ $infante->tutor->Apellido }}
+                        </p>
+                        <p class="infante-sala">
+                            @if ($infante->tutor->Tipo_tutor == 'Trabajador')
+                                <i class="fa-solid fa-briefcase"></i>
+                            @else
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            @endif
+                            {{ $infante->tutor->Tipo_tutor }}
+                        </p>
+                    </div>
+
+                    <a href="{{ route('tutor.presentacion', $infante->tutor_id) }}" class="infante-opciones">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                </div>
+            </div>
+            <hr class="separador">
 
             <!-- ==================== Familiares ==================== -->
             <div class="datos-academicos t-familiar">
@@ -86,15 +109,19 @@
                                 <button class="familiar-vinculo"
                                     @click="abierto === {{ $familiar->id }} ? abierto = null : abierto = {{ $familiar->id }}">
                                     <i class="fa-solid fa-user"></i> {{ $familiar->Vinculo }}
-                                    <i class="fa-solid" :class="abierto === {{ $familiar->id }} ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                    <i class="fa-solid"
+                                        :class="abierto === {{ $familiar->id }} ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                                 </button>
 
                                 <div x-show="abierto === {{ $familiar->id }}" class="familiar-detalles" x-cloak>
                                     <div><strong>Nombre: </strong>{{ $familiar->Nombre }} {{ $familiar->Apellido }}</div>
-                                    <div><strong>{{ $familiar->Tipo_documento }}: </strong> {{ $familiar->Numero_documento }}</div>
+                                    <div><strong>{{ $familiar->Tipo_documento }}: </strong>
+                                        {{ $familiar->Numero_documento }}</div>
                                     <div><strong>Edad: </strong>{{ $familiar->edad }}</div>
-                                    <div><strong>Trabajo: </strong>{{ $familiar?->Lugar_de_trabajo ?? 'No especificado' }}</div>
-                                    <div><strong>Ingreso: </strong>${{ number_format($familiar?->Ingreso, 2) ?? 'No especificado' }}</div>
+                                    <div><strong>Trabajo: </strong>{{ $familiar?->Lugar_de_trabajo ?? 'No especificado' }}
+                                    </div>
+                                    <div><strong>Ingreso:
+                                        </strong>${{ number_format($familiar?->Ingreso, 2) ?? 'No especificado' }}</div>
                                 </div>
                             </div>
 
@@ -127,6 +154,8 @@
                     @endforeach
                 </div>
             </div>
+
+
 
             <hr class="separador">
             <!-- ==================== Datos Médicos ==================== -->
@@ -181,14 +210,6 @@
                     <p>No tiene datos médicos registrados.</p>
                 @endif
             </div>
-
-
-
-
-
-
-
-
 
 
             <!-- ==================== Botón de retorno ==================== -->

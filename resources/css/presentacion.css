@@ -155,6 +155,12 @@
     right: 0px;
 }
 
+.opciones .reporte {
+    position: absolute;
+    top: 50px;
+    right: 0px;
+}
+
 .titulo {
     text-align: center;
 }
