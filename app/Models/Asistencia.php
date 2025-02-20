@@ -8,7 +8,14 @@ class Asistencia extends Model
 {
     protected $table = 'asistencia';
     protected $primaryKey = 'id';
-    protected $fillable = ['Fecha','Hora','Inasistencia','usuario_id','sala_id','infante_id'];
+    protected $fillable = ['Fecha','Hora_Ingreso','Hora_Salida','Inasistencia','usuario_id','sala_id','infante_id'];
+
+    protected $casts = [
+        'Fecha' => 'date:Y-m-d',
+        'Hora_Ingreso' => 'datetime:H:i',
+        'Hora_Salida' => 'datetime:H:i',
+    ];
+
 
     /**
      * Relación inversa uno a uno con el modelo Usuario

@@ -15,7 +15,6 @@ class AsistenciaRequest extends FormRequest
     {
         return [
             'Fecha'         => ['required', 'date'],
-            'Hora'          => ['required', 'date_format:H:i'],
             'Inasistencia'  => ['nullable', 'in:Justificado,Injustificado'],
             'usuario_id'    => ['required', 'exists:usuario,id'],
             'sala_id'       => ['required', 'exists:sala,id'],
@@ -28,8 +27,6 @@ class AsistenciaRequest extends FormRequest
         return [
             'Fecha.required'        => 'La fecha es obligatoria.',
             'Fecha.date'            => 'La fecha debe ser válida.',
-            'Hora.required'         => 'La hora es obligatoria.',
-            'Hora.date_format'      => 'El formato de hora debe ser HH:mm.',
             'Inasistencia.in'       => 'La inasistencia debe ser: Justificado o Injustificado.',
             'usuario_id.required'   => 'El usuario es obligatorio.',
             'usuario_id.exists'     => 'El usuario seleccionado no es válido.',

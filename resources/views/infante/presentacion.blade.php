@@ -62,6 +62,9 @@
                         <a class="editar" href="{{ route('infante.editar', $infante->id) }}">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
+                        <a class="reporte" href="{{ route('asistencia.reporte-especifico', ['infante' => $infante->id, 'sala' => $infante->sala_id]) }}">
+                            <i class="fas fa-file-alt"></i>
+                        </a>
                     </div>
                 </div>
             </div>

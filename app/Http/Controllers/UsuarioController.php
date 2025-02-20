@@ -76,6 +76,7 @@ class UsuarioController extends Controller
         ));
     }
 
+    
     /**
      * Este método:
      * → Recupera la información detallada de un usuario por su identificador único.
@@ -267,7 +268,7 @@ class UsuarioController extends Controller
         $porcentajeInvitado = $total > 0 ? ($invitado / $total) * 100 : 0;
 
         $pdf = PDF::loadView(
-            'reporte/usuarioReporte',
+            'reporte/reporte-general-usuario',
             compact(
                 'usuarios',
                 'bienestar',
@@ -284,19 +285,19 @@ class UsuarioController extends Controller
 
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
-        //return $pdf->download('Reporte de usuarios.pdf');
-        return $pdf->stream();
+        return $pdf->download('Reporte de usuarios ' . now()->format('d-m-Y') . '.pdf');
+        //return $pdf->stream();
     }
 
     public function generarReporteEspecifico(int $id)
     {
         $usuario = Usuario::findOrFail($id);
-        $historiales = Historial::where('usuario_id', $id)->orderBy('created_at', 'desc')->get();
-
-        $pdf = PDF::loadView('reporte/usuarioEspecificoReporte', compact('usuario', 'historiales'));
+        $historiales = Historial::where('usuario_id', $id)->orderBy('created_at', 'asc')->get();
+        $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact('usuario', 'historiales'));
 
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
-        return $pdf->stream();
+        return $pdf->download('Reporte de ' . $usuario->Nombre . ' ' . $usuario->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
+
     }
 }

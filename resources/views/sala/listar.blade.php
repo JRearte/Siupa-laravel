@@ -13,19 +13,12 @@
                             
                                 <!-- Nombre centrado -->
                                 <span class="mx-auto text-center">{{ $sala1->Nombre }}</span>
-                            
-                                <!-- Botón alineado a la derecha -->
-                                <div class="dropdown @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                    <button class="btn btn-sm btn-secondary dropbtn">
-                                        <i class="fas fa-square"></i>
-                                    </button>
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item" href="{{ route('sala.editar', $sala1->id) }}">
-                                            <i class="fa-solid fa-pencil icon"></i> Editar
-                                        </a>
-                                        
+
+                                <a href="{{ route('sala.presentacion',$sala1->id)}}">
+                                    <div class="presentacion" style="width: 20px; height: 20px ">
+                                        <i class="fa-solid fa-gear"></i>
                                     </div>
-                                </div>
+                                </a>
                             </th>
                             
                         </tr>
@@ -115,18 +108,11 @@
                                 <!-- Nombre centrado -->
                                 <span class="mx-auto text-center">{{ $sala2->Nombre }}</span>
                             
-                                <!-- Botón alineado a la derecha -->
-                                <div class="dropdown @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                    <button class="btn btn-sm btn-secondary dropbtn">
-                                        <i class="fas fa-square"></i>
-                                    </button>
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item" href="{{ route('sala.editar', $sala2->id) }}">
-                                            <i class="fa-solid fa-pencil icon"></i> Editar
-                                        </a>
-                                        
+                                <a href="{{ route('sala.presentacion',$sala2->id)}}">
+                                    <div class="presentacion" style="width: 20px; height: 20px ">
+                                        <i class="fa-solid fa-gear"></i>
                                     </div>
-                                </div>
+                                </a>
                             </th>
                             
                         </tr>
@@ -216,18 +202,11 @@
                                 <!-- Nombre centrado -->
                                 <span class="mx-auto text-center">{{ $sala3->Nombre }}</span>
                             
-                                <!-- Botón alineado a la derecha -->
-                                <div class="dropdown @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                    <button class="btn btn-sm btn-secondary dropbtn">
-                                        <i class="fas fa-square"></i>
-                                    </button>
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item" href="{{ route('sala.editar', $sala3->id) }}">
-                                            <i class="fa-solid fa-pencil icon"></i> Editar
-                                        </a>
-                                        
+                                <a href="{{ route('sala.presentacion',$sala3->id)}}">
+                                    <div class="presentacion" style="width: 20px; height: 20px ">
+                                        <i class="fa-solid fa-gear"></i>
                                     </div>
-                                </div>
+                                </a>
                             </th>
                         </tr>
                     </thead>

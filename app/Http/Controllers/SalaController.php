@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sala;
+use App\Models\Infante;
+use App\Models\Usuario;
 use App\Http\Requests\SalaRequest;
 use App\Traits\RegistraHistorial;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+
+
 
 class SalaController extends Controller
 {
@@ -67,6 +72,24 @@ class SalaController extends Controller
         $sala3 = $datos['sala3'] ?? null;
 
         return view('sala.index', compact('sala1', 'sala2', 'sala3', 'buscar'));
+    }
+
+
+    /**
+     * Este método:
+     * → Recupera la información detallada de una sala por su identificador único.
+     * → Recupera los infantes que asisten en la sala.
+     * 
+     * @param int $id → Identificador único de la sala.
+     * @return View → Retorna la vista sala.presentacion con los datos de la sala.
+     */
+    public function presentar(int $id): View
+    {
+        $sala = Sala::findOrFail($id);
+        $infantes = $sala->infante()->get();
+        $cantidad = $infantes->count();
+
+        return view('sala.presentacion', compact('sala', 'infantes', 'cantidad'));
     }
 
 
@@ -183,4 +206,18 @@ class SalaController extends Controller
         $this->registrarAccion(auth()->id(), 'Eliminar sala', "Elimino la sala {$nombre}");
         return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
     }*/
+
+    public function generarReporteEspecifico(int $sala_id)
+    {
+        $sala = Sala::findOrFail($sala_id);
+        $infantes = Infante::where('sala_id', $sala_id)->get();
+        $usuarios = Usuario::whereHas('asistencias', 
+                    function ($consulta) use ($sala_id) {$consulta->where('sala_id', $sala_id);})->distinct()->get();
+    
+        $pdf = PDF::loadView('reporte/reporte-especifico-sala', compact('sala', 'infantes', 'usuarios'));
+    
+        return $pdf->stream();
+    }
+    
+
 }

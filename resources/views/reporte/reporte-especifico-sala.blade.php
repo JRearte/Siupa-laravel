@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Reporte de Usuario Especifico</title>
+    <title>Reporte de Sala</title>
     <style>
         @page {
             margin: 2.5cm 1.5cm 1.5cm 1.5cm;
@@ -59,8 +59,7 @@
             top: 20px;
         }
 
-
-        /* ========== TABLA DE HISTORIAL ========== */
+        /* ========== TABLAS ========== */
         .arreglo {
             width: 100%;
             border-collapse: collapse;
@@ -75,11 +74,12 @@
             background-color: #f2f2f2;
             border: 1px solid #ddd;
             padding: 10px;
-            text-align: left;
+            text-align: center;
             font-weight: bold;
         }
 
         .arreglo td {
+            text-align: center;
             border: 1px solid #ddd;
             padding: 10px;
         }
@@ -91,22 +91,14 @@
         .arreglo tbody tr:hover {
             background-color: #f1f1f1;
         }
-
-        .numero,
-        .contador {
-            text-align: center !important;
-            font-weight: bold;
-            width: 35px;
-        }
     </style>
 </head>
 
 <body>
     <header>
         <img src="{{ public_path('imagen/logo.png') }}" alt="logo" class="imagen">
-        <h2 class="titulo">Reporte del Usuario {{ $usuario->Categoria }}</h2>
-        <p class="subtitulo">Legajo: {{ $usuario->Legajo }} | Nombre: {{ $usuario->Nombre }} {{ $usuario->Apellido }}</p>
-
+        <h2 class="titulo">Reporte de la Sala {{ $sala->Nombre }}</h2>
+        <p class="subtitulo"> Sistema de información UPA </p>
     </header>
 
     <footer>
@@ -125,30 +117,52 @@
         </div>
     </footer>
 
-    <div class="content">
-        <!-- Tabla de historial -->
-        <table class="arreglo">
-            <thead>
+    <!-- Tabla de Infantes -->
+    <table class="arreglo">
+        <thead>
+            <tr>
+                <th colspan="3">Infantes en la Sala</th>
+            </tr>
+            <tr>
+                <th>Nombre completo</th>
+                <th>Categoria</th>
+                <th>Fecha de asignación</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($infantes as $infante)
                 <tr>
-                    <th class="numero">No</th>
-                    <th>Historial de acciones realizadas el año {{$usuario->created_at->format('Y');}}</th>
+                    <td>{{ $infante->Nombre }} {{ $infante->Apellido }}</td>
+                    <td>{{ $infante->Categoria }}</td>
+                    <td>{{ ucfirst(\Carbon\Carbon::parse($infante->Fecha_de_asignacion)->translatedFormat('d F Y')) }}</td>
+
                 </tr>
-            </thead>
-            <tbody>
-                @php $i = 0; @endphp
-                @foreach ($historiales as $historial)
-                    <tr>
-                        <td class="contador">{{ ++$i }}</td>
-                        <td>{{ $historial->detalles }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+            @endforeach
+        </tbody>
+    </table>
 
-
-    
+    <!-- Tabla de Usuarios -->
+    <table class="arreglo">
+        <thead>
+            <tr>
+                <th colspan="3">Usuarios que participaron en la Sala</th>
+            </tr>
+            <tr>
+                <th>Legajo</th>
+                <th>Nombre completo</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($usuarios as $usuario)
+                <tr>
+                    <td>{{ $usuario->Legajo }}</td>
+                    <td>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
+                    <td>{{ $usuario->Categoria }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
 </body>
-
 </html>

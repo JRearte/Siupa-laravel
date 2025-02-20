@@ -21,7 +21,7 @@ class Usuario extends Model implements Authenticacion
     /**
      * Relación uno a muchos con el modelo Asistencia
      */
-    public function asistencia()
+    public function asistencias()
     {
         return $this->hasMany(Asistencia::class);
     }
