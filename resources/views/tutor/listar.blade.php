@@ -146,7 +146,7 @@
                                     </div>
 
                                     <!-- Botón de opciones -->
-                                    <div class="{{ auth()->user()->Categoria !== 'Bienestar' ? 'd-none' : '' }}">
+                                    <div>
                                         <a href="{{ route('tutor.presentacion', $alumno->id) }}">
                                             <div class="presentacion">
                                                 <i class="fa-solid fa-gear"></i>

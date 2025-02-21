@@ -342,7 +342,6 @@ class InfanteController extends Controller
         $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar familiares.", "infante.presentacion", $familiar->infante_id);
         
         $infante = $familiar->infante;
-        
         $nombre = $familiar->Nombre;
         $apellido = $familiar->Apellido;
         $familiar->delete();

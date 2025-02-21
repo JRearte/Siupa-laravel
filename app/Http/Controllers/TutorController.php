@@ -86,6 +86,7 @@ class TutorController extends Controller
      */
     public function presentar(int $id): View
     {
+        $this->validarPermiso(["Bienestar"], "No tienes permiso para ver tutores.", "tutor.index");
         $tutor = Tutor::with(['domicilio', 'infantes.sala', 'correos', 'telefonos'])->findOrFail($id);
         $edad = Carbon::parse($tutor->Fecha_de_nacimiento)->age;
         $trabajador = null;
@@ -135,6 +136,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrar(): View
     {
+        $this->validarPermiso(["Bienestar"], "No tienes permiso para registrar tutores.", "tutor.index");
         $tutor = new Tutor();
         return view('tutor.agregar', compact('tutor'));
     }
@@ -151,7 +153,7 @@ class TutorController extends Controller
      */
     public function registrar(TutorRequest $regla): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar tutores.", "tutor.index");
+        $this->validarPermiso(["Bienestar"], "No tienes permiso para registrar tutores.", "tutor.index");
         $datos = $regla->validated();
         $tutor = Tutor::create($datos);
 
@@ -174,6 +176,7 @@ class TutorController extends Controller
      */
     public function formularioModificar(int $id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar tutores.", "tutor.presentacion", $id);
         $tutor = Tutor::findOrFail($id);
         return view('tutor.editar', compact('tutor'));
     }
@@ -190,7 +193,7 @@ class TutorController extends Controller
      */
     public function modificar(TutorRequest $regla, Tutor $tutor): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar tutores.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar tutores.", "tutor.presentacion", $tutor->id);
         $datos = $regla->validated();
         $tutor->update($datos);
 
@@ -241,6 +244,7 @@ class TutorController extends Controller
      */
     public function advertirEliminacion(int $id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar tutores.", "tutor.presentacion", $id);
         $tutor = Tutor::findOrFail($id);
         return view('tutor.advertencia', compact('tutor'));
     }
@@ -256,7 +260,7 @@ class TutorController extends Controller
      */
     public function eliminar(int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar tutores.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar tutores.", "tutor.presentacion", $id);
 
         $tutor = Tutor::findOrFail($id);
         $nombre = $tutor->Nombre;
@@ -285,6 +289,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrarTelefono($tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar contactos.", "tutor.presentacion", $tutor_id);
         $telefono = new Telefono(['tutor_id' => $tutor_id]);
         return view('tutor.formulario-telefono', compact('telefono', 'tutor_id'));
     }
@@ -301,7 +306,7 @@ class TutorController extends Controller
      */
     public function registrarTelefono(TelefonoRequest $regla, int $tutor_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar contactos.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar contactos.", "tutor.presentacion", $tutor_id);
         $datos = $regla->validated();
         $datos['tutor_id'] = $tutor_id;
         Telefono::create($datos);
@@ -321,13 +326,14 @@ class TutorController extends Controller
      */
     public function eliminarTelefono(int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar contactos.", "tutor.index");
-        $telefono = Telefono::findOrFail($id);
-        $tutor = Tutor::findOrFail($telefono->tutor_id);
+        $telefono = Telefono::with('tutor')->findOrFail($id);
+        $tutor = $telefono->tutor;
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar contactos.", "tutor.presentacion", $tutor->id);
         $telefono->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar teléfono', "Eliminó un contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El teléfono fue eliminado exitosamente');
     }
+    
 
     /**
      * Este método:
@@ -339,6 +345,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrarCorreo($tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar contactos.", "tutor.presentacion", $tutor_id);
         $correo = new Correo(['tutor_id' => $tutor_id]);
         return view('tutor.formulario-correo', compact('correo', 'tutor_id'));
     }
@@ -355,7 +362,7 @@ class TutorController extends Controller
      */
     public function registrarCorreo(CorreoRequest $regla, int $tutor_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar contactos.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar contactos.", "tutor.presentacion", $tutor_id);
         $datos = $regla->validated();
         $datos['tutor_id'] = $tutor_id;
         Correo::create($datos);
@@ -375,9 +382,9 @@ class TutorController extends Controller
      */
     public function eliminarCorreo(int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar contactos.", "tutor.index");
-        $correo = Correo::findOrFail($id);
-        $tutor = Tutor::findOrFail($correo->tutor_id);
+        $correo = Correo::with('tutor')->findOrFail($id);
+        $tutor = $correo->tutor;
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar contactos.", "tutor.presentacion", $tutor->id);
         $correo->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar correo', "Eliminó un contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El correo fue eliminado exitosamente');
@@ -396,6 +403,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrarDomicilio(int $tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar domicilio.", "tutor.presentacion", $tutor_id);
         $domicilio = new Domicilio(['tutor_id' => $tutor_id]);
         return view('tutor.agregar-domicilio', compact('domicilio', 'tutor_id'));
     }
@@ -412,15 +420,12 @@ class TutorController extends Controller
      */
     public function registrarDomicilio(DomicilioRequest $regla, int $tutor_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar datos de domicilio.", "tutor.index");
-
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar domicilio.", "tutor.presentacion", $tutor_id);
         $datos = $regla->validated();
         $datos['tutor_id'] = $tutor_id;
         Domicilio::create($datos);
-
         $tutor = Tutor::findOrFail($tutor_id);
         $this->registrarAccion(auth()->id(), 'Registrar domicilio', "Registró los datos del domicilio de {$tutor->Nombre} {$tutor->Apellido}");
-
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El domicilio fue registrado exitosamente.');
     }
 
@@ -434,6 +439,7 @@ class TutorController extends Controller
      */
     public function formularioModificarDomicilio(int $tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar domicilio.", "tutor.presentacion", $tutor_id);
         $domicilio = Domicilio::where('tutor_id', $tutor_id)->firstOrFail();
         return view('tutor.editar-domicilio', compact('domicilio', 'tutor_id'));
     }
@@ -450,7 +456,7 @@ class TutorController extends Controller
      */
     public function modificarDomicilio(DomicilioRequest $regla, Domicilio $domicilio): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar domicilios.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar domicilio.", "tutor.presentacion", $domicilio->tutor_id);
         $datos = $regla->validated();
         $domicilio->update($datos);
         $tutor = Tutor::findOrFail($domicilio->tutor_id);
@@ -472,6 +478,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrarTrabajador(int $tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar trabajador.", "tutor.presentacion", $tutor_id);
         $trabajador = new Trabajador(['tutor_id' => $tutor_id]);
         return view('tutor.agregar-trabajador', compact('trabajador', 'tutor_id'));
     }
@@ -488,7 +495,7 @@ class TutorController extends Controller
      */
     public function registrarTrabajador(TrabajadorRequest $regla, int $tutor_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar datos de trabajador.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar trabajador.", "tutor.presentacion", $tutor_id);
         $datos = $regla->validated();
         $datos['tutor_id'] = $tutor_id;
         Trabajador::create($datos);
@@ -505,6 +512,7 @@ class TutorController extends Controller
      */
     public function formularioModificarTrabajador(int $tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar trabajador.", "tutor.presentacion", $tutor_id);
         $trabajador = Trabajador::where('tutor_id', $tutor_id)->firstOrFail();
         return view('tutor.editar-trabajador', compact('trabajador', 'tutor_id'));
     }
@@ -521,7 +529,7 @@ class TutorController extends Controller
      */
     public function modificarTrabajador(TrabajadorRequest $regla, Trabajador $trabajador): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar trabajadores.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar trabajador.", "tutor.presentacion", $trabajador->tutor_id);
         $datos = $regla->validated();
         $trabajador->update($datos);
         return redirect()->route('tutor.presentacion', ['id' => $trabajador->tutor_id])->with('success', 'El trabajador fue modificado exitosamente.');
@@ -538,6 +546,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrarCuota(int $tutor_id)
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar cuotas.", "tutor.presentacion", $tutor_id);
         $trabajador = Trabajador::where('tutor_id', $tutor_id)->first();
 
         if (!$trabajador) {
@@ -561,15 +570,16 @@ class TutorController extends Controller
      */
     public function registrarCuota(CuotaRequest $regla, int $trabajador_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar cuotas.", "tutor.index");
+        $trabajador = Trabajador::with('tutor')->findOrFail($trabajador_id);
+        $tutor = $trabajador->tutor;
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar cuotas.", "tutor.presentacion", $tutor->id);
         $datos = $regla->validated();
         $datos['trabajador_id'] = $trabajador_id;
-        $trabajador = Trabajador::where('id', $trabajador_id)->firstOrFail();
-        $tutor = Tutor::where('id', $trabajador->tutor_id)->firstOrFail();
         Cuota::create($datos);
         $this->registrarAccion(auth()->id(), 'Registrar cuota', "Registró la cuota del tutor {$tutor->Nombre} {$tutor->Apellido}");
-        return redirect()->route('tutor.presentacion', $trabajador->tutor_id)->with('success', 'La cuota fue registrada exitosamente.');
+        return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La cuota fue registrada exitosamente.');
     }
+    
 
     /**
      * Este método:
@@ -583,9 +593,9 @@ class TutorController extends Controller
      */
     public function eliminarCuota(int $tutor_id, int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar cuotas.", "tutor.index");
-        $cuota = Cuota::findOrFail($id);
-        $tutor = Tutor::findOrFail($tutor_id);
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar cuotas.", "tutor.presentacion", $tutor_id);
+        $cuota = Cuota::with('trabajador.tutor')->findOrFail($id);
+        $tutor = $cuota->trabajador->tutor;
         $fecha = $cuota->Fecha->translatedFormat('d F Y');
         $cuota->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar cuota', "Eliminó la cuota creada el {$fecha} del tutor {$tutor->Nombre} {$tutor->Apellido}");
@@ -604,6 +614,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrarCarrera(int $tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar carrera.", "tutor.presentacion", $tutor_id);
         $carrera = new Carrera(['tutor_id' => $tutor_id]);
         return view('tutor.agregar-carrera', compact('carrera', 'tutor_id'));
     }
@@ -619,7 +630,7 @@ class TutorController extends Controller
      */
     public function registrarCarrera(CarreraRequest $regla, int $tutor_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar carrera.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar carrera.", "tutor.presentacion", $tutor_id);
         $datos = $regla->validated();
         $datos['tutor_id'] = $tutor_id;
         Carrera::create($datos);
@@ -636,6 +647,7 @@ class TutorController extends Controller
      */
     public function formularioModificarCarrera(int $tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar carrera.", "tutor.presentacion", $tutor_id);
         $carrera = Carrera::where('tutor_id', $tutor_id)->firstOrFail();
         return view('tutor.editar-carrera', compact('carrera', 'tutor_id'));
     }
@@ -651,7 +663,7 @@ class TutorController extends Controller
      */
     public function modificarCarrera(CarreraRequest $regla, Carrera $carrera): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar carreras.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar carrera.", "tutor.presentacion", $carrera->tutor_id);
         $datos = $regla->validated();
         $carrera->update($datos);
         return redirect()->route('tutor.presentacion', ['id' => $carrera->tutor_id])->with('success', 'La carrera fue modificada exitosamente.');
@@ -670,6 +682,7 @@ class TutorController extends Controller
      */
     public function formularioRegistrarAsignatura(int $tutor_id, int $carrera_id): View|RedirectResponse
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar asignaturas.", "tutor.presentacion", $tutor_id);
         $carrera = Carrera::where('tutor_id', $tutor_id)->where('id', $carrera_id)->first();
         if (!$carrera) {
             return redirect()->route('tutor.presentacion', $tutor_id)->with('error', 'Termine de completar los datos del tutor.');
@@ -692,7 +705,7 @@ class TutorController extends Controller
      */
     public function registrarAsignatura(AsignaturaRequest $regla, int $tutor_id, int $carrera_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar asignaturas.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar asignaturas.", "tutor.presentacion", $tutor_id);
         $datos = $regla->validated();
         $datos['tutor_id'] = $tutor_id;
         $datos['carrera_id'] = $carrera_id;
@@ -714,6 +727,7 @@ class TutorController extends Controller
     public function formularioModificarAsignatura(int $carrera_id, int $asignatura_id): View
     {
         $asignatura = Asignatura::where('id', $asignatura_id)->where('carrera_id', $carrera_id)->firstOrFail();
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar asignaturas.", "tutor.presentacion", $asignatura->tutor_id);
         $tutor_id = $asignatura->tutor_id;
         return view('tutor.editar-asignatura', compact('asignatura', 'carrera_id', 'tutor_id'));
     }
@@ -731,7 +745,7 @@ class TutorController extends Controller
      */
     public function modificarAsignatura(AsignaturaRequest $regla, Asignatura $asignatura): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar asignaturas.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar asignaturas.", "tutor.presentacion", $asignatura->tutor_id);
         $datos = $regla->validated();
         $asignatura->update($datos);
         $tutor = Tutor::findOrFail($asignatura->tutor_id);
@@ -751,9 +765,9 @@ class TutorController extends Controller
      */
     public function eliminarAsignatura(int $tutor_id, int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar asignaturas.", "tutor.index");
-        $asignatura = Asignatura::findOrFail($id);
-        $tutor = Tutor::findOrFail($tutor_id);
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar asignaturas.", "tutor.presentacion", $tutor_id);
+        $asignatura = Asignatura::with('tutor')->findOrFail($id);
+        $tutor = $asignatura->tutor;
         $asignatura->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar asignatura', "Eliminó la asignatura {$asignatura->Nombre} del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La asignatura fue eliminada exitosamente');
