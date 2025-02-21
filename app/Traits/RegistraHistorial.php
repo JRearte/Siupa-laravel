@@ -39,12 +39,22 @@ trait RegistraHistorial
      * 
      * @throws \App\Exceptions\ValidacionException → Excepción lanzada si el usuario no tiene la categoría correcta.
      */
-    public function validarPermiso(string $categoria, string $mensaje, string $ruta)
+    public function validarPermiso(array $categorias, string $mensaje, string $ruta)
     {
         $usuarioAutenticado = auth()->user();
-        if ($usuarioAutenticado->Categoria !== $categoria) {
+        if (!in_array($usuarioAutenticado->Categoria, $categorias)) {
             throw new \App\Exceptions\ValidacionException($mensaje, $ruta);
         }
     }
+    
+    public function validarPermisoConID(array $categorias, string $mensaje, string $ruta, int $id)
+    {
+        $usuarioAutenticado = auth()->user();
+        if (!in_array($usuarioAutenticado->Categoria, $categorias)) {
+            throw new \App\Exceptions\ValidacionException($mensaje, $ruta, ['id' => $id]);
+        }
+    }
+    
+    
      
 }

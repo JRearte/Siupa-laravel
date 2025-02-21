@@ -143,6 +143,7 @@ class SalaController extends Controller
      */
     public function formularioModificar(int $id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar salas.", "sala.presentacion",$id);
         $sala = Sala::findOrFail($id);
         return view('sala.editar', compact('sala'));
     }
@@ -159,7 +160,7 @@ class SalaController extends Controller
      */
     public function modificar(SalaRequest $regla, Sala $sala): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar salas.", "sala.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar salas.", "sala.presentacion",$sala->id);
         $datos = $regla->validated();
         $sala->update($datos);
         $this->registrarAccion(auth()->id(), 'Modificar sala', "Modifico la sala {$sala->Nombre}");

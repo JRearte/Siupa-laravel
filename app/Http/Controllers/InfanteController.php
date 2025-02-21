@@ -32,7 +32,9 @@ class InfanteController extends Controller
     {
         $infante = Infante::with([
             'familiares',
-            'medicos' => function ($consulta) {$consulta->orderBy('Tipo', 'asc');},
+            'medicos' => function ($consulta) {
+                $consulta->orderBy('Tipo', 'asc');
+            },
             'asistencias',
             'tutor'
         ])->findOrFail($id);
@@ -40,7 +42,7 @@ class InfanteController extends Controller
         foreach ($infante->familiares as $familiar) {
             $familiar->edad = Carbon::parse($familiar->Fecha_de_nacimiento)->age;
         }
-        
+
         $fechaNacimiento = Carbon::parse($infante->Fecha_de_nacimiento);
         $edad = $fechaNacimiento->diff(Carbon::now());
 
@@ -66,6 +68,7 @@ class InfanteController extends Controller
      */
     public function formularioRegistrar(int $tutor_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar infantes.", "tutor.presentacion", $tutor_id);
         $infante = new Infante(['tutor_id' => $tutor_id]);
         $sala = Sala::findOrFail(1);
         return view('infante.agregar', compact('infante', 'tutor_id', 'sala'));
@@ -84,7 +87,7 @@ class InfanteController extends Controller
      */
     public function registrar(InfanteRequest $regla, int $tutor_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar infantes.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar infantes.", "tutor.presentacion", $tutor_id);
         $tutor = Tutor::findOrFail($tutor_id);
 
         $datos = $regla->validated();
@@ -118,6 +121,7 @@ class InfanteController extends Controller
      */
     public function formularioModificar(int $id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar infantes.", "infante.presentacion", $id);
         $infante = Infante::findOrFail($id);
         $salas = Sala::all();
         return view('infante.editar', compact('infante', 'salas'));
@@ -135,7 +139,7 @@ class InfanteController extends Controller
      */
     public function modificar(InfanteRequest $regla, Infante $infante): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar infantes.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar infantes.", "infante.presentacion", $infante->id);
         $datos = $regla->validated();
         $tutor = Tutor::findOrFail($datos['tutor_id']);
 
@@ -159,6 +163,7 @@ class InfanteController extends Controller
      */
     public function advertirEliminacion(int $id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar infantes.", "infante.presentacion", $id);
         $infante = Infante::findOrFail($id);
         return view('infante.advertencia', compact('infante'));
     }
@@ -174,7 +179,7 @@ class InfanteController extends Controller
      */
     public function eliminar(int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar infantes.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar infantes.", "infante.presentacion", $id);
 
         $infante = Infante::findOrFail($id);
         $nombre = $infante->Nombre;
@@ -198,6 +203,7 @@ class InfanteController extends Controller
      */
     public function formularioRegistrarMedico(int $infante_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar datos médicos.", "infante.presentacion", $infante_id);
         $medico = new Medico(['infante_id' => $infante_id]);
         return view('infante.formulario-medico', compact('medico', 'infante_id'));
     }
@@ -214,7 +220,7 @@ class InfanteController extends Controller
      */
     public function registrarMedico(MedicoRequest $regla, int $infante_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar datos médicos.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar datos médicos.", "infante.presentacion", $infante_id);
         $infante = Infante::findOrFail($infante_id);
 
         $datos = $regla->validated();
@@ -236,7 +242,7 @@ class InfanteController extends Controller
      */
     public function eliminarMedico(int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar datos médicos.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar datos médicos.", "infante.presentacion", $id);
 
         $medico = Medico::findOrFail($id);
         $infante = Infante::findOrFail($medico->infante_id);
@@ -260,6 +266,7 @@ class InfanteController extends Controller
      */
     public function formularioRegistrarFamiliar(int $infante_id): View
     {
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar familiares.", "infante.presentacion", $infante_id);
         $familia = new Familia(['infante_id' => $infante_id]);
         return view('infante.agregar-familiar', compact('familia', 'infante_id'));
     }
@@ -276,7 +283,7 @@ class InfanteController extends Controller
      */
     public function registrarFamiliar(FamiliaRequest $regla, int $infante_id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar familiares.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para registrar familiares.", "infante.presentacion", $infante_id);
         $infante = Infante::findOrFail($infante_id);
         $datos = $regla->validated();
         $datos['infante_id'] = $infante->id;
@@ -296,6 +303,7 @@ class InfanteController extends Controller
     public function formularioModificarFamiliar(int $id): View
     {
         $familia = Familia::findOrFail($id);
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar familiares.", "infante.presentacion", $familia->infante_id);
         return view('infante.editar-familiar', compact('familia'));
     }
 
@@ -310,7 +318,7 @@ class InfanteController extends Controller
      */
     public function modificarFamiliar(FamiliaRequest $regla, Familia $familia): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar familiares.", "tutor.index");
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar familiares.", "infante.presentacion", $familia->infante_id);
         $datos = $regla->validated();
         $infante = Infante::findOrFail($datos['infante_id']);
         $familia->update($datos);
@@ -330,17 +338,18 @@ class InfanteController extends Controller
      */
     public function eliminarFamiliar(int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar familiares.", "tutor.index");
-
-        $familiar = Familia::findOrFail($id);
-        $infante = Infante::findOrFail($familiar->infante_id);
+        $familiar = Familia::with('infante')->findOrFail($id);
+        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar familiares.", "infante.presentacion", $familiar->infante_id);
+        
+        $infante = $familiar->infante;
+        
         $nombre = $familiar->Nombre;
         $apellido = $familiar->Apellido;
         $familiar->delete();
-
+    
         $this->registrarAccion(auth()->id(), 'Eliminar familiar', "Eliminó al familiar {$nombre} {$apellido} del infante {$infante->Nombre} {$infante->Apellido}");
+    
         return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El familiar fue eliminado exitosamente.');
     }
-
-
+    
 }

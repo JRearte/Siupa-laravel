@@ -107,7 +107,7 @@ class UsuarioController extends Controller
      */
     public function formularioRegistrar(): View
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar usuarios.", "usuario.index");
+        $this->validarPermiso(["Bienestar"], "No tienes permiso para registrar usuarios.", "usuario.index");
         $usuario = new Usuario();
         return view('usuario.agregar', compact('usuario'));
     }
@@ -124,7 +124,7 @@ class UsuarioController extends Controller
      */
     public function registrar(UsuarioRequest $regla): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para registrar usuarios.", "usuario.index");
+        $this->validarPermiso(["Bienestar"], "No tienes permiso para registrar usuarios.", "usuario.index");
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario = Usuario::create($datos);
@@ -141,9 +141,9 @@ class UsuarioController extends Controller
      * @param int $id → Identificador único del usuario.
      * @return View → Retorna la vista usuario.editar con los datos del usuario.
      */
-    public function formularioModificar(int $id): View 
+    public function formularioModificar(int $id): View
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar usuarios.", "usuario.index");
+        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para modificarte.','usuario.presentacion',$id);
         $usuario = Usuario::findOrFail($id);
         return view('usuario.editar', compact('usuario'));
     }
@@ -162,7 +162,7 @@ class UsuarioController extends Controller
      */
     public function modificar(UsuarioRequest $regla, Usuario $usuario): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para modificar usuarios.", "usuario.index");
+        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para modificar usuarios.','usuario.presentacion',$usuario->id);
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario->update($datos);
@@ -178,12 +178,9 @@ class UsuarioController extends Controller
      * @param int $id → Identificador único del usuario a eliminar.
      * @return View → Retorna la vista usuario.advertencia con los datos del usuario.
      */
-    public function advertirEliminacion(int $id): View | RedirectResponse
+    public function advertirEliminacion(int $id): View
     {
-        if (auth()->id() == $id) {
-            return redirect()->route('usuario.presentacion', auth()->id())->with('error', 'No puedes autoeliminarte');
-        }
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar usuarios.", "usuario.index");
+        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para eliminar usuarios.','usuario.presentacion',$id);
         $usuario = Usuario::findOrFail($id);
         return view('usuario.advertencia', compact('usuario'));
     }
@@ -199,7 +196,7 @@ class UsuarioController extends Controller
      */
     public function eliminar(int $id): RedirectResponse
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar usuarios.", "usuario.index");
+        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para eliminar usuarios.','usuario.presentacion',$id);
         $usuario = Usuario::findOrFail($id);
         $nombre = $usuario->Nombre;
         $apellido = $usuario->Apellido;
@@ -265,7 +262,7 @@ class UsuarioController extends Controller
      */
     public function generarReporte()
     {
-        $this->validarPermiso("Bienestar", "No tienes permiso para descargar este reporte.", "usuario.index");
+        $this->validarPermiso(["Bienestar"], "No tienes permiso para descargar este reporte.", "usuario.index");
         $usuarios = Usuario::orderBy('apellido', 'asc')->get();
         $bienestar = $usuarios->where('Categoria', 'Bienestar')->count();
         $coordinador = $usuarios->where('Categoria', 'Coordinador')->count();
