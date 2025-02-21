@@ -19,7 +19,7 @@
                 </form>
 
                 <!-- Botones de acciones -->
-                <div class="acciones d-flex  @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
+                <div class="acciones d-flex">
                     <a href="{{ route('usuario.agregar') }}" class="btn btn-dark ms-2">
                         <i class="fas fa-user-plus"></i> <span>{{ __('Agregar') }}</span>
                     </a>
@@ -34,12 +34,12 @@
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li>
+                        <li class="{{ auth()->user()->Categoria !== 'Bienestar' ? 'd-none' : '' }}">
                             <a class="dropdown-item" href="{{ route('usuario.agregar') }}">
                                 <i class="fas fa-user-plus"></i> Agregar
                             </a>
                         </li>
-                        <li>
+                        <li class="{{ auth()->user()->Categoria !== 'Bienestar' ? 'd-none' : '' }}">
                             <a class="dropdown-item" href="{{ route('usuario.reporte') }}">
                                 <i class="fa-solid fa-file-lines"></i> Reporte
                             </a>

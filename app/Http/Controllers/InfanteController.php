@@ -141,6 +141,7 @@ class InfanteController extends Controller
 
         if ($tutor->Habilitado == 0) {
             $datos['Habilitado'] = 0;
+            return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('info', "El tutor del infante está deshabilitado");
         }
 
         $infante->update($datos);

@@ -5,13 +5,14 @@
     <div class="form-group mb-3">
         <label for="legajo" class="form-label">
             {{ __('Legajo') }}
-            <span class="tooltip-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Ejemplo: 1-12345678/12 o 123">
+            <span class="tooltip-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="Ejemplo: 1-12345678/12 o 123">
                 <i class="fa-solid fa-circle-question"></i>
             </span>
         </label>
         <input type="text" name="Legajo" class="form-control @error('Legajo') is-invalid @enderror"
             value="{{ old('Legajo', $usuario?->Legajo) }}" id="legajo">
-        
+
         <!-- Contenedor de mensaje de error -->
         <div class="mensaje-container">
             @if ($errors->has('Legajo'))
@@ -29,7 +30,7 @@
             <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
             <input type="text" name="Nombre" class="form-control @error('Nombre') is-invalid @enderror"
                 value="{{ old('Nombre', $usuario?->Nombre) }}" id="nombre">
-            
+
             <!-- Contenedor de mensaje de error -->
             <div class="mensaje-container">
                 @if ($errors->has('Nombre'))
@@ -45,7 +46,7 @@
             <label for="apellido" class="form-label">{{ __('Apellido') }}</label>
             <input type="text" name="Apellido" class="form-control @error('Apellido') is-invalid @enderror"
                 value="{{ old('Apellido', $usuario?->Apellido) }}" id="apellido">
-            
+
             <!-- Contenedor de mensaje de error -->
             <div class="mensaje-container">
                 @if ($errors->has('Apellido'))
@@ -73,17 +74,20 @@
             </span>
         </label>
         <select name="Categoria" class="form-select @error('Categoria') is-invalid @enderror" id="categoria">
-            <option class="opcion" value="Maestro"
-                {{ old('Categoria', $usuario?->Categoria) == 'Maestro' ? 'selected' : '' }}>Maestro</option>
+            <option class="opcion" value="Bienestar"
+                {{ old('Categoria', $usuario?->Categoria) == 'Bienestar' ? 'selected' : '' }}>Bienestar
+            </option>
             <option class="opcion" value="Coordinador"
                 {{ old('Categoria', $usuario?->Categoria) == 'Coordinador' ? 'selected' : '' }}>Coordinador
             </option>
-            <option class="opcion" value="Bienestar"
-                {{ old('Categoria', $usuario?->Categoria) == 'Bienestar' ? 'selected' : '' }}>Bienestar</option>
+            <option class="opcion" value="Maestro"
+                {{ old('Categoria', $usuario?->Categoria) == 'Maestro' ? 'selected' : '' }}>Maestro
+            </option>
             <option class="opcion" value="Invitado"
-                {{ old('Categoria', $usuario?->Categoria) == 'Invitado' ? 'selected' : '' }}>Invitado</option>
+                {{ old('Categoria', $usuario?->Categoria) == 'Invitado' ? 'selected' : '' }}>Invitado
+            </option>
         </select>
-        
+
         <!-- Contenedor de mensaje de error -->
         <div class="mensaje-container">
             @if ($errors->has('Categoria'))
@@ -105,7 +109,7 @@
                 <i :class="verPassword ? 'fa-solid fa-eye-slash icon' : 'fa-solid fa-eye icon'"></i>
             </button>
         </div>
-        
+
         <!-- Contenedor de mensaje de error -->
         <div class="mensaje-container">
             @if ($errors->has('password'))
@@ -124,14 +128,15 @@
             {{ old('Habilitado', $usuario?->Habilitado) == 1 ? 'checked' : '' }}>
         <label class="form-check-label" for="habilitado">{{ __('Habilitado') }}</label>
     </div>
-    
+
 
     <!-- Botones -->
     <div class="form-buttons">
         <button type="submit" class="btn btn-primary">
             {{ __('Aceptar') }}
         </button>
-        <a class="btn btn-secondary" href="{{ route('usuario.presentacion', ['id' => $usuario->id]) }}">
+        <a class="btn btn-secondary"
+            href="{{ $usuario?->id == null ? route('usuario.index') : route('usuario.presentacion', $usuario->id) }}">
             {{ __('Cancelar') }}
         </a>
     </div>

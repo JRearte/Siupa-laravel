@@ -46,4 +46,5 @@ trait RegistraHistorial
             throw new \App\Exceptions\ValidacionException($mensaje, $ruta);
         }
     }
+     
 }

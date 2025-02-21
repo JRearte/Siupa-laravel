@@ -45,7 +45,7 @@
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.index') }}" class="nav-link {{ request()->routeIs('sala.*') ? 'active' : '' }}">
+            <a href="{{ route('sala.index') }}" class="nav-link {{ request()->routeIs(['sala.*', 'infante.*']) ? 'active' : '' }}">
                 <i class="fas fa-home icon"></i>
                 <p class="nav-text">Sala</p>
             </a>
@@ -57,15 +57,15 @@
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.index') }}" class="nav-link">
-                <i class="fas fa-child icon"></i>
-                <p class="nav-text">Infante</p>
+            <a href="{{ route('asistencia.index') }}" class="nav-link {{ request()->routeIs('asistencia.*') ? 'active' : '' }}"">
+                <i class="fas fa-clock icon"></i>
+                <p class="nav-text">Asistencia</p>
             </a>
         </li>
         <li class="nav-item mb-2">
             <a href="{{ route('sala.index') }}" class="nav-link">
-                <i class="fas fa-clock icon"></i>
-                <p class="nav-text">Asistencia</p>
+                <i class="fas fa-child icon"></i>
+                <p class="nav-text">Infante</p>
             </a>
         </li>
     </ul>

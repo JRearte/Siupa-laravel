@@ -389,3 +389,8 @@ body {
     max-height: 460px;
     z-index: 0;
 }
+
+.deshabilitado {
+    pointer-events: none;
+    opacity: 0.5;
+}

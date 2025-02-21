@@ -97,12 +97,12 @@ Route::controller(InfanteController::class)->middleware('auth')->group(function 
     Route::patch('infante/modificar/{infante}', 'modificar')->name('infante.modificar');
     Route::get('infante/advertencia/{id}', 'advertirEliminacion')->name('infante.confirmar');
     Route::delete('infante/eliminar/{id}', 'eliminar')->name('infante.eliminar');
-
+    
     // Rutas para Registrar y Eliminar datos médicos
     Route::get('infante/{infante_id}/formulario-registrar-medico', 'formularioRegistrarMedico')->name('infante.agregar-medico');
     Route::post('infante/{infante_id}/registrar-medico', 'registrarMedico')->name('infante.registrar-medico');
     Route::delete('infante/eliminar-medico/{id}', 'eliminarMedico')->name('infante.eliminar-medico');
-
+    
     // Rutas para Registrar, Modificar y Eliminar familiares
     Route::get('infante/{infante_id}/formulario-registrar-familiar', 'formularioRegistrarFamiliar')->name('infante.agregar-familiar');
     Route::post('infante/{infante_id}/registrar-familiar', 'registrarFamiliar')->name('infante.registrar-familiar');
@@ -112,6 +112,8 @@ Route::controller(InfanteController::class)->middleware('auth')->group(function 
 });
 
 Route::controller(AsistenciaController::class)->middleware('auth')->group(function () {
+    Route::get('asistencia/presentacion/{id}', 'presentar')->name('asistencia.presentacion');
+    Route::get('/asistencias', 'listar')->name('asistencia.index');
     Route::get('asistencia/{infante}/{sala}/reporte', 'generarReporteEspecifico')->name('asistencia.reporte-especifico');
 });
 

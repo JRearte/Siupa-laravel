@@ -36,8 +36,8 @@ class UsuarioController extends Controller
     {
         // ==================== Filtro de usuarios ====================
         $buscar = $regla->input('buscar');
-        $usuarios = Usuario::when($buscar, function ($query, $buscar) {
-            $query->where('Legajo', 'LIKE', "%$buscar%")
+        $usuarios = Usuario::when($buscar, function ($consulta, $buscar) {
+            $consulta->where('Legajo', 'LIKE', "%$buscar%")
                 ->orWhere('Nombre', 'LIKE', "%$buscar%")
                 ->orWhere('Apellido', 'LIKE', "%$buscar%")
                 ->orWhere('Categoria', 'LIKE', "%$buscar%");
@@ -85,9 +85,14 @@ class UsuarioController extends Controller
      * @param int $id → Identificador único del usuario.
      * @return View → Retorna la vista usuario.presentacion con los datos del usuario.
      */
-    public function presentar(int $id): View
+    public function presentar(int $id): View | RedirectResponse
     {
         $usuario = Usuario::findOrFail($id);
+
+        if ($usuario->id != auth()->id() && auth()->user()->Categoria != 'Bienestar') {
+            return redirect()->route('usuario.index')->with('info', 'Solo puedes ver tu propio usuario.');
+        }
+
         $historial = Historial::where('usuario_id', $id)->orderBy('created_at', 'desc')->get();
         return view('usuario.presentacion', compact('usuario', 'historial'));
     }
@@ -102,6 +107,7 @@ class UsuarioController extends Controller
      */
     public function formularioRegistrar(): View
     {
+        $this->validarPermiso("Bienestar", "No tienes permiso para registrar usuarios.", "usuario.index");
         $usuario = new Usuario();
         return view('usuario.agregar', compact('usuario'));
     }
@@ -135,8 +141,9 @@ class UsuarioController extends Controller
      * @param int $id → Identificador único del usuario.
      * @return View → Retorna la vista usuario.editar con los datos del usuario.
      */
-    public function formularioModificar(int $id): View
+    public function formularioModificar(int $id): View 
     {
+        $this->validarPermiso("Bienestar", "No tienes permiso para modificar usuarios.", "usuario.index");
         $usuario = Usuario::findOrFail($id);
         return view('usuario.editar', compact('usuario'));
     }
@@ -171,8 +178,12 @@ class UsuarioController extends Controller
      * @param int $id → Identificador único del usuario a eliminar.
      * @return View → Retorna la vista usuario.advertencia con los datos del usuario.
      */
-    public function advertirEliminacion(int $id): View
+    public function advertirEliminacion(int $id): View | RedirectResponse
     {
+        if (auth()->id() == $id) {
+            return redirect()->route('usuario.presentacion', auth()->id())->with('error', 'No puedes autoeliminarte');
+        }
+        $this->validarPermiso("Bienestar", "No tienes permiso para eliminar usuarios.", "usuario.index");
         $usuario = Usuario::findOrFail($id);
         return view('usuario.advertencia', compact('usuario'));
     }
@@ -254,6 +265,7 @@ class UsuarioController extends Controller
      */
     public function generarReporte()
     {
+        $this->validarPermiso("Bienestar", "No tienes permiso para descargar este reporte.", "usuario.index");
         $usuarios = Usuario::orderBy('apellido', 'asc')->get();
         $bienestar = $usuarios->where('Categoria', 'Bienestar')->count();
         $coordinador = $usuarios->where('Categoria', 'Coordinador')->count();
@@ -266,6 +278,8 @@ class UsuarioController extends Controller
         $porcentajeCoordinador = $total > 0 ? ($coordinador / $total) * 100 : 0;
         $porcentajeMaestro = $total > 0 ? ($maestro / $total) * 100 : 0;
         $porcentajeInvitado = $total > 0 ? ($invitado / $total) * 100 : 0;
+
+        $this->registrarAccion(auth()->id(), 'Descargar reporte general', "Descargó el reporte general de usuarios");
 
         $pdf = PDF::loadView(
             'reporte/reporte-general-usuario',
@@ -282,19 +296,18 @@ class UsuarioController extends Controller
                 'porcentajeInvitado'
             )
         );
-
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         return $pdf->download('Reporte de usuarios ' . now()->format('d-m-Y') . '.pdf');
-        //return $pdf->stream();
     }
 
     public function generarReporteEspecifico(int $id)
     {
         $usuario = Usuario::findOrFail($id);
         $historiales = Historial::where('usuario_id', $id)->orderBy('created_at', 'asc')->get();
-        $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact('usuario', 'historiales'));
+        $this->registrarAccion(auth()->id(), 'Descargar reporte especifico', "Descargó el reporte del usuario {$usuario->Nombre} {$usuario->Apellido}");
 
+        $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact('usuario', 'historiales'));
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         return $pdf->download('Reporte de ' . $usuario->Nombre . ' ' . $usuario->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');

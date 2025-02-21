@@ -1,7 +1,7 @@
 @vite(['resources/css/tabla.css'])
 <div class="contenido-principal user">
     <!-- Tabla para trabajadores -->
-    @if ($trabajadores->count() > 0)
+    @if ($trabajadores)
         <div class="tabla-salas">
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
@@ -14,7 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($trabajadores as $trabajador)
+                        @forelse ($trabajadores as $trabajador)
                             @php
                                 $nombreCompleto = $trabajador->Nombre;
                                 $primerNombre = explode(' ', $nombreCompleto)[0];
@@ -51,8 +51,8 @@
                                     </div>
 
                                     <!-- Botón de opciones -->
-                                    <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                        <a href="{{ route('tutor.presentacion',$trabajador->id)}}">
+                                    <div>
+                                        <a href="{{ route('tutor.presentacion', $trabajador->id) }}">
                                             <div class="presentacion">
                                                 <i class="fa-solid fa-gear"></i>
                                             </div>
@@ -60,12 +60,11 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
-                        @if ($trabajadores->isEmpty())
+                        @empty
                             <tr>
                                 <td colspan="2" class="text-center">No hay trabajadores.</td>
                             </tr>
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -90,13 +89,14 @@
                     @endif
                 </ul>
             </div>
-
         </div>
     @endif
 
 
+
+
     <!-- Tabla para alumnos -->
-    @if ($alumnos->count() > 0)
+    @if ($alumnos)
         <div class="tabla-salas">
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
@@ -109,7 +109,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($alumnos as $alumno)
+                        @forelse ($alumnos as $alumno)
                             @php
                                 $nombreCompleto = $alumno->Nombre;
                                 $primerNombre = explode(' ', $nombreCompleto)[0];
@@ -146,8 +146,8 @@
                                     </div>
 
                                     <!-- Botón de opciones -->
-                                    <div @if (auth()->user()->Categoria !== 'Bienestar') d-none @endif">
-                                        <a href="{{ route('tutor.presentacion',$alumno->id)}}">
+                                    <div class="{{ auth()->user()->Categoria !== 'Bienestar' ? 'd-none' : '' }}">
+                                        <a href="{{ route('tutor.presentacion', $alumno->id) }}">
                                             <div class="presentacion">
                                                 <i class="fa-solid fa-gear"></i>
                                             </div>
@@ -155,12 +155,11 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
-                        @if ($alumnos->isEmpty())
+                        @empty
                             <tr>
                                 <td colspan="2" class="text-center">No hay alumnos.</td>
                             </tr>
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -185,8 +184,6 @@
                     @endif
                 </ul>
             </div>
-
         </div>
     @endif
-
 </div>

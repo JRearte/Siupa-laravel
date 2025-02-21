@@ -30,12 +30,49 @@ class TutorController extends Controller
 {
     use RegistraHistorial;
 
-    public function listar(): View
+    public function listar(Request $request): View
     {
-        $trabajadores = Tutor::with('infantes')->where('Tipo_tutor', 'Trabajador')->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_trabajador');
-        $alumnos = Tutor::with('infantes')->where('Tipo_tutor', 'Alumno')->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_alumno');
-        return view('tutor.index', compact('trabajadores', 'alumnos'));
+        $buscar = $request->input('buscar');
+        $datos = [];
+    
+        // ==================== Filtro de Trabajadores ====================
+        $trabajadores = Tutor::with('infantes')
+            ->where('Tipo_tutor', 'Trabajador');
+    
+        if ($buscar) {
+            $trabajadores->where(function ($query) use ($buscar) {
+                $query->where('Legajo', 'LIKE', "%$buscar%")
+                    ->orWhere('Nombre', 'LIKE', "%$buscar%")
+                    ->orWhere('Apellido', 'LIKE', "%$buscar%");
+            });
+        }
+    
+        $datos['trabajadores'] = $trabajadores->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_trabajador');
+        $datos['trabajadores']->appends(['buscar' => $buscar]);
+    
+        // ==================== Filtro de Alumnos ====================
+        $alumnos = Tutor::with('infantes')
+            ->where('Tipo_tutor', 'Alumno');
+    
+        if ($buscar) {
+            $alumnos->where(function ($query) use ($buscar) {
+                $query->where('Legajo', 'LIKE', "%$buscar%")
+                    ->orWhere('Nombre', 'LIKE', "%$buscar%")
+                    ->orWhere('Apellido', 'LIKE', "%$buscar%");
+            });
+        }
+    
+        $datos['alumnos'] = $alumnos->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_alumno');
+        $datos['alumnos']->appends(['buscar' => $buscar]);
+    
+        $trabajadores = $datos['trabajadores'] ?? null;
+        $alumnos = $datos['alumnos'] ?? null;
+    
+        return view('tutor.index', compact('trabajadores', 'alumnos', 'buscar'));
     }
+    
+    
+    
 
 
     /**
@@ -159,24 +196,24 @@ class TutorController extends Controller
 
         if ($tutor->Habilitado == 0) {
             $infantes = Infante::where('tutor_id', $tutor->id)->get();
-            
+
             foreach ($infantes as $infante) {
                 $infante->Habilitado = 0;
                 $infante->save();
-        
+
                 Familia::where('infante_id', $infante->id)->update(['Habilitado' => 0]);
             }
         } else {
             $infantes = Infante::where('tutor_id', $tutor->id)->get();
-            
+
             foreach ($infantes as $infante) {
                 $infante->Habilitado = 1;
                 $infante->save();
-        
+
                 Familia::where('infante_id', $infante->id)->update(['Habilitado' => 1]);
             }
         }
-        
+
 
         if ($tutor->Tipo_tutor === 'Trabajador') {
             $trabajador = Trabajador::where('tutor_id', $tutor->id)->exists();
@@ -185,7 +222,6 @@ class TutorController extends Controller
                 return redirect()->route('tutor.editar-trabajador', $tutor->id);
             }
             return redirect()->route('tutor.agregar-trabajador', $tutor->id);
-            
         } else {
             $carrera = Carrera::where('tutor_id', $tutor->id)->exists();
 
