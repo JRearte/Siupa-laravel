@@ -20,7 +20,6 @@ Route::controller(UsuarioController::class)->middleware('auth')->group(function 
     Route::post('usuario/registrar', 'registrar')->name('usuario.registrar');
     Route::get('usuario/formulario/{id}', 'formularioModificar')->name('usuario.editar');
     Route::patch('usuario/modificar/{usuario}', 'modificar')->name('usuario.modificar');
-    Route::get('usuario/advertencia/{id}', 'advertirEliminacion')->name('usuario.confirmar');
     Route::delete('usuario/eliminar/{id}', 'eliminar')->name('usuario.eliminar');
     Route::get('/usuario/reporte', 'generarReporte')->name('usuario.reporte');
     Route::get('/usuario/reporte-especifico/{id}', 'generarReporteEspecifico')->name('usuario.reporte-especifico');
@@ -46,7 +45,6 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::post('tutor/registrar', 'registrar')->name('tutor.registrar');
     Route::get('tutor/formulario/{id}', 'formularioModificar')->name('tutor.editar');
     Route::patch('tutor/modificar/{tutor}', 'modificar')->name('tutor.modificar');
-    Route::get('tutor/advertencia/{id}', 'advertirEliminacion')->name('tutor.confirmar');
     Route::delete('tutor/eliminar/{id}', 'eliminar')->name('tutor.eliminar');
 
     // Rutas para registrar y eliminar contactos
@@ -95,7 +93,6 @@ Route::controller(InfanteController::class)->middleware('auth')->group(function 
     Route::post('infante/{tutor_id}/registrar', 'registrar')->name('infante.registrar');
     Route::get('infante/formulario-modificar/{id}', 'formularioModificar')->name('infante.editar');
     Route::patch('infante/modificar/{infante}', 'modificar')->name('infante.modificar');
-    Route::get('infante/advertencia/{id}', 'advertirEliminacion')->name('infante.confirmar');
     Route::delete('infante/eliminar/{id}', 'eliminar')->name('infante.eliminar');
     
     // Rutas para Registrar y Eliminar datos médicos

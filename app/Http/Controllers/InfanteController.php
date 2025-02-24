@@ -98,8 +98,13 @@ class InfanteController extends Controller
         }
 
         $edad = Carbon::parse($datos['Fecha_de_nacimiento'])->age;
-        $sala = Sala::where('Edad', $edad)->first();
-
+        $sala = Sala::where('Edad', $edad)->firstOrFail();
+        $cantidadInfantes = Infante::where('sala_id', $sala->id)->where('Habilitado', 1)->count();
+        
+        if ($sala->Capacidad == $cantidadInfantes && ($datos['Habilitado'] ?? 1) == 1) {
+            return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('info', "No hay más espacio en la sala {$sala->Nombre}.");
+        }
+        
         if (!$sala) {
             return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('error', 'No hay una sala disponible para esta edad.');
         }
@@ -148,25 +153,18 @@ class InfanteController extends Controller
             return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('info', "El tutor del infante está deshabilitado");
         }
 
+        $sala = Sala::findOrFail($infante->sala_id);
+        $cantidadInfantes = Infante::where('sala_id', $sala->id)->where('Habilitado', 1)->count();
+    
+        if ($sala->Capacidad == $cantidadInfantes && isset($datos['Habilitado']) && $datos['Habilitado'] == 1) {
+            return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('info', "La sala {$sala->Nombre} está llena, no se puede habilitar al infante.");
+        }
+
         $infante->update($datos);
         $this->registrarAccion(auth()->id(), 'Modificar infante', "Modificó al infante {$infante->Nombre} {$infante->Apellido}");
         return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El infante fue modificado exitosamente.');
     }
 
-    /**
-     * Este método:
-     * → Recupera la información de un infante antes de proceder con su eliminación.
-     * → Redirige a una vista de advertencia para confirmar la eliminación.
-     *
-     * @param int $id → Identificador del infante.
-     * @return View → Retorna la vista infante.advertencia con la información del infante.
-     */
-    public function advertirEliminacion(int $id): View
-    {
-        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar infantes.", "infante.presentacion", $id);
-        $infante = Infante::findOrFail($id);
-        return view('infante.advertencia', compact('infante'));
-    }
 
     /**
      * Este método:

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('asistencia', function (Blueprint $table) {
             $table->id();
             $table->date('Fecha');
-            $table->time('Hora_Ingreso')->comment('Hora de ingreso del infante');
+            $table->time('Hora_Ingreso')->nullable()->comment('Hora de ingreso del infante');
             $table->time('Hora_Salida')->nullable()->comment('Hora de salida del infante');
-            $table->string('Inasistencia', 13)->nullable()->comment('Justificado, Injustificado');
+            $table->string('Estado', 25)->comment('Presente, Ausente Justificado, Ausente Injustificado');
+            $table->string('Observacion', 255)->nullable()->comment('Notas adicionales sobre la asistencia');
             $table->unsignedBigInteger('usuario_id');
             $table->unsignedBigInteger('sala_id');
             $table->unsignedBigInteger('infante_id');
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->foreign('infante_id')->references('id')->on('infante')->onDelete('cascade');
         });
     }
+    
     
 
     /**

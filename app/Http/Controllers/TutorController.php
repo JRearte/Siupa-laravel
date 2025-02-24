@@ -235,19 +235,6 @@ class TutorController extends Controller
         }
     }
 
-    /**
-     * Este método:
-     * → Muestra una advertencia antes de eliminar un tutor.
-     *
-     * @param int $id → Identificador unico del tutor.
-     * @return View → Retorna la vista tutor.advertencia con los datos del tutor.
-     */
-    public function advertirEliminacion(int $id): View
-    {
-        $this->validarPermisoConID(["Bienestar"], "No tienes permiso para eliminar tutores.", "tutor.presentacion", $id);
-        $tutor = Tutor::findOrFail($id);
-        return view('tutor.advertencia', compact('tutor'));
-    }
 
     /**
      * Este método:

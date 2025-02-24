@@ -24,9 +24,7 @@
                     <p>{{ $usuario->updated_at->translatedFormat('d F Y \a \l\a\s H:i') }}</p>
                 </div>
                 <div class="opciones">
-                    <a class="eliminar" href="{{ route('usuario.confirmar', $usuario->id) }}">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </a>
+                    @include('usuario.advertencia', ['usuario' => $usuario])
                 </div>
             </div>
             <hr class="separador">

@@ -12,7 +12,6 @@ export default defineConfig({
                 'resources/css/tabla.css',
                 'resources/css/historial.css',
                 'resources/css/estadistica.css',
-                'resources/css/alerta.css',
                 'resources/css/formulario.css',
                 'resources/css/presentacion.css',
                 'resources/js/app.js',

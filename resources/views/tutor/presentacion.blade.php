@@ -27,9 +27,7 @@
                 </div>
                 <!-- Opción de eliminar -->
                 <div class="opciones">
-                    <a href="{{ route('tutor.confirmar', $tutor->id) }}">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </a>
+                    @include('tutor.advertencia', ['tutor' => $tutor])
                 </div>
             </div>
             <hr class="separador">

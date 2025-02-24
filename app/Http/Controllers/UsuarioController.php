@@ -170,20 +170,6 @@ class UsuarioController extends Controller
         return redirect()->route('usuario.presentacion', $usuario->id)->with('success', 'El usuario fue modificado exitosamente');
     }
 
-    /**
-     * Este método:
-     * → Muestra un mensaje de advertencia para confirmar la eliminación de un usuario.
-     * → Redirige al usuario a la página de confirmación de eliminación.
-     * 
-     * @param int $id → Identificador único del usuario a eliminar.
-     * @return View → Retorna la vista usuario.advertencia con los datos del usuario.
-     */
-    public function advertirEliminacion(int $id): View
-    {
-        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para eliminar usuarios.','usuario.presentacion',$id);
-        $usuario = Usuario::findOrFail($id);
-        return view('usuario.advertencia', compact('usuario'));
-    }
 
     /**
      * Este método:
