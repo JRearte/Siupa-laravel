@@ -1,0 +1,183 @@
+/* ==================== Contenedor principal ==================== */
+.asistencia-calendario {
+    max-width: 850px;
+    margin: auto;
+    padding-bottom: 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+/* ==================== Selector de mes ==================== */
+.asistencia-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.asistencia-select {
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #8f3a01;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.asistencia-select:hover {
+    border-color: #8f3a01;
+    box-shadow: 0 0 8px #8f3a0186
+}
+
+/* ==================== Grid del calendario ==================== */
+.asistencia-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    text-align: center;
+}
+
+.asistencia-dia-header {
+    font-weight: bold;
+    padding: 8px;
+    background: linear-gradient(135deg, #8f3a01, #ad4f0f);
+    color: white;
+    border-radius: 5px;
+}
+
+/* ==================== Estilización de los días ==================== */
+.asistencia-dia {
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    border-radius: 5px;
+    background-color: #fafafa;
+    color: black;
+}
+
+/* Colores suaves según el estado */
+.asistencia-presente {
+    background-color: #a3d9a5 !important;
+}
+
+.asistencia-justificado {
+    background-color: #ffe599 !important;
+}
+
+.asistencia-injustificado {
+    background-color: #f5a5a5 !important;
+}
+
+.asistencia-dia:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.asistencia-dia-vacio {
+    visibility: hidden;
+}
+
+
+
+/* ==================== Modal de asistencia ==================== */
+
+.asistencia-modal .modal-content {
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.asistencia-modal-header {
+    background: linear-gradient(135deg, #6cc24a, #a3e635);
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 15px;
+}
+
+.asistencia-modal-body {
+    padding: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.asistencia-detalle p {
+    margin: 5px 0;
+    padding: 5px;
+    border-left: 4px solid #a3e635;
+    background: #f7fff0;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+/* ==================== Estilos para el footer ==================== */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+    flex-wrap: wrap;
+}
+
+.footer-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ==================== Estilos de los botones ==================== */
+.btn {
+    width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+}
+
+/* Botón de Modificar */
+.btn-modificar {
+    background-color: #6c3d2d; /* Marrón oscuro */
+    color: white;
+}
+.btn-modificar:hover {
+    background-color: #4a281d;
+}
+
+/* Botón de Eliminar */
+.btn-eliminar {
+    background-color: #ff0000; /* Rojo */
+    color: white;
+}
+.btn-eliminar:hover {
+    background-color: #cc0000;
+}
+
+/* ==================== Ajustes responsivos ==================== */
+@media (max-width: 576px) {
+    .modal-footer {
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    .btn{
+        width: 160px;
+    }
+}

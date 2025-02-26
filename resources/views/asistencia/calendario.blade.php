@@ -1,10 +1,11 @@
+@vite(['resources/css/calendario.css'])
 <div class="asistencia-calendario" x-data="{ diaSeleccionado: null, asistencias: [] }">
     <!-- Selector de Mes -->
     <form id="seleccionMes" class="asistencia-selector">
         <select name="mes" id="mes" class="asistencia-select" onchange="this.form.submit()">
             @foreach (range(1, 12) as $i)
                 @php
-                    $fechaMes = now()->year(2025)->month($i);
+                    $fechaMes = now()->month($i);
                     $valor = $fechaMes->format('Y-m');
                 @endphp
                 <option value="{{ $valor }}"
@@ -30,73 +31,82 @@
         @endfor
 
         @foreach (range(1, now()->parse($mes)->daysInMonth) as $dia)
-            @php
-                $fecha = now()->parse($mes)->day($dia);
-                $hayAsistencia = isset($asistenciasPorDia[$fecha->format('Y-m-d')]);
-            @endphp
-            <button class="asistencia-dia {{ $hayAsistencia ? 'asistencia-dia-activo' : '' }}"
-                @click="diaSeleccionado = '{{ $fecha->format('Y-m-d') }}'; asistencias = {{ json_encode($asistenciasPorDia[$fecha->format('Y-m-d')] ?? []) }}"
-                data-bs-toggle="modal" data-bs-target="#modalAsistencia">
-                {{ $dia }}
-            </button>
-        @endforeach
+    @php
+        $fecha = now()->parse($mes)->day($dia)->format('Y-m-d');
+        $asistenciasDia = $asistenciasPorDia[$fecha] ?? collect([]);
+        $estadoAsistencia = $asistenciasDia->sortByDesc('created_at')->first()->Estado ?? null;
+
+        $claseEstado = match ($estadoAsistencia) {
+            'Presente' => 'asistencia-presente',
+            'Ausente Justificado' => 'asistencia-justificado',
+            'Ausente Injustificado' => 'asistencia-injustificado',
+            default => ''
+        };
+    @endphp
+
+    <button class="asistencia-dia {{ $claseEstado }}"
+        @if ($estadoAsistencia)
+            @click="diaSeleccionado = '{{ $fecha }}'; 
+            asistencias = {{ $asistenciasDia->values()->toJson() }}"
+            data-bs-toggle="modal" data-bs-target="#modalAsistencia"
+        @else
+            onclick="window.location.href='{{ route('asistencia.agregar', ['infante_id' => $infante->id, 'fecha' => urlencode($fecha)]) }}'"
+        @endif>
+        {{ $dia }}
+    </button>
+@endforeach
+
     </div>
 
-    
     <!-- Modal de Asistencia -->
     <div class="modal fade asistencia-modal" id="modalAsistencia" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header asistencia-modal-header">
                     <h5 class="modal-title">
-                        Asistencias del día <span x-text="diaSeleccionado"></span>
+                        Asistencia de {{ explode(' ', trim($infante->Nombre))[0] }} {{ explode(' ', trim($infante->Apellido))[0] }}
                     </h5>
+                                       
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body asistencia-modal-body">
-                    <template x-if="asistencias.length === 0">
-                        <p class="text-muted">No hay asistencias registradas para este día.</p>
-                    </template>
-
                     <template x-for="asistencia in asistencias">
                         <div class="asistencia-detalle">
-                            <strong>Responsable:</strong> 
-                            <span x-text="asistencia.usuario?.Nombre ?? 'Desconocido'"></span> 
-                            <span x-text="asistencia.usuario?.Apellido ?? ''"></span><br>
-                            
-                            <strong>Horario:</strong> 
-                            <span x-text="asistencia.Hora_Ingreso"></span> - 
-                            <span x-text="asistencia.Hora_Salida"></span>
+                            <p><strong>Fecha:</strong> <span x-text="new Date(diaSeleccionado).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })"></span>
+                            <p><strong>Responsable:</strong> <span x-text="asistencia.usuario.Nombre"></span> <span
+                                    x-text="asistencia.usuario.Apellido"></span></p>
+                            <p><strong>Estado:</strong> <span x-text="asistencia.Estado"></span></p>
+                            <p><strong>Horario:</strong> <span
+                                    x-text="asistencia.Hora_Ingreso ?? 'No registrada'"></span> - <span x-text="asistencia.Hora_Salida ?? 'No registrada'"></span></p>
+                            <p><strong>Observación:</strong> <span
+                                    x-text="asistencia.Observacion ?? 'Sin observaciones'"></span></p>
                         </div>
                     </template>
-                    
                 </div>
-
                 <div class="modal-footer">
-                    <!-- Botón Registrar Asistencia (para Maestro y Coordinador, si NO hay asistencia) -->
-                    @if (in_array(auth()->user()->Categoria, ['Maestro', 'Coordinador']))
-                        <template x-if="asistencias.length === 0">
-                            <button class="btn btn-success">Registrar Asistencia</button>
-                        </template>
-                    @endif
-
-                    <!-- Botón Modificar (solo Coordinador, si hay asistencia) -->
                     @if (auth()->user()->Categoria === 'Coordinador')
-                        <template x-if="asistencias.length > 0">
-                            <button class="btn btn-primary">Modificar</button>
-                        </template>
-                    @endif
-
-                    <!-- Botón Eliminar (solo Coordinador, si hay asistencia) -->
-                    @if (auth()->user()->Categoria === 'Coordinador')
-                        <template x-if="asistencias.length > 0">
-                            <button class="btn btn-danger">Eliminar</button>
-                        </template>
+                        <div class="footer-buttons">
+                            <template x-for="asistencia in asistencias" :key="asistencia.id">
+                                <a :href="'{{ route('asistencia.editar', '') }}/' + asistencia.id" class="btn btn-modificar">
+                                    <i class="fa-solid fa-pencil"></i> Modificar
+                                </a>
+                            </template>
+                
+                            <template x-for="asistencia in asistencias" :key="asistencia.id">
+                                <form :action="'{{ route('asistencia.eliminar', '') }}' + '/' + asistencia.id" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-eliminar">
+                                        <i class="fa-solid fa-trash-can"></i> Eliminar
+                                    </button>
+                                </form>
+                            </template>
+                        </div>
                     @endif
                 </div>
+                
             </div>
         </div>
     </div>
-
 </div>

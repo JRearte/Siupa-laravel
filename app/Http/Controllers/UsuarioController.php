@@ -59,9 +59,11 @@ class UsuarioController extends Controller
 
         // ==================== Historial ====================
         $historial = Historial::orderBy('created_at', 'desc')->get();
+        $modelo = new Usuario;
 
         return view('usuario.index', compact(
             'usuarios',
+            'modelo',
             'buscar',
             'totalUsuarios',
             'usuariosBienestar',

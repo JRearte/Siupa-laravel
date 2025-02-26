@@ -26,9 +26,7 @@
                 </div>
                 <!-- Opción de eliminar -->
                 <div class="opciones">
-                    <a href="{{ route('infante.confirmar', $infante->id) }}">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </a>
+                    @include('infante.advertencia', ['infante' => $infante])
                 </div>
             </div>
             <hr class="separador">
@@ -68,7 +66,7 @@
             </div>
             <hr class="separador">
 
-            @include('asistencia.calendario', ['mes' => $mes, 'asistenciasPorDia' => $asistenciasPorDia])
+            @include('asistencia.calendario', ['mes' => $mes, 'asistenciasPorDia' => $asistenciasPorDia, 'infante' => $infante])
 
 
             <!-- ==================== Botón de retorno ==================== -->

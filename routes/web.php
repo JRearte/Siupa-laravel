@@ -111,6 +111,11 @@ Route::controller(InfanteController::class)->middleware('auth')->group(function 
 Route::controller(AsistenciaController::class)->middleware('auth')->group(function () {
     Route::get('asistencia/presentacion/{id}', 'presentar')->name('asistencia.presentacion');
     Route::get('/asistencias', 'listar')->name('asistencia.index');
+    Route::get('asistencia/formulario/{infante_id}/{fecha}', 'formularioRegistrar')->name('asistencia.agregar');
+    Route::post('asistencia/registrar', 'registrar')->name('asistencia.registrar');    
+    Route::get('asistencia/formulario-modificar/{id}', 'formularioModificar')->name('asistencia.editar');
+    Route::patch('asistencia/modificar/{asistencia}', 'modificar')->name('asistencia.modificar');
+    Route::delete('asistencia/eliminar/{id}', 'eliminar')->name('asistencia.eliminar');
     Route::get('asistencia/{infante}/{sala}/reporte', 'generarReporteEspecifico')->name('asistencia.reporte-especifico');
 });
 

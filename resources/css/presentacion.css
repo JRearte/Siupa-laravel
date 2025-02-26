@@ -670,87 +670,7 @@
 }
 
 
-/* ==================== Calendario ==================== */
 
-/* ==================== Contenedor principal ==================== */
-.asistencia-calendario {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* ==================== Selector de mes ==================== */
-.asistencia-selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.asistencia-selector label {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-.asistencia-select {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-}
-
-/* Estilizar el selector al pasar el mouse */
-.asistencia-select:hover {
-    border-color: #a3e635;
-    box-shadow: 0 0 8px rgba(163, 230, 53, 0.5);
-}
-
-/* ==================== Grid del calendario ==================== */
-.asistencia-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    text-align: center;
-}
-
-.asistencia-dia-header {
-    font-weight: bold;
-    padding: 8px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-}
-
-.asistencia-dia {
-    padding: 10px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-    border-radius: 5px;
-}
-
-.asistencia-dia-activo {
-    background-color: #a3d9a5; /* Verde suave */
-    font-weight: bold;
-}
-
-.asistencia-dia:hover {
-    background-color: #e0f2e9;
-    transform: scale(1.05);
-}
-
-.asistencia-dia-vacio {
-    visibility: hidden;
-}
 
 
 
@@ -770,7 +690,7 @@
 }
 
 
-/* ==================== Encabezado ==================== */
+/* ==================== Modal de advertencia ==================== */
 
 .modal .modal-confirmacion-header {
     display: flex;

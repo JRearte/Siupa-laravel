@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/css/estadistica.css',
                 'resources/css/formulario.css',
                 'resources/css/presentacion.css',
+                'resources/css/calendario.css',
                 'resources/js/app.js',
                 'resources/js/grafico.js',
                 'resources/js/toast.js',
