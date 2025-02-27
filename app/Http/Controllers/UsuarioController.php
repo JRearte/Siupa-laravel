@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //Metodo de encriptación irreversible 
 use Illuminate\View\View;
 
+
 /**
  * Class UsuarioController
  * @package App\Http\Controllers
@@ -78,7 +79,7 @@ class UsuarioController extends Controller
         ));
     }
 
-    
+
     /**
      * Este método:
      * → Recupera la información detallada de un usuario por su identificador único.
@@ -145,7 +146,6 @@ class UsuarioController extends Controller
      */
     public function formularioModificar(int $id): View
     {
-        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para modificarte.','usuario.presentacion',$id);
         $usuario = Usuario::findOrFail($id);
         return view('usuario.editar', compact('usuario'));
     }
@@ -164,7 +164,6 @@ class UsuarioController extends Controller
      */
     public function modificar(UsuarioRequest $regla, Usuario $usuario): RedirectResponse
     {
-        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para modificar usuarios.','usuario.presentacion',$usuario->id);
         $datos = $regla->validated();
         $datos['password'] = Hash::make($datos['password']);
         $usuario->update($datos);
@@ -184,7 +183,6 @@ class UsuarioController extends Controller
      */
     public function eliminar(int $id): RedirectResponse
     {
-        $this->validarPermisoConID(["Bienestar"],'No tienes permiso para eliminar usuarios.','usuario.presentacion',$id);
         $usuario = Usuario::findOrFail($id);
         $nombre = $usuario->Nombre;
         $apellido = $usuario->Apellido;
@@ -197,7 +195,7 @@ class UsuarioController extends Controller
         }
 
         $usuario->delete();
-        $this->registrarAccion(auth()->id(), 'Eliminar usuario', "Eliminó el usuario {$nombre} {$apellido} ");
+        $this->registrarAccion(auth()->id(), 'Eliminar usuario', "Eliminó al usuario {$nombre} {$apellido} ");
         return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');
     }
 
@@ -259,10 +257,10 @@ class UsuarioController extends Controller
         $total = $usuarios->count();
 
 
-        $porcentajeBienestar = $total > 0 ? ($bienestar / $total) * 100 : 0;
-        $porcentajeCoordinador = $total > 0 ? ($coordinador / $total) * 100 : 0;
-        $porcentajeMaestro = $total > 0 ? ($maestro / $total) * 100 : 0;
-        $porcentajeInvitado = $total > 0 ? ($invitado / $total) * 100 : 0;
+        $porcentajeBienestar = $total > 0 ? round(($bienestar / $total) * 100, 2) : 0;
+        $porcentajeCoordinador = $total > 0 ? round(($coordinador / $total) * 100, 2) : 0;
+        $porcentajeMaestro = $total > 0 ? round(($maestro / $total) * 100, 2) : 0;
+        $porcentajeInvitado = $total > 0 ? round(($invitado / $total) * 100, 2) : 0;
 
         $this->registrarAccion(auth()->id(), 'Descargar reporte general', "Descargó el reporte general de usuarios");
 
@@ -285,17 +283,27 @@ class UsuarioController extends Controller
         $pdf->render();
         return $pdf->download('Reporte de usuarios ' . now()->format('d-m-Y') . '.pdf');
     }
-
+    
     public function generarReporteEspecifico(int $id)
     {
         $usuario = Usuario::findOrFail($id);
         $historiales = Historial::where('usuario_id', $id)->orderBy('created_at', 'asc')->get();
-        $this->registrarAccion(auth()->id(), 'Descargar reporte especifico', "Descargó el reporte del usuario {$usuario->Nombre} {$usuario->Apellido}");
-
-        $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact('usuario', 'historiales'));
+        $cantidadHistorial = $historiales->count();
+        $totalHistoriales = Historial::count();
+        $porcentajeHistorial = $totalHistoriales > 0 ? round(($cantidadHistorial / $totalHistoriales) * 100, 2) : 0;
+        
+        $this->registrarAccion(auth()->id(), 'Descargar reporte específico', "Descargó el reporte del usuario {$usuario->Nombre} {$usuario->Apellido}");
+        
+        $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact(
+            'usuario',
+            'historiales',
+            'cantidadHistorial',
+            'totalHistoriales',
+            'porcentajeHistorial'
+        ));
+        
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         return $pdf->download('Reporte de ' . $usuario->Nombre . ' ' . $usuario->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
-
     }
 }

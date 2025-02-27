@@ -5,6 +5,7 @@
     <title>Reporte de Usuarios</title>
     <style>
         @page {
+            size: A4;
             margin: 2.5cm 1.5cm 1.5cm 1.5cm;
         }
 
@@ -98,6 +99,7 @@
             font-weight: bold;
             width: 35px;
         }
+
     </style>
 </head>
 
@@ -124,38 +126,43 @@
     </footer>
 
     <div class="content">
-        <!-- Tabla de categorías arriba -->
-        <table class="arreglo">
-            <thead>
-                <tr>
-                    <th>Categoría</th>
-                    <th>Cantidad</th>
-                    <th>Porcentaje</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Bienestar</td>
-                    <td>{{ $bienestar }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeBienestar, 2) }}%</td>
-                </tr>
-                <tr>
-                    <td>Coordinador</td>
-                    <td>{{ $coordinador }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeCoordinador, 2) }}%</td>
-                </tr>
-                <tr>
-                    <td>Maestro</td>
-                    <td>{{ $maestro }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeMaestro, 2) }}%</td>
-                </tr>
-                <tr>
-                    <td>Invitado</td>
-                    <td>{{ $invitado }} de {{ $total }}</td>
-                    <td>{{ number_format($porcentajeInvitado, 2) }}%</td>
-                </tr>
-            </tbody>
-        </table>
+
+
+        <div class="reporte-container">
+            <p>
+                En el año <strong>{{ now()->year }}</strong>, el sistema <strong>SUIpa</strong> contó con la participación de 
+                <strong>{{ number_format($total, 0, ',', '.') }}</strong> usuarios, distribuidos en cuatro roles:
+            </p>
+            <ul>
+                <li><strong>Bienestar</strong>: gestiona todas las funciones, excepto las asistencias.</li>
+                <li><strong>Coordinador</strong>: responsable de administrar y supervisar las asistencias.</li>
+                <li><strong>Maestro</strong>: con permiso exclusivo para registrar asistencias.</li>
+                <li><strong>Invitado</strong>: limitado únicamente a la visualización de información básica del sistema.</li>
+            </ul>
+            
+            <p>De estos usuarios:</p>
+            <ul>
+                <li>
+                    <strong>{{ number_format($bienestar, 0, ',', '.') }}</strong> pertenecen a la categoría 
+                    <strong>Bienestar</strong>, representando el <strong>{{ $porcentajeBienestar }}%</strong>.
+                </li>
+                <li>
+                    <strong>{{ number_format($coordinador, 0, ',', '.') }}</strong> son <strong>Coordinadores</strong>, 
+                    representando el <strong>{{ $porcentajeCoordinador }}%</strong>.
+                </li>
+                <li>
+                    <strong>{{ number_format($maestro, 0, ',', '.') }}</strong> son <strong>Maestros</strong>, 
+                    representando el <strong>{{ $porcentajeMaestro }}%</strong>.
+                </li>
+                <li>
+                    <strong>{{ number_format($invitado, 0, ',', '.') }}</strong> son <strong>Invitados</strong>, 
+                    representando el <strong>{{ $porcentajeInvitado }}%</strong>.
+                </li>
+            </ul>
+        </div>
+        
+        <p>A continuación, se presentarán los usuarios en orden alfabético por su apellido, destacando su rol:</p>
+        
 
         <!-- Tabla de usuarios -->
         <table class="arreglo">

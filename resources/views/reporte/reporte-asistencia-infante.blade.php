@@ -8,7 +8,6 @@
             margin: 2.5cm 1.5cm 1.5cm 1.5cm;
         }
 
-        /* ========== ENCABEZADO Y PIE DE PÁGINA ========== */
         header {
             position: fixed;
             top: -2.5cm;
@@ -92,11 +91,27 @@
             background-color: #f1f1f1;
         }
 
-        .numero,
-        .contador {
-            text-align: center !important;
-            font-weight: bold;
-            width: 35px;
+
+        .formato {
+            text-align: justify;
+            text-justify: inter-word;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .numero {
+            width: 25px;
+        }
+
+        .fecha {
+            width: 100px;
+        }
+
+        .observacion {
+            width: 100%;
+            text-align: left !important;
         }
     </style>
 </head>
@@ -105,9 +120,7 @@
     <header>
         <img src="{{ public_path('imagen/logo.png') }}" alt="logo" class="imagen">
         <h2 class="titulo">Reporte de Asistencias</h2>
-        <p class="subtitulo">
-            Infante: {{ $infante->Nombre }} {{ $infante->Apellido }} | Sala: {{ $infante->sala->Nombre }}
-        </p>
+        <p class="subtitulo">Sistema de información UPA</p>
     </header>
 
     <footer>
@@ -127,39 +140,74 @@
     </footer>
 
 
-    <table class="arreglo">
-        <thead>
-            <tr>
-                <th>Mes</th>
-                <th>Horas Cumplidas</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($horasPorMes as $mes => $horas)
-                <tr>
-                    <td>{{ ucfirst(\Carbon\Carbon::parse($mes . '-01')->translatedFormat('F')) }}</td>
-                    <td>{{ $horas['horas'] }} horas {{ $horas['minutos'] }} minutos</td>
-                </tr>
-            @endforeach
-            <tr>
-                <td><strong>Total de horas cumplidas: </strong> </td>
-                <td style="border-left: none">{{ $totalGeneral }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-
-
-
+    <p class="formato">
+        El infante <strong>{{ $infante->Nombre }} {{ $infante->Apellido }}</strong> comenzó su cursada en el jardín
+        maternal Upa en la sala <strong>{{ $infante->sala->Nombre }}</strong>, desde el
+        <strong>{{ $primerAsistencia }}</strong> hasta el <strong>{{ $ultimaAsistencia }}</strong>,
+        registrando un total de <strong>{{ $totalAsistencias }}</strong> asistencias a lo largo del año.
+        A continuación, se detalla la distribución mensual de sus asistencias, reflejando su continuidad en el año.
+    </p>
+    <ul>
+        @foreach ($horasPorMes as $mes => $datos)
+            <li>
+                <strong>{{ ucfirst(\Carbon\Carbon::parse($mes . '-01')->translatedFormat('F')) }}</strong>:
+                tuvo un total de <strong>{{ $datos['asistencias'] }}</strong> asistencias,
+                cumpliendo <strong>{{ $datos['horas'] }} horas {{ $datos['minutos'] }} minutos</strong>.
+                <br>
+                <strong>Durante este mes se registraron:</strong>
+                <ul>
+                    <li><strong>{{ $datos['estados']['Presente'] }}</strong> asistencias con presencia.</li>
+                    <li><strong>{{ $datos['estados']['Ausente Justificado'] }}</strong> ausencias justificadas.</li>
+                    <li><strong>{{ $datos['estados']['Ausente Injustificado'] }}</strong> ausencias injustificadas.</li>
+                </ul>
+                <br>
+            </li>
+        @endforeach
+    </ul>
+    
+    <p>
+        Se transcurrió un total de <strong>{{ $totalGeneral }}</strong> en asistencia durante el año.
+    </p>
+    
+    <hr>
+    
     <div class="content">
+        @if ($observaciones->isNotEmpty())
+            <h4 style="text-align: center">Observaciones destacadas durante el año</h4>
+            <table class="arreglo">
+                <thead>
+                    <tr>
+                        <th class="numero">No</th>
+                        <th class="fecha">Fecha</th>
+                        <th>Observación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $i = 0; @endphp
+                    @foreach ($observaciones as $obs)
+                        <tr>
+                            <td class="numero">{{ ++$i }}</td>
+                            <td class="fecha"> {{ \Carbon\Carbon::parse($obs->Fecha)->format('d/m/Y') }}</td>
+                            <td class="observacion">{{ $obs->Observacion }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
+    
+    <hr>
+    
+    <div class="content">
+        <h4 style="text-align: center">Asistencias detalladas del año</h4>
         <table class="arreglo">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Registrado por</th>
+                    <th>Estado</th>
                     <th>Fecha</th>
-                    <th>Hora Ingreso</th>
-                    <th>Hora Salida</th>
+                    <th>Horario</th>
                     <th>Duración</th>
                 </tr>
             </thead>
@@ -169,19 +217,24 @@
                     <tr>
                         <td>{{ ++$i }}</td>
                         <td>
-                            {{ explode(' ', $asistencia->usuario->Nombre)[0] }}
-                            {{ explode(' ', $asistencia->usuario->Apellido)[0] }}
+                            @if($asistencia->usuario)
+                                {{ explode(' ', $asistencia->usuario->Nombre)[0] }}
+                                {{ explode(' ', $asistencia->usuario->Apellido)[0] }}
+                            @else
+                                No registrado
+                            @endif
                         </td>
+                        <td>{{ $asistencia->Estado }}</td>
                         <td>{{ \Carbon\Carbon::parse($asistencia->Fecha)->format('d/m/Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($asistencia->Hora_Ingreso)->format('H:i') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($asistencia->Hora_Salida)->format('H:i') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($asistencia->Hora_Ingreso)->format('H:i') }} - 
+                            {{ \Carbon\Carbon::parse($asistencia->Hora_Salida)->format('H:i') }}</td>
                         <td>{{ $asistencia->duracion }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-
     </div>
+    
 
 </body>
 

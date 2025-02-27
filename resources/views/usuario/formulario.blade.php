@@ -60,44 +60,49 @@
     </div>
 
     <!-- Categoria -->
-    <div class="form-group mb-3">
-        <label for="categoria" class="form-label">
-            {{ __('Categoria') }}
-            <span class="tooltip-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                title="<div class='tooltip-list'>
+    @if (auth()->user()->Categoria == 'Bienestar')
+        <div class="form-group mb-3">
+            <label for="categoria" class="form-label">
+                {{ __('Categoria') }}
+                <span class="tooltip-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                    title="<div class='tooltip-list'>
                 <div class='tooltip-item'><strong>Bienestar:</strong> gestiona todo menos asistencias.</div>
                 <div class='tooltip-item'><strong>Coordinador:</strong> gestiona las asistencias.</div>
                 <div class='tooltip-item'><strong>Maestro:</strong> solo registra asistencias.</div>
                 <div class='tooltip-item'><strong>Invitado:</strong> solo puede ver información básica.</div>
             </div>">
-                <i class="fa-solid fa-circle-question"></i>
-            </span>
-        </label>
-        <select name="Categoria" class="form-select @error('Categoria') is-invalid @enderror" id="categoria">
-            <option class="opcion" value="Bienestar"
-                {{ old('Categoria', $usuario?->Categoria) == 'Bienestar' ? 'selected' : '' }}>Bienestar
-            </option>
-            <option class="opcion" value="Coordinador"
-                {{ old('Categoria', $usuario?->Categoria) == 'Coordinador' ? 'selected' : '' }}>Coordinador
-            </option>
-            <option class="opcion" value="Maestro"
-                {{ old('Categoria', $usuario?->Categoria) == 'Maestro' ? 'selected' : '' }}>Maestro
-            </option>
-            <option class="opcion" value="Invitado"
-                {{ old('Categoria', $usuario?->Categoria) == 'Invitado' ? 'selected' : '' }}>Invitado
-            </option>
-        </select>
+                    <i class="fa-solid fa-circle-question"></i>
+                </span>
+            </label>
+            <select name="Categoria" class="form-select @error('Categoria') is-invalid @enderror" id="categoria">
+                <option class="opcion" value="Bienestar"
+                    {{ old('Categoria', $usuario?->Categoria) == 'Bienestar' ? 'selected' : '' }}>Bienestar
+                </option>
+                <option class="opcion" value="Coordinador"
+                    {{ old('Categoria', $usuario?->Categoria) == 'Coordinador' ? 'selected' : '' }}>Coordinador
+                </option>
+                <option class="opcion" value="Maestro"
+                    {{ old('Categoria', $usuario?->Categoria) == 'Maestro' ? 'selected' : '' }}>Maestro
+                </option>
+                <option class="opcion" value="Invitado"
+                    {{ old('Categoria', $usuario?->Categoria) == 'Invitado' ? 'selected' : '' }}>Invitado
+                </option>
+            </select>
 
-        <!-- Contenedor de mensaje de error -->
-        <div class="mensaje-container">
-            @if ($errors->has('Categoria'))
-                <div class="mensaje-error show">
-                    <i class="fas fa-exclamation-circle"></i>
-                    {{ $errors->first('Categoria') }}
-                </div>
-            @endif
+            <!-- Contenedor de mensaje de error -->
+            <div class="mensaje-container">
+                @if ($errors->has('Categoria'))
+                    <div class="mensaje-error show">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ $errors->first('Categoria') }}
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
+    @else
+        <input type="hidden" name="Categoria" id="categoria" value="{{ $usuario?->Categoria }}">
+    @endif
+
 
     <!-- Contraseña -->
     <div x-data="{ verPassword: false }" class="form-group mb-3">
@@ -122,12 +127,16 @@
     </div>
 
     <!-- Habilitado -->
-    <div class="form-check form-switch mb-3">
-        <input type="hidden" name="Habilitado" value="0">
-        <input class="form-check-input" type="checkbox" id="habilitado" name="Habilitado" value="1"
-            {{ old('Habilitado', $usuario?->Habilitado) == 1 ? 'checked' : '' }}>
-        <label class="form-check-label" for="habilitado">{{ __('Habilitado') }}</label>
-    </div>
+    @if (auth()->user()->Categoria == 'Bienestar')
+        <div class="form-check form-switch mb-3">
+            <input type="hidden" name="Habilitado" value="0">
+            <input class="form-check-input" type="checkbox" id="habilitado" name="Habilitado" value="1"
+                {{ old('Habilitado', $usuario?->Habilitado) == 1 ? 'checked' : '' }}>
+            <label class="form-check-label" for="habilitado">{{ __('Habilitado') }}</label>
+        </div>
+    @else
+        <input type="hidden" name="Habilitado" id="habilitado" value="{{ old('Habilitado', $usuario?->Habilitado) }}">
+    @endif
 
 
     <!-- Botones -->

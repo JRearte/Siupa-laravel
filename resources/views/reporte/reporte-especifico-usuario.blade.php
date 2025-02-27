@@ -5,10 +5,10 @@
     <title>Reporte de Usuario Especifico</title>
     <style>
         @page {
+            size: A4;
             margin: 2.5cm 1.5cm 1.5cm 1.5cm;
         }
 
-        /* ========== ENCABEZADO Y PIE DE PÁGINA ========== */
         header {
             position: fixed;
             top: -2.5cm;
@@ -98,14 +98,23 @@
             font-weight: bold;
             width: 35px;
         }
+
+        .formato {
+            text-align: justify;
+            text-justify: inter-word;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
 <body>
     <header>
         <img src="{{ public_path('imagen/logo.png') }}" alt="logo" class="imagen">
-        <h2 class="titulo">Reporte del Usuario {{ $usuario->Categoria }}</h2>
-        <p class="subtitulo">Legajo: {{ $usuario->Legajo }} | Nombre: {{ $usuario->Nombre }} {{ $usuario->Apellido }}</p>
+        <h2 class="titulo">Reporte de Usuario </h2>
+        <p class="subtitulo">Legajo: {{ $usuario->Legajo }}</p>
 
     </header>
 
@@ -126,12 +135,41 @@
     </footer>
 
     <div class="content">
+
+        <div class="reporte-container">
+            <p class="formato">
+                El usuario <strong>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</strong>, quien desempeña el rol de
+                <strong>{{ $usuario->Categoria }}</strong> fue registrado en el sistema
+                SUIpa el dia
+                <strong>{{ $usuario->created_at->translatedFormat('d F Y') }}</strong>, iniciando su actividad en la
+                plataforma.
+                Desde entonces, ha realizado un total de
+                <strong>{{ number_format($cantidadHistorial, 0, ',', '.') }}</strong> acciones,
+                lo que representa un <strong>{{ number_format($porcentajeHistorial, 2, ',', '.') }}%</strong> de todas
+                las actividades registradas en el sistema.
+            </p>
+
+            @if ($cantidadHistorial > 0)
+                <p class="formato">
+                    Su primera acción fue registrada el
+                    <strong>{{ $historiales->first()->created_at->translatedFormat('d F Y \a \l\a\s H:i') }}</strong>,
+                    mientras que su última actividad tuvo lugar el
+                    <strong>{{ $historiales->last()->created_at->translatedFormat('d F Y \a \l\a\s H:i') }}</strong>.
+                </p>
+            @else
+                <p class="formato">
+                    Hasta la fecha, el usuario no ha realizado ninguna acción registrada en el sistema.
+                </p>
+            @endif
+        </div>
+
+
         <!-- Tabla de historial -->
         <table class="arreglo">
             <thead>
                 <tr>
                     <th class="numero">No</th>
-                    <th>Historial de acciones realizadas el año {{$usuario->created_at->format('Y');}}</th>
+                    <th>Historial de acciones realizadas el año {{ $usuario->created_at->format('Y') }}</th>
                 </tr>
             </thead>
             <tbody>

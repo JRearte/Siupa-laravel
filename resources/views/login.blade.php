@@ -66,7 +66,7 @@
                 <a href="https://www.instagram.com/uart_unpa/" class="btn-contacto instagram" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="mailto:email@example.com" class="btn-contacto gmail" target="_blank">
+                <a href="mailto:Acceso.uartunpa@gmail.com" class="btn-contacto gmail" target="_blank">
                     <i class="fas fa-envelope"></i>
                 </a>
                 <a href="https://www.linkedin.com/in/jonatan-rearte-078b5a233/" class="btn-contacto linkedin"

@@ -24,9 +24,11 @@
                     <p><strong>Modificación:</strong></p>
                     <p>{{ $infante->updated_at->translatedFormat('d F Y \a \l\a\s H:i') }}</p>
                 </div>
-                <!-- Opción de eliminar -->
+                
                 <div class="opciones">
-                    @include('infante.advertencia', ['infante' => $infante])
+                    <a href="{{ route('asistencia.reporte-especifico', ['infante' => $infante->id, 'sala' => $infante->sala_id]) }}">
+                        <i class="fas fa-file-alt"></i>
+                    </a>
                 </div>
             </div>
             <hr class="separador">
@@ -51,17 +53,6 @@
                     <p><strong>Fecha de asignacion:</strong></p>
                     <p>{{ $infante->Fecha_de_asignacion->translatedFormat('d F Y') }}</p>
 
-
-                    <!-- Botón de edición -->
-                    <div class="opciones editar">
-                        <a class="editar" href="{{ route('infante.editar', $infante->id) }}">
-                            <i class="fa-solid fa-pencil"></i>
-                        </a>
-                        <a class="reporte"
-                            href="{{ route('asistencia.reporte-especifico', ['infante' => $infante->id, 'sala' => $infante->sala_id]) }}">
-                            <i class="fas fa-file-alt"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
             <hr class="separador">
