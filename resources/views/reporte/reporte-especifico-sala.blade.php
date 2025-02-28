@@ -91,6 +91,23 @@
         .arreglo tbody tr:hover {
             background-color: #f1f1f1;
         }
+
+        .formato {
+            text-align: justify;
+            text-justify: inter-word;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .lista {
+            text-align: justify;
+            text-justify: inter-word;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -117,52 +134,56 @@
         </div>
     </footer>
 
+
+    <p class="formato">
+        A lo largo del año {{ date('Y') }}, los usuarios con los roles de <strong>Coordinador</strong> y
+        <strong>Maestro</strong> han desempeñado un papel fundamental en el cuidado y educación de los infantes,
+        supervisando su bienestar y registrando sus asistencias.
+    </p>
+    <p class="formato">
+        A continuación, se presenta el listado de los usuarios que han participado activamente en la sala
+        <strong>{{ $sala->Nombre }}</strong>, contribuyendo con su compromiso y dedicación.
+    </p>
+
+    <ul>
+        @foreach ($usuariosPorcentaje as $usuario)
+            <li class="lista">
+                <strong>{{ $usuario['Nombre'] }} {{ $usuario['Apellido'] }}</strong>, en su rol de
+                {{ $usuario['Categoria'] }}, registró el {{ $usuario['Porcentaje'] }}% de las asistencias.
+            </li>
+        @endforeach
+    </ul>
+
+
     <!-- Tabla de Infantes -->
     <table class="arreglo">
         <thead>
             <tr>
-                <th colspan="3">Infantes en la Sala</th>
+                <th colspan="5">Infantes en la Sala</th>
             </tr>
             <tr>
+                <th class="numero">No</th>
                 <th>Nombre completo</th>
                 <th>Categoria</th>
                 <th>Fecha de asignación</th>
+                <th>Habilitado</th>
             </tr>
         </thead>
         <tbody>
+            @php $i = 0; @endphp
             @foreach ($infantes as $infante)
                 <tr>
+                    <td class="numero">{{ ++$i }}</td>
                     <td>{{ $infante->Nombre }} {{ $infante->Apellido }}</td>
                     <td>{{ $infante->Categoria }}</td>
-                    <td>{{ ucfirst(\Carbon\Carbon::parse($infante->Fecha_de_asignacion)->translatedFormat('d F Y')) }}</td>
-
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <!-- Tabla de Usuarios -->
-    <table class="arreglo">
-        <thead>
-            <tr>
-                <th colspan="3">Usuarios que participaron en la Sala</th>
-            </tr>
-            <tr>
-                <th>Legajo</th>
-                <th>Nombre completo</th>
-                <th>Categoria</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($usuarios as $usuario)
-                <tr>
-                    <td>{{ $usuario->Legajo }}</td>
-                    <td>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
-                    <td>{{ $usuario->Categoria }}</td>
+                    <td>{{ ucfirst(\Carbon\Carbon::parse($infante->Fecha_de_asignacion)->translatedFormat('d F Y')) }}
+                    </td>
+                    <td>{{ $infante->Habilitado ? 'Habilitado' : 'Deshabilitado' }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
 </body>
+
 </html>

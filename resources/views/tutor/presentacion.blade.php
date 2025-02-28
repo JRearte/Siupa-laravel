@@ -78,8 +78,11 @@
 
                     <!-- Botón de edición -->
                     <div class="opciones editar">
-                        <a class="editar" href="{{ route('tutor.editar', $tutor?->id) }}">
+                        <a class="editar" href="{{ route('tutor.editar', $tutor->id) }}">
                             <i class="fa-solid fa-pencil"></i>
+                        </a>
+                        <a class="reporte" href="{{ route('tutor.reporte-especifico', $tutor->id) }}">
+                            <i class="fas fa-file-alt"></i>
                         </a>
                     </div>
                 </div>

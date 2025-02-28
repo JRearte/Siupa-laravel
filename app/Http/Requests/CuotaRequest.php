@@ -23,13 +23,14 @@ class CuotaRequest extends FormRequest
     public function messages()
     {
         return [
-            'Valor.required'         => 'El valor de la cuota es obligatorio.',
-            'Valor.numeric'          => 'El valor de la cuota debe ser un número.',
-            'Valor.min'              => 'El valor de la cuota no puede ser negativo.',
-            'Fecha.required'         => 'La fecha de la cuota es obligatoria.',
-            'Fecha.date'             => 'La fecha debe ser válida.',
-            'trabajador_id.required' => 'El trabajador asociado es obligatorio.',
-            'trabajador_id.exists'   => 'El trabajador seleccionado no es válido.',
+            'Valor.required'         => 'Valor obligatorio.',
+            'Valor.numeric'          => 'Debe ser un número.',
+            'Valor.min'              => 'No puede ser negativo.',
+            'Fecha.required'         => 'Fecha obligatoria.',
+            'Fecha.date'             => 'Debe ser válida.',
+            'trabajador_id.required' => 'Trabajador obligatorio.',
+            'trabajador_id.exists'   => 'Trabajador no válido.',
         ];
     }
+    
 }

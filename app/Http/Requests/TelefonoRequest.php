@@ -22,11 +22,12 @@ class TelefonoRequest extends FormRequest
     public function messages()
     {
         return [
-            'Numero.required'   => 'El número de teléfono es obligatorio.',
-            'Numero.integer'    => 'El número de teléfono debe ser un número válido.',
-            'tutor_id.required' => 'El tutor es obligatorio.',
-            'tutor_id.exists'   => 'El tutor seleccionado no es válido.',
+            'Numero.required'   => 'Número obligatorio.',
+            'Numero.integer'    => 'Debe ser un número válido.',
+            'tutor_id.required' => 'Tutor obligatorio.',
+            'tutor_id.exists'   => 'Tutor inválido.',
         ];
     }
+    
 }
 

@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class TutorController extends Controller
 {
@@ -34,11 +35,11 @@ class TutorController extends Controller
     {
         $buscar = $request->input('buscar');
         $datos = [];
-    
+
         // ==================== Filtro de Trabajadores ====================
         $trabajadores = Tutor::with('infantes')
             ->where('Tipo_tutor', 'Trabajador');
-    
+
         if ($buscar) {
             $trabajadores->where(function ($query) use ($buscar) {
                 $query->where('Legajo', 'LIKE', "%$buscar%")
@@ -46,14 +47,14 @@ class TutorController extends Controller
                     ->orWhere('Apellido', 'LIKE', "%$buscar%");
             });
         }
-    
+
         $datos['trabajadores'] = $trabajadores->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_trabajador');
         $datos['trabajadores']->appends(['buscar' => $buscar]);
-    
+
         // ==================== Filtro de Alumnos ====================
         $alumnos = Tutor::with('infantes')
             ->where('Tipo_tutor', 'Alumno');
-    
+
         if ($buscar) {
             $alumnos->where(function ($query) use ($buscar) {
                 $query->where('Legajo', 'LIKE', "%$buscar%")
@@ -61,18 +62,18 @@ class TutorController extends Controller
                     ->orWhere('Apellido', 'LIKE', "%$buscar%");
             });
         }
-    
+
         $datos['alumnos'] = $alumnos->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_alumno');
         $datos['alumnos']->appends(['buscar' => $buscar]);
-    
+
         $trabajadores = $datos['trabajadores'] ?? null;
         $alumnos = $datos['alumnos'] ?? null;
-    
+
         return view('tutor.index', compact('trabajadores', 'alumnos', 'buscar'));
     }
-    
-    
-    
+
+
+
 
 
     /**
@@ -86,7 +87,7 @@ class TutorController extends Controller
      */
     public function presentar(int $id): View
     {
-        $this->validarPermiso(["Bienestar"], "No tienes permiso para ver tutores.", "tutor.index");
+        $this->validarPermiso(["Bienestar","Coordinador"], "No tienes permiso para ver tutores.", "tutor.index");
         $tutor = Tutor::with(['domicilio', 'infantes.sala', 'correos', 'telefonos'])->findOrFail($id);
         $edad = Carbon::parse($tutor->Fecha_de_nacimiento)->age;
         $trabajador = null;
@@ -320,7 +321,7 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Eliminar teléfono', "Eliminó un contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'El teléfono fue eliminado exitosamente');
     }
-    
+
 
     /**
      * Este método:
@@ -566,7 +567,7 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Registrar cuota', "Registró la cuota del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La cuota fue registrada exitosamente.');
     }
-    
+
 
     /**
      * Este método:
@@ -758,5 +759,47 @@ class TutorController extends Controller
         $asignatura->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar asignatura', "Eliminó la asignatura {$asignatura->Nombre} del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La asignatura fue eliminada exitosamente');
+    }
+
+    public function generarReporteEspecifico(int $tutor_id)
+    {
+        $tutor = Tutor::with([
+            'infantes.familiares',
+            'domicilio',
+            'telefonos',
+            'correos',
+        ])->findOrFail($tutor_id);
+        
+        $porcentaje = 0; 
+        $totalAsignaturas = 0;
+        $totalCuotasPagadas = 0;
+        
+        if ($tutor->Tipo_tutor === 'Trabajador') {
+            $tutor->load('trabajador.cuotas');
+    
+
+            if ($tutor->relationLoaded('trabajador') && $tutor->trabajador->relationLoaded('cuotas')) {
+                $totalCuotasPagadas = $tutor->trabajador->cuotas->sum('Valor');
+            }
+
+        } elseif ($tutor->Tipo_tutor === 'Alumno') {
+            $tutor->load('carrera.asignaturas');
+        
+            if ($tutor->relationLoaded('asignaturas')) {
+                $condicion = $tutor->asignaturas->whereIn('Condicion', ['Regular', 'Aprobado'])->count();
+                $totalAsignaturas = $tutor->asignaturas->count();
+                $porcentaje = $totalAsignaturas > 0 ? ($condicion / $totalAsignaturas) * 100 : 0;
+            }
+        }
+        
+        $pdf = PDF::loadView('reporte/reporte-especifico-tutor', [
+            'tutor' => $tutor,
+            'porcentaje' => $porcentaje,
+            'totalAsignaturas' => $totalAsignaturas,
+            'totalCuotasPagadas' => $totalCuotasPagadas
+        ]);
+    
+        return $pdf->stream();
+        //return $pdf->download('Reporte de ' . $tutor->Nombre . ' ' . $tutor->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }
 }

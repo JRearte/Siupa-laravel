@@ -85,6 +85,8 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::get('tutor/{carrera_id}/formulario-modificar-asignatura/{asignatura_id}', 'formularioModificarAsignatura')->name('tutor.editar-asignatura');
     Route::patch('tutor/asignatura-modificar/{asignatura}', 'modificarAsignatura')->name('tutor.modificar-asignatura');
     Route::delete('tutor/{tutor_id}/eliminar-asignatura/{asignatura_id}', 'eliminarAsignatura')->name('tutor.eliminar-asignatura');
+
+    Route::get('/tutor/reporte-especifico/{id}', 'generarReporteEspecifico')->name('tutor.reporte-especifico');
 });
 
 Route::controller(InfanteController::class)->middleware('auth')->group(function () {

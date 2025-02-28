@@ -24,17 +24,18 @@ class TrabajadorRequest extends FormRequest
     public function messages()
     {
         return [
-            'Hora.required'     => 'El número de horas es obligatorio.',
-            'Hora.integer'      => 'El número de horas debe ser un número entero.',
-            'Hora.min'          => 'El número mínimo de horas es :min.',
-            'Hora.max'          => 'El número máximo de horas es :max.',
-            'Cargo.required'    => 'El cargo es obligatorio.',
-            'Cargo.regex'       => 'El cargo solo puede contener letras y espacios.',
-            'Cargo.max'         => 'El cargo puede tener un máximo de :max caracteres.',
-            'Tipo.required'     => 'El tipo de trabajador es obligatorio.',
-            'Tipo.in'           => 'El tipo debe ser "Docente" o "No docente".',
-            'tutor_id.required' => 'El tutor asociado es obligatorio.',
-            'tutor_id.exists'   => 'El tutor seleccionado no es válido.',
+            'Hora.required'  => 'Horas obligatorias.',
+            'Hora.integer'   => 'Debe ser un número entero.',
+            'Hora.min'       => 'Mínimo :min horas.',
+            'Hora.max'       => 'Máximo :max horas.',
+            'Cargo.required' => 'Cargo obligatorio.',
+            'Cargo.regex'    => 'Solo letras y espacios.',
+            'Cargo.max'      => 'Máximo :max caracteres.',
+            'Tipo.required'  => 'Tipo obligatorio.',
+            'Tipo.in'        => 'Debe ser "Docente" o "No docente".',
+            'tutor_id.required' => 'Tutor obligatorio.',
+            'tutor_id.exists'   => 'Tutor inválido.',
         ];
     }
+    
 }

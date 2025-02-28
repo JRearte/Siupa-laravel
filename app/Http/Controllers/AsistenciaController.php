@@ -12,7 +12,6 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 use Illuminate\View\View;
 
 class AsistenciaController extends Controller
@@ -56,6 +55,7 @@ class AsistenciaController extends Controller
 
     public function presentar(int $infante_id, Request $regla): View
     {
+        $this->validarPermiso(["Coordinador", "Maestro", "Bienestar"], "No tienes permiso para ver asistencias.", "asistencia.index");
         $mes = $regla->input('mes', now()->format('Y-m'));
 
         $infante = Infante::with([
@@ -83,7 +83,7 @@ class AsistenciaController extends Controller
      */
     public function formularioRegistrar(int $infante_id, string $fecha): View
     {
-        $this->validarPermiso(["Coordinador", "Maestro"], "No tienes permiso para registrar asistencias.", "asistencia.index");
+        $this->validarPermisoConID(["Coordinador", "Maestro"], "No tienes permiso para registrar asistencias.", "asistencia.presentacion", $infante_id);
 
         $usuarioAutentificado = auth()->id();
         $infante = Infante::findOrFail($infante_id);
@@ -110,13 +110,13 @@ class AsistenciaController extends Controller
      */
     public function registrar(AsistenciaRequest $regla): RedirectResponse
     {
-        $this->validarPermiso(["Coordinador", "Maestro"], "No tienes permiso para registrar asistencias.", "asistencia.index");
-        $datos = $regla->validated();
-        $asistencia = Asistencia::create($datos);
-        $infante = Infante::findOrFail($asistencia->infante_id);
-        $this->registrarAccion(auth()->id(), 'Registrar asistencia', "Registró la asistencia de {$infante->Nombre} {$infante->Apellido} ");
+        $this->validarPermisoConID(["Coordinador", "Maestro"], "No tienes permiso para registrar asistencias.", "asistencia.presentacion", $regla->infante_id);
+        $asistencia = Asistencia::create($regla->validated());
+        $infante = $asistencia->infante;
+        $this->registrarAccion(auth()->id(), 'Registrar asistencia', "Registró la asistencia de {$infante->Nombre} {$infante->Apellido}");
         return redirect()->route('asistencia.presentacion', $infante->id)->with('success', 'La asistencia fue registrada exitosamente.');
     }
+    
 
     /**
      * Este método:
@@ -187,22 +187,19 @@ class AsistenciaController extends Controller
         $observaciones = $infante->asistencias->whereNotNull('Observacion');
 
         if (!$infante->asistencias->count()) {
-            return abort(404, 'El infante no tiene asistencias registradas.');
+            return redirect()->route('asistencia.presentacion', $infante->id)->with('info', 'El infante no tiene asistencias.');
         }
 
-        // Obtener la primera asistencia del año
         $primerAsistencia = Asistencia::where('infante_id', $infante_id)
             ->whereYear('Fecha', now()->year)
             ->orderBy('Fecha', 'asc')
             ->first();
 
-        // Obtener la última asistencia del año
         $ultimaAsistencia = Asistencia::where('infante_id', $infante_id)
             ->whereYear('Fecha', now()->year)
             ->orderBy('Fecha', 'desc')
             ->first();
 
-        // Calcular la duración de cada asistencia
         foreach ($infante->asistencias as $asistencia) {
             $horaIngreso = Carbon::parse($asistencia->Hora_Ingreso);
             $horaSalida = Carbon::parse($asistencia->Hora_Salida);

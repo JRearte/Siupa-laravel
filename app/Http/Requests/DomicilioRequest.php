@@ -36,25 +36,25 @@ class DomicilioRequest extends FormRequest
      */
     public function messages()
     {
-        return[
-            'Provincia.required'     => 'La provincia es obligatoria',
-            'Provincia.regex'        => 'La provincia solo puede contener letras',
-            'Provincia.max'          => 'La provincia solo puede tener un máximo de :max caracteres',
-            'Localidad.required'     => 'La localidad es obligatoria',
-            'Localidad.regex'        => 'La localidad solo puede contener letras y números',
-            'Localidad.max'          => 'La localidad solo puede tener un máximo de :max caracteres',
-            'Codigo_postal.required' => 'El código postal es obligatorio',
-            'Codigo_postal.integer'  => 'El código postal solo puede contener números enteros',
-            'Codigo_postal.digits'   => 'El código postal debe tener :digits dígitos',
-            'Barrio.required'        => 'El barrio es obligatorio',
-            'Barrio.regex'           => 'El barrio solo puede contener letras y números',
-            'Barrio.max'             => 'El barrio solo puede tener un máximo de :max caracteres',
-            'Calle.required'         => 'La calle es obligatoria',
-            'Calle.regex'            => 'La calle solo puede contener letras y números',
-            'Calle.max'              => 'La calle solo puede tener un máximo de :max caracteres',
-            'Numero.required'        => 'El número de casa es obligatorio',
-            'Numero.regex'           => 'El número de casa puede contener números y letras',
-            'Numero.max'             => 'El número de casa puede tener un máximo de :max caracteres',
+        return [
+            'Provincia.required'     => 'Provincia obligatoria.',
+            'Provincia.regex'        => 'Solo letras y números.',
+            'Provincia.max'          => 'Máximo :max caracteres.',
+            'Localidad.required'     => 'Localidad obligatoria.',
+            'Localidad.regex'        => 'Solo letras y números.',
+            'Localidad.max'          => 'Máximo :max caracteres.',
+            'Codigo_postal.required' => 'Código postal obligatorio.',
+            'Codigo_postal.integer'  => 'Solo números enteros.',
+            'Codigo_postal.digits'   => 'Debe tener :digits dígitos.',
+            'Barrio.required'        => 'Barrio obligatorio.',
+            'Barrio.regex'           => 'Solo letras y números.',
+            'Barrio.max'             => 'Máximo :max caracteres.',
+            'Calle.required'         => 'Calle obligatoria.',
+            'Calle.regex'            => 'Solo letras y números.',
+            'Calle.max'              => 'Máximo :max caracteres.',
+            'Numero.required'        => 'Número obligatorio.',
+            'Numero.regex'           => 'Puede contener números y letras.',
+            'Numero.max'             => 'Máximo :max caracteres.',
         ];
-    }
+    }    
 }

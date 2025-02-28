@@ -25,8 +25,8 @@ class SalaRequest extends FormRequest
         $id = $this->route('sala');
         return [
             'Nombre'    => ['required', 'string', 'max:30', RULE::unique('sala', 'Nombre')->ignore($id)],
-            'Edad'      => ['required', 'integer', 'min:0', 'max:6'], //La edad puede ser de 0 a 6 años.
-            'Capacidad' => ['required', 'integer', 'digits_between:1,2'], //La capacidad comprende de 1 a 2 digitos.
+            'Edad'      => ['required', 'integer', 'min:0', 'max:6'],
+            'Capacidad' => ['required', 'integer', 'digits_between:1,2'],
         ];
     }
 
@@ -36,16 +36,17 @@ class SalaRequest extends FormRequest
     public function messages()
     {
         return [
-            'Nombre.required'          => 'El nombre es obligatorio.',
-            'Nombre.max'               => 'El nombre solo puede tener un máximo de :max caracteres.',
-            'Nombre.unique'            => 'El nombre ya está en uso.',
-            'Edad.required'            => 'La edad es obligatorio.',
-            'Edad.integer'             => 'La edad debe ser un número entero.',
-            'Edad.min'                 => 'La edad minima es de :min año.',
-            'Edad.max'                 => 'La edad máxima es de :max años.',
-            'Capacidad.required'       => 'La capacidad es obligatorio.',
-            'Capacidad.integer'        => 'La capacidad debe ser un número entero.',
-            'Capacidad.digits_between' => 'La capacidad debe tener entre 1 y 2 dígitos.',
+            'Nombre.required'           => 'Nombre obligatorio.',
+            'Nombre.max'                => 'Máximo :max caracteres.',
+            'Nombre.unique'             => 'Nombre en uso.',
+            'Edad.required'             => 'Edad obligatoria.',
+            'Edad.integer'              => 'Debe ser un número entero.',
+            'Edad.min'                  => 'Mínimo :min año.',
+            'Edad.max'                  => 'Máximo :max años.',
+            'Capacidad.required'        => 'Capacidad obligatoria.',
+            'Capacidad.integer'         => 'Debe ser un número entero.',
+            'Capacidad.digits_between'  => 'Debe tener entre 1 y 2 dígitos.',
         ];
     }
+    
 }

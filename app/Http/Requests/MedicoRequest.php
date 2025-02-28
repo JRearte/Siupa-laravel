@@ -23,12 +23,13 @@ class MedicoRequest extends FormRequest
     public function messages()
     {
         return [
-            'Tipo.required'       => 'El tipo es obligatorio.',
-            'Tipo.in'             => 'El tipo debe ser: Vacuna, Alergia o Discapacidad.',
-            'Nombre.required'     => 'El nombre es obligatorio.',
-            'Nombre.max'          => 'El nombre no puede tener más de :max caracteres.',
-            'infante_id.required' => 'El infante es obligatorio.',
-            'infante_id.exists'   => 'El infante seleccionado no es válido.',
+            'Tipo.required'       => 'Tipo obligatorio.',
+            'Tipo.in'             => 'Debe ser Vacuna, Alergia o Discapacidad.',
+            'Nombre.required'     => 'Descripción obligatoria.',
+            'Nombre.max'          => 'Máximo :max caracteres.',
+            'infante_id.required' => 'Infante obligatorio.',
+            'infante_id.exists'   => 'Infante no válido.',
         ];
     }
+    
 }

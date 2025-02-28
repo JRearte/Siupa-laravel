@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sala;
 use App\Models\Infante;
 use App\Models\Usuario;
+use App\Models\Asistencia;
 use App\Http\Requests\SalaRequest;
 use App\Traits\RegistraHistorial;
 use Illuminate\Http\Request;
@@ -85,6 +86,7 @@ class SalaController extends Controller
      */
     public function presentar(int $id): View
     {
+        $this->validarPermiso(["Bienestar","Coordinador"], "No tienes permiso para ver salas.", "sala.index");
         $sala = Sala::findOrFail($id);
         $infantes = $sala->infante()->get();
         $cantidad = $infantes->count();
@@ -212,13 +214,35 @@ class SalaController extends Controller
     {
         $sala = Sala::findOrFail($sala_id);
         $infantes = Infante::where('sala_id', $sala_id)->get();
-        $usuarios = Usuario::whereHas('asistencias', 
-                    function ($consulta) use ($sala_id) {$consulta->where('sala_id', $sala_id);})->distinct()->get();
     
-        $pdf = PDF::loadView('reporte/reporte-especifico-sala', compact('sala', 'infantes', 'usuarios'));
+        $usuarios = Usuario::whereHas('asistencias', function ($consulta) use ($sala_id) {
+            $consulta->where('sala_id', $sala_id);
+        })->distinct()->get();
+    
+        $totalAsistencias = Asistencia::where('sala_id', $sala_id)->count();
+    
+        $usuariosPorcentaje = [];
+        foreach ($usuarios as $usuario) {
+            $asistenciasUsuario = Asistencia::where('sala_id', $sala_id)
+                ->where('usuario_id', $usuario->id)
+                ->count();
+    
+            $porcentaje = $totalAsistencias > 0 ? round(($asistenciasUsuario / $totalAsistencias) * 100, 2) : 0;
+    
+            $usuariosPorcentaje[] = [
+                'Nombre' => $usuario->Nombre,
+                'Apellido' => $usuario->Apellido,
+                'Categoria' => $usuario->Categoria,
+                'Legajo' => $usuario->Legajo,
+                'Porcentaje' => $porcentaje,
+            ];
+        }
+
+        $pdf = PDF::loadView('reporte/reporte-especifico-sala', compact('sala', 'infantes', 'usuariosPorcentaje', 'totalAsistencias'));
     
         return $pdf->stream();
     }
+    
     
 
 }

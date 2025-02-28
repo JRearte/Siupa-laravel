@@ -5,21 +5,17 @@
     <div class="user-section text-center mb-4">
         <div class="card p-2">
             <div class="d-flex align-items-start">
-                <!-- Contenedor del Icono de Usuario -->
                 <div class="user-icon">
                     <i class="fa-regular fa-user"></i>
                 </div>
-
-                <!-- Contenedor del Nombre de Usuario y Elemento Adicional -->
                 <div class="user-info ml-2 d-flex flex-column justify-content-between">
-                    <!-- Nombre del Usuario -->
                     <div class="user-name">
                         @if (Auth::check())
                             @php
                                 $nombreCompleto = Auth::user()->Nombre;
-                                $primerNombre = explode(' ', $nombreCompleto)[0]; // Toma el primer nombre
+                                $primerNombre = explode(' ', $nombreCompleto)[0];
                                 $apellidoCompleto = Auth::user()->Apellido;
-                                $primerApellido = explode(' ', $apellidoCompleto)[0]; // Toma el primer nombre
+                                $primerApellido = explode(' ', $apellidoCompleto)[0];
                             @endphp
                             <p class="mb-0">{{ $primerNombre }} {{ $primerApellido }}</p> 
                         @else
@@ -27,7 +23,6 @@
                         @endif
                     </div>
 
-                    <!-- Elemento Adicional -->
                     <div class="user-extra">
                         <p class="mb-0 text-muted">{{ Auth::user()->Categoria }}</p>
                     </div>
@@ -45,27 +40,21 @@
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.index') }}" class="nav-link {{ request()->routeIs(['sala.*', 'infante.*']) ? 'active' : '' }}">
-                <i class="fas fa-home icon"></i>
-                <p class="nav-text">Sala</p>
-            </a>
-        </li>
-        <li class="nav-item mb-2">
             <a href="{{ route('tutor.index') }}" class="nav-link {{ request()->routeIs('tutor.*') ? 'active' : '' }}">
                 <i class="fas fa-user-tie icon"></i>
                 <p class="nav-text">Tutor</p>
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('asistencia.index') }}" class="nav-link {{ request()->routeIs('asistencia.*') ? 'active' : '' }}"">
-                <i class="fas fa-clock icon"></i>
-                <p class="nav-text">Asistencia</p>
+            <a href="{{ route('sala.index') }}" class="nav-link {{ request()->routeIs(['sala.*', 'infante.*']) ? 'active' : '' }}">
+                <i class="fas fa-home icon"></i>
+                <p class="nav-text">Sala</p>
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('sala.index') }}" class="nav-link">
-                <i class="fas fa-child icon"></i>
-                <p class="nav-text">Infante</p>
+            <a href="{{ route('asistencia.index') }}" class="nav-link {{ request()->routeIs('asistencia.*') ? 'active' : '' }}"">
+                <i class="fas fa-clock icon"></i>
+                <p class="nav-text">Asistencia</p>
             </a>
         </li>
     </ul>

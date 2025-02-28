@@ -26,15 +26,16 @@ class CarreraRequest extends FormRequest
     public function messages()
     {
         return [
-            'Codigo.required'    => 'El código de la carrera es obligatorio.',
-            'Codigo.integer'     => 'El código de la carrera debe ser un número entero.',
-            'Codigo.digits'      => 'El código de la carrera debe tener exactamente :digits dígitos.',
-            'Nombre.required'    => 'El nombre de la carrera es obligatorio.',
-            'Nombre.regex'       => 'El nombre solo puede contener letras y espacios.',
-            'Nombre.max'         => 'El nombre puede tener un máximo de :max caracteres.',
-            'tutor_id.required'  => 'El tutor asociado es obligatorio.',
-            'tutor_id.unique'    => 'El tutor ya tiene una carrera asignada.',
-            'tutor_id.exists'    => 'El tutor seleccionado no es válido.',
+            'Codigo.required'   => 'Código obligatorio.',
+            'Codigo.integer'    => 'Debe ser un número.',
+            'Codigo.digits'     => 'Debe tener :digits dígitos.',
+            'Nombre.required'   => 'Nombre obligatorio.',
+            'Nombre.regex'      => 'Solo letras y espacios.',
+            'Nombre.max'        => 'Máximo :max caracteres.',
+            'tutor_id.required' => 'Tutor obligatorio.',
+            'tutor_id.unique'   => 'El tutor ya tiene carrera.',
+            'tutor_id.exists'   => 'Tutor no válido.',
         ];
     }
+    
 }

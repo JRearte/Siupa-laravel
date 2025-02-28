@@ -30,6 +30,7 @@ class InfanteController extends Controller
      */
     public function presentar(int $id): View
     {
+        $this->validarPermiso(["Bienestar","Coordinador","Maestro"], "No tienes permiso para ver infantes.", "sala.index");
         $infante = Infante::with([
             'familiares',
             'medicos' => function ($consulta) {
