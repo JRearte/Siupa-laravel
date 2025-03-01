@@ -88,9 +88,6 @@ body {
     box-shadow: 0 0 8px rgba(23, 162, 184, 0.8), 0 0 15px rgba(23, 162, 184, 0.6);
 }
 
-
-
-
 .toast-body {
     flex-grow: 1;
     padding-left: 10px;
@@ -166,6 +163,7 @@ body {
     height: 100vh;
     box-sizing: border-box;
 }
+
 
 /* ==================== Cabecera ==================== */
 .cabecera {
@@ -353,6 +351,11 @@ body {
         flex: 1;
         max-width: 100%;
     }
+
+    .asistencias {
+        margin-bottom: 100px;
+    }
+
 }
 
 

@@ -21,15 +21,15 @@ class AsistenciaController extends Controller
     public function listar(Request $regla): View
     {
         $buscar = $regla->input('buscar');
+        $mes = $regla->input('mes', Carbon::now()->month);
+        $anio = $regla->input('anio', Carbon::now()->year);
+    
         $salas = Sala::all();
         $datos = [];
-
+    
         foreach ($salas as $index => $sala) {
-            if (!$sala) {
-                continue;
-            }
-
-            // ==================== Filtro de búsqueda ====================
+            if (!$sala) continue;
+    
             if ($buscar) {
                 $sala->infante = $sala->infante()
                     ->where('Habilitado', 1)
@@ -41,17 +41,60 @@ class AsistenciaController extends Controller
             } else {
                 $sala->infante = $sala->infante()->where('Habilitado', 1)->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala' . ($index + 1));
             }
-
-            $sala->infante->appends(['buscar' => $buscar]);
+    
+            $sala->infante->appends(['buscar' => $buscar, 'mes' => $mes, 'anio' => $anio]);
             $datos['sala' . ($index + 1)] = $sala;
         }
-
+    
+        // Pasar los parámetros a obtenerDatosAsistencias
+        $graficoDatos = $this->obtenerDatosAsistencias($regla->merge(['mes' => $mes, 'anio' => $anio]))->getData(true);
+    
         $sala1 = $datos['sala1'] ?? null;
         $sala2 = $datos['sala2'] ?? null;
         $sala3 = $datos['sala3'] ?? null;
-
-        return view('asistencia.index', compact('sala1', 'sala2', 'sala3', 'buscar'));
+    
+        return view('asistencia.index', compact('sala1', 'sala2', 'sala3', 'buscar', 'graficoDatos', 'mes', 'anio'));
     }
+    
+    
+    public function obtenerDatosAsistencias(Request $request)
+    {
+        $mes = $request->input('mes', Carbon::now()->month);
+        $anio = $request->input('anio', Carbon::now()->year);
+    
+        $cantidadInfantes = Infante::where('Habilitado', 1)->count();
+        $diasMes = Carbon::create($anio, $mes, 1)->daysInMonth;
+    
+        $asistencias = Asistencia::selectRaw('DAY(Fecha) as dia, COUNT(*) as cantidad')
+            ->whereYear('Fecha', $anio)
+            ->whereMonth('Fecha', $mes)
+            ->groupBy('dia')
+            ->orderBy('dia')
+            ->get()
+            ->keyBy('dia'); 
+    
+        $labels = [];
+        $data = [];
+        $fechas = [];
+    
+        for ($i = 1; $i <= $diasMes; $i++) {
+            $fecha = Carbon::create($anio, $mes, $i)->toDateString();
+            $labels[] = $i;
+            $fechas[] = $fecha;
+            $data[] = $asistencias[$i]->cantidad ?? 0;
+        }
+    
+        return response()->json([
+            'cantidadInfantes' => $cantidadInfantes,
+            'labels' => $labels,
+            'data' => $data,
+            'fechas' => $fechas,
+            'diaActual' => ($mes == Carbon::now()->month && $anio == Carbon::now()->year) ? Carbon::now()->day : null
+        ]);
+    }
+    
+    
+    
 
     public function presentar(int $infante_id, Request $regla): View
     {
@@ -116,7 +159,7 @@ class AsistenciaController extends Controller
         $this->registrarAccion(auth()->id(), 'Registrar asistencia', "Registró la asistencia de {$infante->Nombre} {$infante->Apellido}");
         return redirect()->route('asistencia.presentacion', $infante->id)->with('success', 'La asistencia fue registrada exitosamente.');
     }
-    
+
 
     /**
      * Este método:
@@ -183,7 +226,7 @@ class AsistenciaController extends Controller
             ->where('id', $infante_id)
             ->where('sala_id', $sala_id)
             ->firstOrFail();
-        
+
         $observaciones = $infante->asistencias->whereNotNull('Observacion');
 
         if (!$infante->asistencias->count()) {

@@ -1,5 +1,5 @@
 @vite(['resources/css/tabla.css'])
-<div class="contenido-principal user">
+<div class="contenido-principal user asistencias">
     <!-- Tabla para la Sala 1 -->
     @if ($sala1)
         <div class="tabla-salas">

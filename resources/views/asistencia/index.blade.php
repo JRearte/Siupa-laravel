@@ -47,7 +47,9 @@
         <div class="contenido-principal">
             @include('asistencia.listar', ['sala1' => $sala1, 'sala2' => $sala2, 'sala3' => $sala3])
 
-
+            <div>
+                @include('asistencia.estadistica', compact('graficoDatos'))
+            </div>
         </div>
 
     </div>

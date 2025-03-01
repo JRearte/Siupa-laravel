@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/css/calendario.css',
                 'resources/js/app.js',
                 'resources/js/grafico.js',
+                'resources/js/grafico-barra.js',
                 'resources/js/toast.js',
                 'resources/js/menu_desplegable.js',
                 'resources/js/dropdowns.js'],
