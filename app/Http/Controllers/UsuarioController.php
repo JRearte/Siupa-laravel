@@ -8,10 +8,10 @@ use App\Models\Historial;
 use App\Traits\RegistraHistorial;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
-use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //Metodo de encriptación irreversible 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\View;
 
 
@@ -139,6 +139,7 @@ class UsuarioController extends Controller
     /**
      * Este método:
      * → Recupera los datos de un usuario por su identificador único.
+     * → Cifra las categorías antes de enviarlas al formulario para mayor seguridad.
      * → Redirige al formulario de edición con la información del usuario cargada.
      * 
      * @param int $id → Identificador único del usuario.
@@ -147,15 +148,23 @@ class UsuarioController extends Controller
     public function formularioModificar(int $id): View
     {
         $usuario = Usuario::findOrFail($id);
-        return view('usuario.editar', compact('usuario'));
-    }
 
+        $categorias = [
+            'Bienestar' => Crypt::encryptString('Bienestar'),
+            'Coordinador' => Crypt::encryptString('Coordinador'),
+            'Maestro' => Crypt::encryptString('Maestro'),
+            'Invitado' => Crypt::encryptString('Invitado'),
+        ];
+
+        return view('usuario.editar', compact('usuario', 'categorias'))->with('categoriaEncriptada', Crypt::encryptString($usuario->Categoria));
+    }
 
     /**
      * Este método:
      * → Modifica la información de un usuario en la base de datos con datos validados.
      * → Encripta de manera irreversible la contraseña para mayor seguridad.
      * → Solo permite la modificación a usuarios con categoría "Bienestar".
+     * → Valida y desencripta la categoría seleccionada para evitar manipulación.
      * → Registra la acción en el historial.
      * 
      * @param UsuarioRequest $regla → Datos validados del usuario a modificar.
@@ -165,11 +174,48 @@ class UsuarioController extends Controller
     public function modificar(UsuarioRequest $regla, Usuario $usuario): RedirectResponse
     {
         $datos = $regla->validated();
-        $datos['password'] = Hash::make($datos['password']);
+
+        try {
+            if (!isset($datos['Categoria'])) {
+                throw new \Exception('Categoría no proporcionada.');
+            }
+
+            $categoria = Crypt::decryptString($datos['Categoria']);
+
+            if (!in_array($categoria, ['Bienestar', 'Coordinador', 'Maestro', 'Invitado'])) {
+                throw new \Exception('Intento de manipulación detectado.');
+            }
+
+            $datos['Categoria'] = $categoria;
+        } catch (\Exception $e) {
+            if ($usuarioLogueado = Auth::user()) {
+                Usuario::where('id', $usuarioLogueado->id)->update(['Habilitado' => 0]);
+
+                $this->registrarAccion(
+                    $usuarioLogueado->id,
+                    'Intento de manipulación',
+                    "El usuario {$usuarioLogueado->Nombre} {$usuarioLogueado->Apellido} fue deshabilitado por intento de manipulación"
+                );
+
+                Auth::guard('web')->logout();
+                session()->invalidate();
+                session()->regenerateToken();
+            }
+            return redirect()->route('login')->with('error', 'Acción inválida detectada. ¡Usuario deshabilitado!');
+        }
+
+        if (!empty($datos['password'])) {
+            $datos['password'] = Hash::make($datos['password']);
+        } else {
+            unset($datos['password']);
+        }
+        
         $usuario->update($datos);
-        $this->registrarAccion(auth()->id(), 'Modificar usuario', "Modifico el usuario {$usuario->Nombre} {$usuario->Apellido} ");
+        $this->registrarAccion(auth()->id(), 'Modificar usuario', "Modificó el usuario {$usuario->Nombre} {$usuario->Apellido}");
         return redirect()->route('usuario.presentacion', $usuario->id)->with('success', 'El usuario fue modificado exitosamente');
     }
+
+
 
 
     /**
@@ -283,7 +329,7 @@ class UsuarioController extends Controller
         $pdf->render();
         return $pdf->download('Reporte de usuarios ' . now()->format('d-m-Y') . '.pdf');
     }
-    
+
     public function generarReporteEspecifico(int $id)
     {
         $usuario = Usuario::findOrFail($id);
@@ -291,9 +337,9 @@ class UsuarioController extends Controller
         $cantidadHistorial = $historiales->count();
         $totalHistoriales = Historial::count();
         $porcentajeHistorial = $totalHistoriales > 0 ? round(($cantidadHistorial / $totalHistoriales) * 100, 2) : 0;
-        
+
         $this->registrarAccion(auth()->id(), 'Descargar reporte específico', "Descargó el reporte del usuario {$usuario->Nombre} {$usuario->Apellido}");
-        
+
         $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact(
             'usuario',
             'historiales',
@@ -301,7 +347,7 @@ class UsuarioController extends Controller
             'totalHistoriales',
             'porcentajeHistorial'
         ));
-        
+
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         return $pdf->download('Reporte de ' . $usuario->Nombre . ' ' . $usuario->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');

@@ -147,35 +147,48 @@
         registrando un total de <strong>{{ $totalAsistencias }}</strong> asistencias a lo largo del año.
         A continuación, se detalla la distribución mensual de sus asistencias, reflejando su continuidad en el año.
     </p>
-    <ul>
-        @foreach ($horasPorMes as $mes => $datos)
-            <li>
-                <strong>{{ ucfirst(\Carbon\Carbon::parse($mes . '-01')->translatedFormat('F')) }}</strong>:
-                tuvo un total de <strong>{{ $datos['asistencias'] }}</strong> asistencias,
-                cumpliendo <strong>{{ $datos['horas'] }} horas {{ $datos['minutos'] }} minutos</strong>.
-                <br>
-                <strong>Durante este mes se registraron:</strong>
-                <ul>
-                    <li><strong>{{ $datos['estados']['Presente'] }}</strong> asistencias con presencia.</li>
-                    <li><strong>{{ $datos['estados']['Ausente Justificado'] }}</strong> ausencias justificadas.</li>
-                    <li><strong>{{ $datos['estados']['Ausente Injustificado'] }}</strong> ausencias injustificadas.</li>
-                </ul>
-                <br>
-            </li>
-        @endforeach
-    </ul>
-    
-    <p>
-        Se transcurrió un total de <strong>{{ $totalGeneral }}</strong> en asistencia durante el año.
-    </p>
-    
+
+    <table class="arreglo">
+        <thead>
+            <tr>
+                <th colspan="6">Resumen de Asistencias por Mes</th>
+            </tr>
+            <tr>
+                <th>Mes</th>
+                <th>Total de Asistencias</th>
+                <th>Horas y Minutos</th>
+                <th>Presente</th>
+                <th>Ausente Justificado</th>
+                <th>Ausente Injustificado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($horasPorMes as $mes => $datos)
+                <tr>
+                    <td>{{ ucfirst(\Carbon\Carbon::parse($mes . '-01')->translatedFormat('F')) }}</td>
+                    <td>{{ $datos['asistencias'] }}</td>
+                    <td>{{ $datos['horas'] }} horas {{ $datos['minutos'] }} minutos</td>
+                    <td>{{ $datos['estados']['Presente'] }}</td>
+                    <td>{{ $datos['estados']['Ausente Justificado'] }}</td>
+                    <td>{{ $datos['estados']['Ausente Injustificado'] }}</td>
+                </tr>
+            @endforeach
+            <tr>
+                <th colspan="6"> Se transcurrió un total de <strong>{{ $totalGeneral }}</strong> en asistencia durante el año.</th>
+            </tr>
+        </tbody>
+    </table>
+
+
     <hr>
-    
+
     <div class="content">
         @if ($observaciones->isNotEmpty())
-            <h4 style="text-align: center">Observaciones destacadas durante el año</h4>
             <table class="arreglo">
                 <thead>
+                    <tr>
+                        <th colspan="3">Observaciones destacadas durante el año</th>
+                    </tr>
                     <tr>
                         <th class="numero">No</th>
                         <th class="fecha">Fecha</th>
@@ -195,13 +208,15 @@
             </table>
         @endif
     </div>
-    
+
     <hr>
-    
+
     <div class="content">
-        <h4 style="text-align: center">Asistencias detalladas del año</h4>
         <table class="arreglo">
             <thead>
+                <tr>
+                    <th colspan="6">Asistencias detalladas del año</th>
+                </tr>
                 <tr>
                     <th>No</th>
                     <th>Registrado por</th>
@@ -217,7 +232,7 @@
                     <tr>
                         <td>{{ ++$i }}</td>
                         <td>
-                            @if($asistencia->usuario)
+                            @if ($asistencia->usuario)
                                 {{ explode(' ', $asistencia->usuario->Nombre)[0] }}
                                 {{ explode(' ', $asistencia->usuario->Apellido)[0] }}
                             @else
@@ -226,7 +241,7 @@
                         </td>
                         <td>{{ $asistencia->Estado }}</td>
                         <td>{{ \Carbon\Carbon::parse($asistencia->Fecha)->format('d/m/Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($asistencia->Hora_Ingreso)->format('H:i') }} - 
+                        <td>{{ \Carbon\Carbon::parse($asistencia->Hora_Ingreso)->format('H:i') }} -
                             {{ \Carbon\Carbon::parse($asistencia->Hora_Salida)->format('H:i') }}</td>
                         <td>{{ $asistencia->duracion }}</td>
                     </tr>
@@ -234,7 +249,7 @@
             </tbody>
         </table>
     </div>
-    
+
 
 </body>
 

@@ -35,7 +35,6 @@ Route::controller(SalaController::class)->middleware('auth')->group(function () 
     Route::patch('sala/modificar/{sala}', 'modificar')->name('sala.modificar');
     //Route::get('sala/advertencia/{id}', 'advertirEliminacion')->name('sala.confirmar');
     //Route::delete('sala/eliminar/{id}', 'eliminar')->name('sala.eliminar');
-    Route::get('/sala/reporte-especifico/{id}', 'generarReporteEspecifico')->name('sala.reporte-especifico');
 });
 
 Route::controller(TutorController::class)->middleware('auth')->group(function () {
@@ -46,46 +45,46 @@ Route::controller(TutorController::class)->middleware('auth')->group(function ()
     Route::get('tutor/formulario/{id}', 'formularioModificar')->name('tutor.editar');
     Route::patch('tutor/modificar/{tutor}', 'modificar')->name('tutor.modificar');
     Route::delete('tutor/eliminar/{id}', 'eliminar')->name('tutor.eliminar');
-
+    
     // Rutas para registrar y eliminar contactos
     Route::get('tutor/{tutor_id}/formulario-registrar-telefono', 'formularioRegistrarTelefono')->name('tutor.agregar-telefono');
     Route::post('tutor/{tutor_id}/registrar-telefono', 'registrarTelefono')->name('tutor.registrar-telefono');
     Route::delete('tutor/eliminar-telefono/{id}', 'eliminarTelefono')->name('tutor.eliminar-telefono');
-
+    
     Route::get('tutor/{tutor_id}/formulario-registrar-correo', 'formularioRegistrarCorreo')->name('tutor.agregar-correo');
     Route::post('tutor/{tutor_id}/registrar-correo', 'registrarCorreo')->name('tutor.registrar-correo');
     Route::delete('tutor/eliminar-correo/{id}', 'eliminarCorreo')->name('tutor.eliminar-correo');
-
+    
     // Rutas para Registrar y Modificar domicilio
     Route::get('tutor/{tutor_id}/formulario-registrar-domicilio', 'formularioRegistrarDomicilio')->name('tutor.agregar-domicilio');
     Route::post('tutor/{tutor_id}/registrar-domicilio', 'registrarDomicilio')->name('tutor.registrar-domicilio');
     Route::get('tutor/{tutor_id}/formulario-modificar-domicilio', 'formularioModificarDomicilio')->name('tutor.editar-domicilio');
     Route::patch('tutor/domicilio-modificar/{domicilio}', 'modificarDomicilio')->name('tutor.modificar-domicilio');
-
+    
     // Rutas para Registrar y Modificar trabajador universitario
     Route::get('tutor/{tutor_id}/formulario-registrar-trabajador', 'formularioRegistrarTrabajador')->name('tutor.agregar-trabajador');
     Route::post('tutor/{tutor_id}/registrar-trabajador', 'registrarTrabajador')->name('tutor.registrar-trabajador');
     Route::get('tutor/{tutor_id}/formulario-modificar-trabajador', 'formularioModificarTrabajador')->name('tutor.editar-trabajador');
     Route::patch('tutor/trabajador-modificar/{trabajador}', 'modificarTrabajador')->name('tutor.modificar-trabajador');
-
+    
     // Rutas para Registrar y Eliminar cuotas
     Route::get('tutor/{tutor_id}/formulario-registrar-cuota', 'formularioRegistrarCuota')->name('tutor.agregar-cuota');
     Route::post('tutor/{trabajador_id}/registrar-cuota', 'registrarCuota')->name('tutor.registrar-cuota');
     Route::delete('tutor/{tutor_id}/eliminar-cuota/{cuota_id}', 'eliminarCuota')->name('tutor.eliminar-cuota');
-
+    
     // Rutas para Registrar y Modificar carrera
     Route::get('tutor/{tutor_id}/formulario-registrar-carrera', 'formularioRegistrarCarrera')->name('tutor.agregar-carrera');
     Route::post('tutor/{tutor_id}/registrar-carrera', 'registrarCarrera')->name('tutor.registrar-carrera');
     Route::get('tutor/{tutor_id}/formulario-modificar-carrera', 'formularioModificarCarrera')->name('tutor.editar-carrera');
     Route::patch('tutor/carrera-modificar/{carrera}', 'modificarCarrera')->name('tutor.modificar-carrera');
-
+    
     // Rutas para Registrar, Modificar y Eliminar asignaturas
     Route::get('tutor/{tutor_id}/formulario-registrar-asignatura/{carrera_id}', 'formularioRegistrarAsignatura')->name('tutor.agregar-asignatura');
     Route::post('tutor/{tutor_id}/registrar-asignatura/{carrera_id}', 'registrarAsignatura')->name('tutor.registrar-asignatura');
     Route::get('tutor/{carrera_id}/formulario-modificar-asignatura/{asignatura_id}', 'formularioModificarAsignatura')->name('tutor.editar-asignatura');
     Route::patch('tutor/asignatura-modificar/{asignatura}', 'modificarAsignatura')->name('tutor.modificar-asignatura');
     Route::delete('tutor/{tutor_id}/eliminar-asignatura/{asignatura_id}', 'eliminarAsignatura')->name('tutor.eliminar-asignatura');
-
+    
     Route::get('/tutor/reporte-especifico/{id}', 'generarReporteEspecifico')->name('tutor.reporte-especifico');
 });
 
@@ -118,7 +117,8 @@ Route::controller(AsistenciaController::class)->middleware('auth')->group(functi
     Route::get('asistencia/formulario-modificar/{id}', 'formularioModificar')->name('asistencia.editar');
     Route::patch('asistencia/modificar/{asistencia}', 'modificar')->name('asistencia.modificar');
     Route::delete('asistencia/eliminar/{id}', 'eliminar')->name('asistencia.eliminar');
-    Route::get('asistencia/{infante}/{sala}/reporte', 'generarReporteEspecifico')->name('asistencia.reporte-especifico');
+    Route::get('asistencia/{infante}/{sala}/reporte', 'generarReporteEspecificoInfante')->name('asistencia.reporte-especifico');
+    Route::get('/sala/reporte-especifico/{id}', 'generarReporteEspecificoSala')->name('sala.reporte-especifico');
 });
 
 Route::post('validar', [UsuarioController::class, 'validar'])->name('usuario.validar'); // Sin middleware

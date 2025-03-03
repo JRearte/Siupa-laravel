@@ -7,6 +7,7 @@ use App\Traits\RegistraHistorial;
 use App\Models\Asistencia;
 use App\Models\Infante;
 use App\Models\Sala;
+use App\Models\Usuario;
 use App\Http\Requests\AsistenciaRequest;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\RedirectResponse;
@@ -23,13 +24,13 @@ class AsistenciaController extends Controller
         $buscar = $regla->input('buscar');
         $mes = $regla->input('mes', Carbon::now()->month);
         $anio = $regla->input('anio', Carbon::now()->year);
-    
+
         $salas = Sala::all();
         $datos = [];
-    
+
         foreach ($salas as $index => $sala) {
             if (!$sala) continue;
-    
+
             if ($buscar) {
                 $sala->infante = $sala->infante()
                     ->where('Habilitado', 1)
@@ -41,49 +42,49 @@ class AsistenciaController extends Controller
             } else {
                 $sala->infante = $sala->infante()->where('Habilitado', 1)->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_sala' . ($index + 1));
             }
-    
+
             $sala->infante->appends(['buscar' => $buscar, 'mes' => $mes, 'anio' => $anio]);
             $datos['sala' . ($index + 1)] = $sala;
         }
-    
+
         // Pasar los parámetros a obtenerDatosAsistencias
         $graficoDatos = $this->obtenerDatosAsistencias($regla->merge(['mes' => $mes, 'anio' => $anio]))->getData(true);
-    
+
         $sala1 = $datos['sala1'] ?? null;
         $sala2 = $datos['sala2'] ?? null;
         $sala3 = $datos['sala3'] ?? null;
-    
+
         return view('asistencia.index', compact('sala1', 'sala2', 'sala3', 'buscar', 'graficoDatos', 'mes', 'anio'));
     }
-    
-    
+
+
     public function obtenerDatosAsistencias(Request $request)
     {
         $mes = $request->input('mes', Carbon::now()->month);
         $anio = $request->input('anio', Carbon::now()->year);
-    
+
         $cantidadInfantes = Infante::where('Habilitado', 1)->count();
         $diasMes = Carbon::create($anio, $mes, 1)->daysInMonth;
-    
+
         $asistencias = Asistencia::selectRaw('DAY(Fecha) as dia, COUNT(*) as cantidad')
             ->whereYear('Fecha', $anio)
             ->whereMonth('Fecha', $mes)
             ->groupBy('dia')
             ->orderBy('dia')
             ->get()
-            ->keyBy('dia'); 
-    
+            ->keyBy('dia');
+
         $labels = [];
         $data = [];
         $fechas = [];
-    
+
         for ($i = 1; $i <= $diasMes; $i++) {
             $fecha = Carbon::create($anio, $mes, $i)->toDateString();
             $labels[] = $i;
             $fechas[] = $fecha;
             $data[] = $asistencias[$i]->cantidad ?? 0;
         }
-    
+
         return response()->json([
             'cantidadInfantes' => $cantidadInfantes,
             'labels' => $labels,
@@ -92,9 +93,9 @@ class AsistenciaController extends Controller
             'diaActual' => ($mes == Carbon::now()->month && $anio == Carbon::now()->year) ? Carbon::now()->day : null
         ]);
     }
-    
-    
-    
+
+
+
 
     public function presentar(int $infante_id, Request $regla): View
     {
@@ -217,7 +218,7 @@ class AsistenciaController extends Controller
     }
 
 
-    public function generarReporteEspecifico(int $infante_id, int $sala_id)
+    public function generarReporteEspecificoInfante(int $infante_id, int $sala_id)
     {
         $infante = Infante::with([
             'asistencias.usuario',
@@ -266,7 +267,83 @@ class AsistenciaController extends Controller
             'observaciones' => $observaciones
         ]);
 
-        return $pdf->download('Reporte de ' . $infante->Nombre . ' ' . $infante->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
+        //return $pdf->download('Reporte de ' . $infante->Nombre . ' ' . $infante->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
+        return $pdf->stream();
+    }
+
+
+    public function generarReporteEspecificoSala(int $sala_id)
+    {
+        $sala = Sala::with(['infantes.asistencias'])->findOrFail($sala_id);
+        $infantes = Infante::where('sala_id', $sala_id)->get();
+
+        $usuarios = Usuario::whereHas('asistencias', function ($consulta) use ($sala_id) {
+            $consulta->where('sala_id', $sala_id);
+        })->distinct()->get();
+
+        $totalAsistencias = Asistencia::where('sala_id', $sala_id)->count();
+
+        $usuariosPorcentaje = [];
+        foreach ($usuarios as $usuario) {
+            $asistenciasUsuario = Asistencia::where('sala_id', $sala_id)
+                ->where('usuario_id', $usuario->id)
+                ->count();
+
+            $porcentaje = $totalAsistencias > 0 ? round(($asistenciasUsuario / $totalAsistencias) * 100, 2) : 0;
+
+            $usuariosPorcentaje[] = [
+                'Nombre' => $usuario->Nombre,
+                'Apellido' => $usuario->Apellido,
+                'Categoria' => $usuario->Categoria,
+                'Legajo' => $usuario->Legajo,
+                'Porcentaje' => $porcentaje,
+            ];
+        }
+
+        $asistenciasPorMes = Asistencia::selectRaw(
+            "DATE_FORMAT(Fecha, '%Y-%m') as mes, Estado, COUNT(*) as cantidad"
+        )
+            ->where('sala_id', $sala_id)
+            ->groupBy('mes', 'Estado')
+            ->get()
+            ->groupBy('mes')
+            ->map(function ($grupo) {
+                return [
+                    'total' => $grupo->sum('cantidad'),
+                    'Presente' => $grupo->where('Estado', 'Presente')->sum('cantidad'),
+                    'Ausente Justificado' => $grupo->where('Estado', 'Ausente Justificado')->sum('cantidad'),
+                    'Ausente Injustificado' => $grupo->where('Estado', 'Ausente Injustificado')->sum('cantidad'),
+                ];
+            });
+
+        $pdf = PDF::loadView('reporte/reporte-especifico-sala', [
+            'sala' => $sala,
+            'infantes' => $infantes,
+            'usuariosPorcentaje' => $usuariosPorcentaje,
+            'totalAsistencias' => $totalAsistencias,
+            'asistenciasPorMes' => $asistenciasPorMes,
+        ]);
+
+        return $pdf->download('Reporte de la sala ' . $sala->Nombre . ' ' . now()->format('d-m-Y') . '.pdf');
+    }
+
+
+
+    private function contarAsistenciasPorMes($asistencias)
+    {
+        $asistenciasPorMes = [];
+
+        foreach ($asistencias as $asistencia) {
+            $mes = Carbon::parse($asistencia->Fecha)->format('Y-m');
+
+            if (!isset($asistenciasPorMes[$mes])) {
+                $asistenciasPorMes[$mes] = 0;
+            }
+
+            $asistenciasPorMes[$mes]++;
+        }
+
+        return $asistenciasPorMes;
     }
 
 

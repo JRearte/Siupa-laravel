@@ -61,16 +61,18 @@
 
         /* ========== TABLAS ========== */
         .arreglo {
-            width: 100%;
+            width: 400px;
             border-collapse: collapse;
             font-size: 13px;
             margin-top: 5px;
             position: relative;
+            left: 120px;
             top: 0.5cm;
             margin-bottom: 30px;
         }
 
         .arreglo th {
+            width: 200px;
             background-color: #f2f2f2;
             border: 1px solid #ddd;
             padding: 10px;
@@ -114,7 +116,7 @@
 <body>
     <header>
         <img src="{{ public_path('imagen/logo.png') }}" alt="logo" class="imagen">
-        <h2 class="titulo">Reporte de {{ $tutor->Nombre }} {{ $tutor->Apellido }}</h2>
+        <h2 class="titulo">Reporte de {{ $tutor?->Nombre }} {{ $tutor?->Apellido }}</h2>
         <p class="subtitulo"> Sistema de información UPA </p>
     </header>
 
@@ -134,103 +136,158 @@
         </div>
     </footer>
 
-
     <div class="introduccion">
         <p class="formato">
-            El {{ strtolower($tutor->Tipo_tutor) }} <strong>{{ $tutor->Nombre }} {{ $tutor->Apellido }}</strong>,
-            domiciliado en la localidad de {{ $tutor->domicilio->Localidad }}, barrio {{ $tutor->domicilio->Barrio }},
-            calle {{ $tutor->domicilio->Calle }}, casa {{ $tutor->domicilio->Numero }}, fue dado de alta en el sistema
-            <strong>SIUpa</strong> el día {{ $tutor->created_at->translatedFormat('d \d\e F \d\e Y') }}, con el
-            propósito
-            de inscribir a
-            @if ($tutor->infantes->count() == 1)
+            @php
+                $tipoTutor = strtolower($tutor?->Tipo_tutor ?? 'Alumno');
+                $generoTutor = strtolower($tutor?->Genero ?? 'Masculino');
+
+                $tipoTutorFrase = match ([$tipoTutor, $generoTutor]) {
+                    ['alumno', 'femenino'] => 'La alumna',
+                    ['alumno', 'masculino'] => 'El alumno',
+                    ['trabajador', 'femenino'] => 'La trabajadora',
+                    ['trabajador', 'masculino'] => 'El trabajador',
+                    default => 'El/La tutor/a',
+                };
+            @endphp
+
+            {{ $tipoTutorFrase }} <strong>{{ $tutor?->Nombre }} {{ $tutor?->Apellido }}</strong>
+            ({{ $tutor?->Tipo_documento }} {{ $tutor?->Numero_documento }}),
+            domiciliado/a en la localidad de {{ $tutor?->domicilio?->Localidad }},
+            barrio {{ $tutor?->domicilio?->Barrio }}, calle {{ $tutor?->domicilio?->Calle }},
+            casa {{ $tutor?->domicilio?->Numero }}, fue dado/a de alta en el sistema <strong>SIUpa</strong> el día
+            {{ $tutor?->created_at?->translatedFormat('d \d\e F \d\e Y') }} con el propósito de inscribir a
+
+            @if ($tutor?->infantes?->count() == 1)
                 @php
-                    $infante = $tutor->infantes->first();
-                    $sufijo = $infante->Genero === 'Masculino' ? 'o' : 'a';
+                    $infante = $tutor?->infantes?->first();
+                    $sufijoInfante = $infante?->Genero === 'Masculino' ? 'o' : 'a';
                 @endphp
-                su hij{{ $sufijo }} <strong>{{ $infante->Nombre }} {{ $infante->Apellido }}</strong>
+                su hij{{ $sufijoInfante }} <strong>{{ $infante?->Nombre }} {{ $infante?->Apellido }}</strong>,
             @else
                 sus hijos/as:
-                @foreach ($tutor->infantes as $infante)
-                    <strong>{{ $infante->Nombre }} {{ $infante->Apellido }}</strong>
-                    @if (!$loop->last)
+                @foreach ($tutor?->infantes as $index => $infante)
+                    <strong>{{ $infante?->Nombre }} {{ $infante?->Apellido }}</strong>
+                    @if ($index < $tutor?->infantes?->count() - 2)
+                        ,
+                    @elseif ($index == $tutor?->infantes?->count() - 2)
                         y
                     @endif
                 @endforeach
-
             @endif
-            en el
-            <strong>Jardín Maternal UPA</strong> para el desarrollo de su trayectoria educativa.
+            en el <strong>Jardín Maternal UPA</strong> para el desarrollo de su trayectoria educativa.
         </p>
 
         <p class="formato">
-            Como <strong>{{ strtolower($tutor->Tipo_tutor) }}</strong>, su compromiso con la institución implica
-            @if (strtolower($tutor->Tipo_tutor) === 'trabajador')
-                el cumplimiento de los pagos correspondientes a las cuotas mensuales, habiéndose recaudado un total de 
-                ${{ number_format($totalCuotasPagadas, 2, ',', '.') }} por concepto de 
-                {{ $tutor->trabajador->cuotas->count() }} cuotas pagadas durante el año.
-            
+            Como <strong>{{ strtolower($tutor?->Tipo_tutor) }}</strong>, su compromiso con la institución implica
+            @if ($tipoTutor === 'trabajador')
+                el cumplimiento de los pagos correspondientes a las cuotas mensuales. Hasta la fecha
+                {{ now()->translatedFormat('d \d\e F \d\e Y') }}, ha realizado
+                un total de {{ $tutor?->trabajador?->cuotas?->count() ?? 0 }} pagos, sumando
+                <strong>${{ number_format($totalCuotasPagadas ?? 0, 2, ',', '.') }}</strong>.
+
+
+                @if ($tutor?->trabajador?->cuotas->isNotEmpty())
+                    <table class="arreglo">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($tutor->trabajador->cuotas as $cuota)
+                                <tr>
+                                    <td>{{ $cuota->Fecha?->translatedFormat('d F Y') ?? 'N/A' }}</td>
+                                    <td>${{ number_format($cuota->Valor, 2, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <th colspan="2">Total: ${{ number_format($totalCuotasPagadas ?? 0, 2, ',', '.') }}
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                @else
+                    <p class="formato"><em>No hay cuotas registradas hasta el momento.</em></p>
+                @endif
             @else
-                mantener al menos el 50% de las asignaturas en condición de regularidad o finalización para conservar su
-                beca.
-                Hasta la fecha {{ now()->translatedFormat('d \d\e F \d\e Y') }}, ha alcanzado un cumplimiento del
-                <strong>{{ $porcentaje }}%</strong> de un total de {{ $totalAsignaturas }} asignaturas
-                comprometidas.
+                mantener al menos el 50% de las asignaturas cursadas en la carrera de
+                <strong>{{ $tutor?->carrera?->Nombre }}</strong>
+                en condición de regularidad o finalización para conservar su beca.
+                Hasta la fecha {{ now()->translatedFormat('d \d\e F \d\e Y') }}, ha logrado un cumplimiento del
+                <strong>{{ $porcentaje ?? 0 }}%</strong> sobre un total de {{ $totalAsignaturas ?? 0 }} asignaturas.
+
+                @if ($tipoTutor === 'alumno' && $tutor?->carrera?->asignaturas?->isNotEmpty())
+                    <p class="formato">Estas asignaturas son:</p>
+                    <ul class="asignaturas">
+                        @foreach ($tutor?->carrera?->asignaturas as $asignatura)
+                            <li>
+                                <strong>{{ $asignatura?->Codigo }} | {{ $asignatura?->Nombre }}</strong>
+                                en estado <span class="condicion">{{ strtolower($asignatura?->Condicion) }}</span>,
+                                con una calificación de <strong>{{ $asignatura?->Calificacion ?? 'N/A' }}</strong>.
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             @endif
         </p>
 
-
-        <p>
-            A continuación, se detalla la información relevante sobre la composición familiar del infante.
-        </p>
+        @if ($tutor?->telefonos?->isNotEmpty() || $tutor?->correos?->isNotEmpty())
+            <p class="formato">
+                Para comunicarse con el tutor/a, se dispone de los siguientes medios:
+            </p>
+            <ul>
+                @if ($tutor?->telefonos?->isNotEmpty())
+                    <li><strong>Teléfono:</strong>
+                        {{ $tutor?->telefonos?->pluck('Numero')?->join(' | ') }}
+                    </li>
+                @endif
+                @if ($tutor?->correos?->isNotEmpty())
+                    <li><strong>Correo:</strong>
+                        {{ $tutor?->correos?->pluck('Mail')?->join(' | ') }}
+                    </li>
+                @endif
+            </ul>
+        @endif
     </div>
 
-    <table class="arreglo">
-        <thead>
-            <tr>
-                <th colspan="4">Composición familiar del infante</th>
-            </tr>
-            <tr>
-                <th>Vínculo</th>
-                <th>Nombre completo</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Documento</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{-- Fila del Tutor --}}
-            <tr>
-                <td>Tutor</td>
-                <td>{{ $tutor->Nombre }} {{ $tutor->Apellido }}</td>
-                <td>{{ $tutor->Fecha_de_nacimiento ? \Carbon\Carbon::parse($tutor->Fecha_de_nacimiento)->format('d/m/Y') : 'N/A' }}
-                </td>
-                <td>{{ $tutor->Numero_documento }}</td>
-            </tr>
 
-            {{-- Filas de Infantes --}}
-            @foreach ($tutor->infantes as $infante)
-                <tr>
-                    <td>Infante</td>
-                    <td>{{ $infante->Nombre }} {{ $infante->Apellido }}</td>
-                    <td>{{ $infante->Fecha_de_nacimiento ? \Carbon\Carbon::parse($infante->Fecha_de_nacimiento)->format('d/m/Y') : 'N/A' }}
-                    </td>
-                    <td>{{ $infante->Numero_documento }}</td>
-                </tr>
 
-                {{-- Filas de Familiares de cada Infante --}}
-                @foreach ($infante->familiares as $familiar)
-                    <tr>
-                        <td>{{ $familiar->Vinculo }}</td>
-                        <td>{{ $familiar->Nombre }} {{ $familiar->Apellido }}</td>
-                        <td>{{ $familiar->Fecha_de_nacimiento ? \Carbon\Carbon::parse($familiar->Fecha_de_nacimiento)->format('d/m/Y') : 'N/A' }}
-                        </td>
-                        <td>{{ $familiar->Numero_documento }}</td>
-                    </tr>
-                @endforeach
+
+    @foreach ($tutor->infantes as $infante)
+        <p style="text-align: center"><strong>Información del Infante</strong></p>
+        <p class="formato">
+            <strong>{{ $infante?->Nombre }} {{ $infante?->Apellido }}</strong>,
+            nacido el {{ $infante?->Fecha_de_nacimiento?->translatedFormat('d \d\e F \d\e Y') }}, actualmente con
+            {{ $infante?->edad }} años,
+            @if ($infante?->familiares?->isNotEmpty())
+                vive junto a {{ $infante?->familiares?->count() }}
+                {{ $infante?->familiares?->count() <= 1 ? 'familiar que lo acompaña en su hogar. Este es:' : 'familiares que lo acompañan en su hogar. Estos son: ' }}
+        </p>
+
+        <ul>
+            @foreach ($infante?->familiares as $familiar)
+                <li>
+                    Su <strong>{{ strtolower($familiar?->Vinculo) }}</strong>,
+                    {{ $familiar?->Nombre }} {{ $familiar?->Apellido }},
+                    de {{ $familiar?->edad }} años.
+                </li>
             @endforeach
-        </tbody>
-    </table>
+        </ul>
+    @endif
 
+    @if ($infante?->medicos?->isNotEmpty())
+        <p class="formato">
+            Se encuentran registrados los siguientes datos médicos:
+        </p>
+        <ul>
+            @foreach ($infante?->medicos as $medico)
+                <li><strong>{{ $medico?->Tipo }}:</strong> {{ $medico?->Nombre }}</li>
+            @endforeach
+        </ul>
+    @endif
+    @endforeach
 
 </body>
 

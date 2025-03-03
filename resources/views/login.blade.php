@@ -13,8 +13,16 @@
 <body class="cuerpo">
 
     <div class="contenedor-principal">
+        
         <!-- Lado izquierdo: Login -->
+        
         <div class="lado-izquierdo">
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    <i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('usuario.validar') }}" class="formulario-login">
                 @csrf
 

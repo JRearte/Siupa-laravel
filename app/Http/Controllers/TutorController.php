@@ -765,33 +765,44 @@ class TutorController extends Controller
     {
         $tutor = Tutor::with([
             'infantes.familiares',
+            'infantes.medicos',
             'domicilio',
             'telefonos',
             'correos',
         ])->findOrFail($tutor_id);
-        
+    
         $porcentaje = 0; 
         $totalAsignaturas = 0;
         $totalCuotasPagadas = 0;
-        
+    
+        $tutor->edad = $tutor->Fecha_de_nacimiento ? Carbon::parse($tutor->Fecha_de_nacimiento)->age : 'N/A';
+    
+        foreach ($tutor->infantes as $infante) {
+            $infante->edad = $infante->Fecha_de_nacimiento ? Carbon::parse($infante->Fecha_de_nacimiento)->age : 'N/A';
+    
+            foreach ($infante->familiares as $familiar) {
+                $familiar->edad = $familiar->Fecha_de_nacimiento ? Carbon::parse($familiar->Fecha_de_nacimiento)->age : 'N/A';
+            }
+        }
+    
         if ($tutor->Tipo_tutor === 'Trabajador') {
             $tutor->load('trabajador.cuotas');
     
-
             if ($tutor->relationLoaded('trabajador') && $tutor->trabajador->relationLoaded('cuotas')) {
                 $totalCuotasPagadas = $tutor->trabajador->cuotas->sum('Valor');
             }
-
-        } elseif ($tutor->Tipo_tutor === 'Alumno') {
-            $tutor->load('carrera.asignaturas');
-        
-            if ($tutor->relationLoaded('asignaturas')) {
-                $condicion = $tutor->asignaturas->whereIn('Condicion', ['Regular', 'Aprobado'])->count();
-                $totalAsignaturas = $tutor->asignaturas->count();
-                $porcentaje = $totalAsignaturas > 0 ? ($condicion / $totalAsignaturas) * 100 : 0;
-            }
         }
         
+        elseif ($tutor->Tipo_tutor === 'Alumno') {
+            $tutor->load('carrera.asignaturas');
+    
+            if ($tutor->relationLoaded('carrera') && $tutor->carrera->relationLoaded('asignaturas')) {
+                $condicion = $tutor->carrera->asignaturas->whereIn('Condicion', ['Regular', 'Aprobado'])->count();
+                $totalAsignaturas = $tutor->carrera->asignaturas->count();
+                $porcentaje = $totalAsignaturas > 0 ? round(($condicion / $totalAsignaturas) * 100, 2) : 0;
+            }
+        }
+    
         $pdf = PDF::loadView('reporte/reporte-especifico-tutor', [
             'tutor' => $tutor,
             'porcentaje' => $porcentaje,
@@ -800,6 +811,7 @@ class TutorController extends Controller
         ]);
     
         return $pdf->stream();
-        //return $pdf->download('Reporte de ' . $tutor->Nombre . ' ' . $tutor->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }
+    
+    //return $pdf->download('Reporte de ' . $tutor->Nombre . ' ' . $tutor->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
 }

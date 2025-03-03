@@ -27,7 +27,7 @@ class UsuarioRequest extends FormRequest
             'Legajo'     => ['required', 'string', 'max:13', Rule::unique('usuario', 'Legajo')->ignore($id), 'regex:/^[0-9\/\-]+$/'],
             'Nombre'     => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'], // Solo letras
             'Apellido'   => ['required', 'string', 'max:20', 'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/'], // Solo letras
-            'Categoria'  => ['required', 'string', 'max:11', 'in:Invitado,Bienestar,Coordinador,Maestro'],
+            'Categoria'  => ['required', 'string'],
             'password'   => ['required', 'string', 'min:8', 'max:60'],
             'Habilitado' => ['boolean'],
         ];

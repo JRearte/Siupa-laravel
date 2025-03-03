@@ -108,6 +108,10 @@
             line-height: 1.6;
             color: #333;
         }
+
+        .columna{
+            width: 22%;
+        }
     </style>
 </head>
 
@@ -134,7 +138,6 @@
         </div>
     </footer>
 
-
     <p class="formato">
         A lo largo del año {{ date('Y') }}, los usuarios con los roles de <strong>Coordinador</strong> y
         <strong>Maestro</strong> han desempeñado un papel fundamental en el cuidado y educación de los infantes,
@@ -153,7 +156,6 @@
             </li>
         @endforeach
     </ul>
-
 
     <!-- Tabla de Infantes -->
     <table class="arreglo">
@@ -184,6 +186,36 @@
         </tbody>
     </table>
 
+    <!-- Resumen de Asistencias por Mes -->
+    <table class="arreglo">
+        <thead>
+            <tr>
+                <th colspan="5">Resumen de Asistencias por Mes</th>
+            </tr>
+            <tr>
+                <th>Mes</th>
+                <th>Total de Asistencias</th>
+                <th>Presente</th>
+                <th>Ausente Justificado</th>
+                <th>Ausente Injustificado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($asistenciasPorMes as $mes => $datos)
+                <tr>
+                    <td >{{ ucfirst(\Carbon\Carbon::createFromFormat('Y-m', $mes)->locale('es')->translatedFormat('F')) }}
+                    </td>
+                    <td class="columna">{{ $datos['total'] }}</td>
+                    <td class="columna">{{ $datos['Presente'] }}</td>
+                    <td class="columna">{{ $datos['Ausente Justificado'] }}</td>
+                    <td class="columna">{{ $datos['Ausente Injustificado'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+        <tr>
+            <th colspan="5">Total de asistencias en la sala: <strong>{{ $totalAsistencias }}</strong></th>
+        </tr>
+    </table>
 </body>
 
 </html>

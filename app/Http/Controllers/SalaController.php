@@ -208,41 +208,6 @@ class SalaController extends Controller
         $sala->delete();
         $this->registrarAccion(auth()->id(), 'Eliminar sala', "Elimino la sala {$nombre}");
         return redirect()->route('sala.index')->with('success', 'La sala fue eliminada exitosamente.');
-    }*/
-
-    public function generarReporteEspecifico(int $sala_id)
-    {
-        $sala = Sala::findOrFail($sala_id);
-        $infantes = Infante::where('sala_id', $sala_id)->get();
-    
-        $usuarios = Usuario::whereHas('asistencias', function ($consulta) use ($sala_id) {
-            $consulta->where('sala_id', $sala_id);
-        })->distinct()->get();
-    
-        $totalAsistencias = Asistencia::where('sala_id', $sala_id)->count();
-    
-        $usuariosPorcentaje = [];
-        foreach ($usuarios as $usuario) {
-            $asistenciasUsuario = Asistencia::where('sala_id', $sala_id)
-                ->where('usuario_id', $usuario->id)
-                ->count();
-    
-            $porcentaje = $totalAsistencias > 0 ? round(($asistenciasUsuario / $totalAsistencias) * 100, 2) : 0;
-    
-            $usuariosPorcentaje[] = [
-                'Nombre' => $usuario->Nombre,
-                'Apellido' => $usuario->Apellido,
-                'Categoria' => $usuario->Categoria,
-                'Legajo' => $usuario->Legajo,
-                'Porcentaje' => $porcentaje,
-            ];
-        }
-
-        $pdf = PDF::loadView('reporte/reporte-especifico-sala', compact('sala', 'infantes', 'usuariosPorcentaje', 'totalAsistencias'));
-    
-        return $pdf->stream();
-    }
-    
-    
+    }*/    
 
 }

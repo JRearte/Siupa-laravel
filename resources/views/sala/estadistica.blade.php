@@ -26,7 +26,7 @@
                 <div class="estadistica" 
                     data-id="chartSala2_1" 
                     data-porcentaje="{{ $sala1->porcentajeIngresantes }}"
-                    data-colores="#FFC107,#FF6F31" 
+                    data-colores="#FFD67E,#FFA07A"
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala2_1" class="grafico"></canvas>
@@ -38,7 +38,7 @@
                 <div class="estadistica"
                     data-id="chartSala3_1" 
                     data-porcentaje="{{ $sala1->porcentajeHabilitados }}"
-                    data-colores="#00BFA5,#4FC3F7" 
+                    data-colores="#90EE90,#FF9999"
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala3_1" class="grafico"></canvas>
@@ -112,7 +112,7 @@
                 <div class="estadistica" 
                     data-id="chartSala2_2" 
                     data-porcentaje="{{ $sala2->porcentajeIngresantes }}"
-                    data-colores="#FFC107,#FF6F31" 
+                    data-colores="#FFD67E,#FFA07A"
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala2_2" class="grafico"></canvas>
@@ -124,7 +124,7 @@
                 <div class="estadistica" 
                     data-id="chartSala3_2" 
                     data-porcentaje="{{ $sala2->porcentajeHabilitados }}"
-                    data-colores="#00BFA5,#4FC3F7" 
+                    data-colores="#90EE90,#FF9999"
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala3_2" class="grafico"></canvas>
@@ -198,7 +198,7 @@
                 <div class="estadistica" 
                     data-id="chartSala2_3"
                     data-porcentaje="{{ $sala3->porcentajeIngresantes }}" 
-                    data-colores="#FFC107,#FF6F31"
+                    data-colores="#FFD67E,#FFA07A"
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala2_3" class="grafico"></canvas>
@@ -210,7 +210,7 @@
                 <div class="estadistica" 
                     data-id="chartSala3_3"
                     data-porcentaje="{{ $sala3->porcentajeHabilitados }}"
-                    data-colores="#00BFA5,#4FC3F7"
+                    data-colores="#90EE90,#FF9999"
                     data-icono="fa-crown">
                     <div class="grafico">
                         <canvas id="chartSala3_3" class="grafico"></canvas>

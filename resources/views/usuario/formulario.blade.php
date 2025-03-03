@@ -75,18 +75,12 @@
                 </span>
             </label>
             <select name="Categoria" class="form-select @error('Categoria') is-invalid @enderror" id="categoria">
-                <option class="opcion" value="Bienestar"
-                    {{ old('Categoria', $usuario?->Categoria) == 'Bienestar' ? 'selected' : '' }}>Bienestar
-                </option>
-                <option class="opcion" value="Coordinador"
-                    {{ old('Categoria', $usuario?->Categoria) == 'Coordinador' ? 'selected' : '' }}>Coordinador
-                </option>
-                <option class="opcion" value="Maestro"
-                    {{ old('Categoria', $usuario?->Categoria) == 'Maestro' ? 'selected' : '' }}>Maestro
-                </option>
-                <option class="opcion" value="Invitado"
-                    {{ old('Categoria', $usuario?->Categoria) == 'Invitado' ? 'selected' : '' }}>Invitado
-                </option>
+                @foreach ($categorias as $nombre => $valorCifrado)
+                    <option value="{{ $valorCifrado }}"
+                        {{ Crypt::decryptString(old('Categoria', $categoriaEncriptada)) == $nombre ? 'selected' : '' }}>
+                        {{ $nombre }}
+                    </option>
+                @endforeach
             </select>
 
             <!-- Contenedor de mensaje de error -->
@@ -100,7 +94,7 @@
             </div>
         </div>
     @else
-        <input type="hidden" name="Categoria" id="categoria" value="{{ $usuario?->Categoria }}">
+        <input type="hidden" name="Categoria" id="categoria" value="{{ $categoriaEncriptada }}">
     @endif
 
 
