@@ -58,7 +58,7 @@
 
 
         <div class="contenido-principal">
-            @include('tutor.listar', ['trabajadores' => $trabajadores, 'alumnos' => $alumnos])
+            @include('tutor.listar', ['trabajadores' => $trabajadores, 'alumnos' => $alumnos, 'birthday' => $birthday])
 
         </div>
 

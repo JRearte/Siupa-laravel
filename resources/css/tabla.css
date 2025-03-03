@@ -268,3 +268,53 @@
     border-radius: 4px;
 }
 
+/* ==================== Cumpleaños ==================== */
+
+.year{
+    height: 50px;
+}
+
+.birthday {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 0.6rem;
+    color: #6c757d;
+}
+
+.cumple-hoy .aviso-cumple {
+    width: 175px;
+    position: absolute;
+    left: 100px;
+    bottom: 10%;
+    background: linear-gradient(45deg, #ffcc00, #ffa500);
+    color: #000;
+    font-weight: bold;
+    font-size: 0.6rem;
+    border-radius: 12px;
+    padding: 5px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid #cc8800;
+    box-shadow: 0 0 12px rgba(255, 170, 0, 0.8);
+    animation: destello 2s infinite alternate;
+}
+
+@keyframes destello {
+    0% { box-shadow: 0 0 12px rgba(255, 170, 0, 0.8); }
+    100% { box-shadow: 0 0 20px rgba(255, 140, 0, 1); }
+}
+
+.pastel {
+    animation: rebotar 1s infinite ease-in-out;
+}
+
+@keyframes rebotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+

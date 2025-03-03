@@ -186,4 +186,57 @@
             </div>
         </div>
     @endif
+
+
+    @if ($birthday)
+        <div class="tabla-salas">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="thead">
+                        <tr>
+                            <th class="d-flex justify-content-between align-items-center">
+                                <span class="mx-auto text-center">Próximos Cumpleaños</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($birthday as $infante)
+                            @php
+                                $esHoy = now()->isSameDay($infante->fechaCumple);
+                            @endphp
+                            <tr class="{{ $esHoy ? 'cumple-hoy' : '' }}">
+                                <td class="usuario year">
+                                    <div>
+                                        <div class="nombre">
+                                            <div class="habilitado">
+                                                @php
+                                                    $apellido = explode(' ', $infante->Apellido)[0];
+                                                    $nombre = explode(' ', $infante->Nombre)[0];
+                                                @endphp
+                                                <strong>{{ $apellido }} {{ $nombre }}</strong>
+                                                <i class="fa-solid fa-birthday-cake"></i>
+                                            </div>
+                                        </div>
+                                        <div class="birthday">
+                                            {{ ucfirst($infante->fechaCumple->translatedFormat('d F')) }}
+                                            @if ($esHoy)
+                                                <span class="aviso-cumple"><i class="fa-solid fa-birthday-cake pastel"></i> ¡Hoy es su cumpleaños! <i class="fa-solid fa-gift pastel"></i></span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="2" class="text-center">No hay cumpleaños próximos.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+
+
 </div>

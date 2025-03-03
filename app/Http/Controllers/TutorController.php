@@ -66,15 +66,32 @@ class TutorController extends Controller
         $datos['alumnos'] = $alumnos->orderBy('apellido', 'asc')->paginate(7, ['*'], 'page_alumno');
         $datos['alumnos']->appends(['buscar' => $buscar]);
 
+        // ==================== Obtener los cumpleaños más cercanos ====================
+        $hoy = Carbon::today();
+        
+        $birthday = Infante::select('Nombre', 'Apellido', 'Fecha_de_nacimiento')
+            ->get()
+            ->map(function ($infante) use ($hoy) {
+                $fechaCumple = Carbon::parse($infante->Fecha_de_nacimiento)->setYear($hoy->year);
+        
+                if ($fechaCumple->lessThan($hoy)) {
+                    $fechaCumple->addYear();
+                }
+                $infante->fechaCumple = $fechaCumple;
+                $infante->diasParaCumple = $hoy->diffInDays($fechaCumple);
+                
+                return $infante;
+            })
+            ->sortBy('diasParaCumple')
+            ->take(7);
+        
+        
+
         $trabajadores = $datos['trabajadores'] ?? null;
         $alumnos = $datos['alumnos'] ?? null;
 
-        return view('tutor.index', compact('trabajadores', 'alumnos', 'buscar'));
+        return view('tutor.index', compact('trabajadores', 'alumnos', 'buscar', 'birthday'));
     }
-
-
-
-
 
     /**
      * Este método:
@@ -87,7 +104,7 @@ class TutorController extends Controller
      */
     public function presentar(int $id): View
     {
-        $this->validarPermiso(["Bienestar","Coordinador"], "No tienes permiso para ver tutores.", "tutor.index");
+        $this->validarPermiso(["Bienestar", "Coordinador"], "No tienes permiso para ver tutores.", "tutor.index");
         $tutor = Tutor::with(['domicilio', 'infantes.sala', 'correos', 'telefonos'])->findOrFail($id);
         $edad = Carbon::parse($tutor->Fecha_de_nacimiento)->age;
         $trabajador = null;
@@ -770,48 +787,46 @@ class TutorController extends Controller
             'telefonos',
             'correos',
         ])->findOrFail($tutor_id);
-    
-        $porcentaje = 0; 
+
+        $porcentaje = 0;
         $totalAsignaturas = 0;
         $totalCuotasPagadas = 0;
-    
+
         $tutor->edad = $tutor->Fecha_de_nacimiento ? Carbon::parse($tutor->Fecha_de_nacimiento)->age : 'N/A';
-    
+
         foreach ($tutor->infantes as $infante) {
             $infante->edad = $infante->Fecha_de_nacimiento ? Carbon::parse($infante->Fecha_de_nacimiento)->age : 'N/A';
-    
+
             foreach ($infante->familiares as $familiar) {
                 $familiar->edad = $familiar->Fecha_de_nacimiento ? Carbon::parse($familiar->Fecha_de_nacimiento)->age : 'N/A';
             }
         }
-    
+
         if ($tutor->Tipo_tutor === 'Trabajador') {
             $tutor->load('trabajador.cuotas');
-    
+
             if ($tutor->relationLoaded('trabajador') && $tutor->trabajador->relationLoaded('cuotas')) {
                 $totalCuotasPagadas = $tutor->trabajador->cuotas->sum('Valor');
             }
-        }
-        
-        elseif ($tutor->Tipo_tutor === 'Alumno') {
+        } elseif ($tutor->Tipo_tutor === 'Alumno') {
             $tutor->load('carrera.asignaturas');
-    
+
             if ($tutor->relationLoaded('carrera') && $tutor->carrera->relationLoaded('asignaturas')) {
                 $condicion = $tutor->carrera->asignaturas->whereIn('Condicion', ['Regular', 'Aprobado'])->count();
                 $totalAsignaturas = $tutor->carrera->asignaturas->count();
                 $porcentaje = $totalAsignaturas > 0 ? round(($condicion / $totalAsignaturas) * 100, 2) : 0;
             }
         }
-    
+
         $pdf = PDF::loadView('reporte/reporte-especifico-tutor', [
             'tutor' => $tutor,
             'porcentaje' => $porcentaje,
             'totalAsignaturas' => $totalAsignaturas,
             'totalCuotasPagadas' => $totalCuotasPagadas
         ]);
-    
+
         return $pdf->stream();
     }
-    
+
     //return $pdf->download('Reporte de ' . $tutor->Nombre . ' ' . $tutor->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
 }
