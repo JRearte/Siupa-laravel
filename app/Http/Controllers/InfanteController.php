@@ -58,6 +58,7 @@ class InfanteController extends Controller
         return view('infante.presentacion', ['infante' => $infante, 'edad' => $edadF]);
     }
 
+
     /**
      * Este método:
      * → Muestra el formulario para registrar un nuevo infante.
@@ -74,6 +75,7 @@ class InfanteController extends Controller
         $sala = Sala::findOrFail(1);
         return view('infante.agregar', compact('infante', 'tutor_id', 'sala'));
     }
+
 
     /**
      * Este método:
@@ -117,6 +119,7 @@ class InfanteController extends Controller
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El infante fue registrado exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Recupera los datos de un infante para su modificación.
@@ -132,6 +135,7 @@ class InfanteController extends Controller
         $salas = Sala::all();
         return view('infante.editar', compact('infante', 'salas'));
     }
+
 
     /**
      * Este método:
@@ -190,6 +194,7 @@ class InfanteController extends Controller
         return redirect()->route('tutor.presentacion', $tutor_id)->with('success', 'El infante fue eliminado exitosamente.');
     }
 
+
     /* ==================== Datos Médicos ========== */
 
     /**
@@ -206,6 +211,7 @@ class InfanteController extends Controller
         $medico = new Medico(['infante_id' => $infante_id]);
         return view('infante.formulario-medico', compact('medico', 'infante_id'));
     }
+
 
     /**
      * Este método:
@@ -230,6 +236,7 @@ class InfanteController extends Controller
         return redirect()->route('infante.presentacion', ['id' => $infante_id])->with('success', 'El dato médico fue registrado exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Elimina un dato médico de la base de datos.
@@ -253,6 +260,7 @@ class InfanteController extends Controller
         return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El dato médico fue eliminado exitosamente.');
     }
 
+
     /* ==================== Familiar ==================== */
 
     /**
@@ -269,6 +277,7 @@ class InfanteController extends Controller
         $familia = new Familia(['infante_id' => $infante_id]);
         return view('infante.agregar-familiar', compact('familia', 'infante_id'));
     }
+
 
     /**
      * Este método:
@@ -292,6 +301,7 @@ class InfanteController extends Controller
         return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El familiar fue registrado exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Recupera los datos de un familiar para su modificación.
@@ -305,6 +315,7 @@ class InfanteController extends Controller
         $this->validarPermisoConID(["Bienestar"], "No tienes permiso para modificar familiares.", "infante.presentacion", $familia->infante_id);
         return view('infante.editar-familiar', compact('familia'));
     }
+
 
     /**
      * Este método:
@@ -326,6 +337,7 @@ class InfanteController extends Controller
         return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('success', 'El familiar fue modificado exitosamente.');
     }
 
+    
     /**
      * Este método:
      * → Elimina un familiar de la base de datos.

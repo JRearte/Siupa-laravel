@@ -159,6 +159,7 @@ class UsuarioController extends Controller
         return view('usuario.editar', compact('usuario', 'categorias'))->with('categoriaEncriptada', Crypt::encryptString($usuario->Categoria));
     }
 
+    
     /**
      * Este método:
      * → Modifica la información de un usuario en la base de datos con datos validados.
@@ -216,8 +217,6 @@ class UsuarioController extends Controller
     }
 
 
-
-
     /**
      * Este método:
      * → Elimina un usuario de la base de datos por su identificador único | Excepto al super usuario.
@@ -244,6 +243,7 @@ class UsuarioController extends Controller
         $this->registrarAccion(auth()->id(), 'Eliminar usuario', "Eliminó al usuario {$nombre} {$apellido} ");
         return redirect()->route('usuario.index')->with('success', 'El usuario fue eliminado exitosamente');
     }
+
 
     /**
      * Este método:
@@ -284,11 +284,12 @@ class UsuarioController extends Controller
         return redirect('/');
     }
 
+
     /**
      * Este método:
      * → Genera un reporte en formato PDF con un listado de usuarios ordenados por apellido.
      * → Establece el tamaño de papel A4 en orientación vertical para el reporte.
-     * → Muestra el reporte PDF directamente en el navegador.
+     * → Descarga el reporte PDF directamente en el navegador.
      * 
      * @return PDF → Retorna el PDF generado para ser mostrado o descargado.
      */
@@ -330,6 +331,15 @@ class UsuarioController extends Controller
         return $pdf->download('Reporte de usuarios ' . now()->format('d-m-Y') . '.pdf');
     }
 
+
+    /**
+     * Este método:
+     * → Genera un reporte especifico en formato PDF con la información del usuario.
+     * → Establece el tamaño de papel A4 en orientación vertical para el reporte.
+     * → Descarga el reporte PDF directamente en el navegador.
+     * 
+     * @return PDF → Retorna el PDF generado para ser mostrado o descargado.
+     */
     public function generarReporteEspecifico(int $id)
     {
         $usuario = Usuario::findOrFail($id);

@@ -14,11 +14,24 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Collection;
+
 
 class AsistenciaController extends Controller
 {
     use RegistraHistorial;
 
+
+    /**
+     * Este método:
+     * → Recupera y pagina los infantes habilitados de cada sala, permitiendo filtrar por nombre, apellido y categoría.
+     * → Permite seleccionar un mes y un año específicos para obtener datos de asistencia.
+     * → Obtiene y estructura los datos de asistencia para ser utilizados en un gráfico.
+     * → Envía los datos de hasta tres salas a la vista de asistencia.
+     * 
+     * @param Request $regla → Contiene los filtros opcionales de búsqueda, mes y año.
+     * @return View → Retorna la vista asistencia.index con los datos procesados.
+     */
     public function listar(Request $regla): View
     {
         $buscar = $regla->input('buscar');
@@ -47,7 +60,6 @@ class AsistenciaController extends Controller
             $datos['sala' . ($index + 1)] = $sala;
         }
 
-        // Pasar los parámetros a obtenerDatosAsistencias
         $graficoDatos = $this->obtenerDatosAsistencias($regla->merge(['mes' => $mes, 'anio' => $anio]))->getData(true);
 
         $sala1 = $datos['sala1'] ?? null;
@@ -58,6 +70,17 @@ class AsistenciaController extends Controller
     }
 
 
+    /**
+     * Este método:
+     * → Obtiene la cantidad total de infantes habilitados.
+     * → Calcula el número de días del mes seleccionado.
+     * → Recupera la cantidad de asistencias registradas por día dentro del mes y año especificados.
+     * → Genera etiquetas y datos estructurados para su uso en gráficos.
+     * → Retorna una respuesta JSON con los datos procesados.
+     * 
+     * @param Request $request → Contiene los parámetros opcionales de mes y año.
+     * @return JsonResponse → Devuelve los datos de asistencias en formato JSON.
+     */
     public function obtenerDatosAsistencias(Request $request)
     {
         $mes = $request->input('mes', Carbon::now()->month);
@@ -95,8 +118,17 @@ class AsistenciaController extends Controller
     }
 
 
-
-
+    /**
+     * Este método:
+     * → Verifica si el usuario tiene permiso para ver asistencias según su rol.
+     * → Obtiene el infante especificado junto con sus asistencias del mes seleccionado.
+     * → Organiza las asistencias por día para su presentación estructurada.
+     * → Retorna la vista con los datos procesados.
+     * 
+     * @param int $infante_id → Identificador del infante a consultar.
+     * @param Request $regla → Contiene el parámetro opcional de mes en formato 'YYYY-MM'.
+     * @return View → Retorna la vista asistencia.presentacion con los datos del infante y sus asistencias.
+     */
     public function presentar(int $infante_id, Request $regla): View
     {
         $this->validarPermiso(["Coordinador", "Maestro", "Bienestar"], "No tienes permiso para ver asistencias.", "asistencia.index");
@@ -143,6 +175,7 @@ class AsistenciaController extends Controller
         return view('asistencia.agregar', compact('asistencia'));
     }
 
+
     /**
      * Este método:
      * → Registra una nueva asistencia en la base de datos con datos validados.
@@ -177,6 +210,7 @@ class AsistenciaController extends Controller
         return view('asistencia.editar', compact('asistencia'));
     }
 
+
     /**
      * Este método:
      * → Modifica la información de una asistencia en la base de datos con datos validados.
@@ -196,6 +230,7 @@ class AsistenciaController extends Controller
         $this->registrarAccion(auth()->id(), 'Modificar asistencia', "Modificó la asistencia de {$infante->Nombre} {$infante->Apellido} ");
         return redirect()->route('asistencia.presentacion', $infante->id)->with('success', 'La asistencia fue modificada exitosamente.');
     }
+
 
     /**
      * Este método:
@@ -218,6 +253,15 @@ class AsistenciaController extends Controller
     }
 
 
+    /**
+     * Este método:
+     * → Genera un reporte en PDF con la asistencia de un infante en una sala específica.
+     * → Calcula la duración de cada asistencia y las horas totales por mes.
+     * → Incluye las primeras y últimas asistencias del año, además de observaciones registradas.
+     * → Descarga el reporte PDF con el nombre del infante y la fecha actual.
+     * 
+     * @return PDF → Retorna el PDF generado para su descarga.
+     */
     public function generarReporteEspecificoInfante(int $infante_id, int $sala_id)
     {
         $infante = Infante::with([
@@ -267,11 +311,19 @@ class AsistenciaController extends Controller
             'observaciones' => $observaciones
         ]);
 
-        //return $pdf->download('Reporte de ' . $infante->Nombre . ' ' . $infante->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
-        return $pdf->stream();
+        return $pdf->download('Reporte de ' . $infante->Nombre . ' ' . $infante->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }
 
 
+    /**
+     * Este método:
+     * → Genera un reporte en PDF con la asistencia de una sala específica.
+     * → Calcula el porcentaje de asistencias registradas por cada usuario.
+     * → Agrupa las asistencias por mes y estado (Presente, Ausente Justificado, Ausente Injustificado).
+     * → Descarga el reporte PDF con el nombre de la sala y la fecha actual.
+     * 
+     * @return PDF → Retorna el PDF generado para su descarga.
+     */
     public function generarReporteEspecificoSala(int $sala_id)
     {
         $sala = Sala::with(['infantes.asistencias'])->findOrFail($sala_id);
@@ -328,8 +380,15 @@ class AsistenciaController extends Controller
     }
 
 
-
-    private function contarAsistenciasPorMes($asistencias)
+    /**
+     * Este método:
+     * → Cuenta la cantidad de asistencias por mes a partir de una colección de asistencias.
+     * → Agrupa las asistencias según el mes en formato 'Y-m'.
+     * 
+     * @param Collection $asistencias → Colección de asistencias a procesar.
+     * @return array → Retorna un arreglo con la cantidad de asistencias por mes.
+     */
+    private function contarAsistenciasPorMes(Collection $asistencias): array
     {
         $asistenciasPorMes = [];
 
@@ -347,7 +406,15 @@ class AsistenciaController extends Controller
     }
 
 
-    private function calcularHorasPorMes($asistencias)
+    /**
+     * Este método:
+     * → Calcula la cantidad de horas asistidas por mes y su acumulado en horas y minutos.
+     * → Cuenta la cantidad de asistencias por mes y su distribución por estado.
+     * 
+     * @param Collection $asistencias → Colección de asistencias a procesar.
+     * @return array → Retorna un arreglo con horas, asistencias y estados por mes, junto con totales generales.
+     */
+    private function calcularHorasPorMes(Collection $asistencias): array
     {
         $horasPorMes = [];
         $totalMinutos = 0;

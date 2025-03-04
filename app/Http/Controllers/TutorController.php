@@ -31,6 +31,17 @@ class TutorController extends Controller
 {
     use RegistraHistorial;
 
+
+    /**
+     * Este método:
+     * → Lista los tutores clasificados en "Trabajadores" y "Alumnos" con sus respectivos infantes.
+     * → Permite filtrar los tutores por "Legajo", "Nombre" o "Apellido" mediante un campo de búsqueda.
+     * → Pagina los resultados de cada categoría con un límite de 7 registros por página.
+     * → Obtiene los 7 cumpleaños de infantes más cercanos y los ordena por proximidad.
+     * 
+     * @param Request $request → Contiene los datos de búsqueda ingresados por el usuario.
+     * @return View → Retorna la vista con los datos de tutores y cumpleaños próximos.
+     */
     public function listar(Request $request): View
     {
         $buscar = $request->input('buscar');
@@ -68,30 +79,30 @@ class TutorController extends Controller
 
         // ==================== Obtener los cumpleaños más cercanos ====================
         $hoy = Carbon::today();
-        
+
         $birthday = Infante::select('Nombre', 'Apellido', 'Fecha_de_nacimiento')
             ->get()
             ->map(function ($infante) use ($hoy) {
                 $fechaCumple = Carbon::parse($infante->Fecha_de_nacimiento)->setYear($hoy->year);
-        
+
                 if ($fechaCumple->lessThan($hoy)) {
                     $fechaCumple->addYear();
                 }
                 $infante->fechaCumple = $fechaCumple;
                 $infante->diasParaCumple = $hoy->diffInDays($fechaCumple);
-                
+
                 return $infante;
             })
             ->sortBy('diasParaCumple')
             ->take(7);
-        
-        
+
 
         $trabajadores = $datos['trabajadores'] ?? null;
         $alumnos = $datos['alumnos'] ?? null;
 
         return view('tutor.index', compact('trabajadores', 'alumnos', 'buscar', 'birthday'));
     }
+
 
     /**
      * Este método:
@@ -204,10 +215,15 @@ class TutorController extends Controller
      * → Modifica la información de un tutor en la base de datos con datos validados.
      * → Solo permite la modificación a usuarios con categoría "Bienestar".
      * → Registra la acción en el historial.
+     * → Si el tutor es deshabilitado, también se deshabilitan sus infantes y familiares.
+     * → Si el tutor es habilitado, también se habilitan sus infantes y familiares.
+     * → Redirige según el tipo de tutor:
+     *    → Si es "Trabajador", verifica si ya existe un registro para editarlo o agregarlo.
+     *    → Si es "Alumno", verifica si ya tiene una carrera asociada para editar o agregar.
      * 
      * @param TutorRequest $regla → Datos validados del tutor a modificar.
      * @param Tutor $tutor → Objeto tutor con la estructura y datos actuales.
-     * @return RedirectResponse → Redirige a la página principal con un mensaje de éxito o error.
+     * @return RedirectResponse → Redirige a la vista correspondiente con un mensaje de éxito o error.
      */
     public function modificar(TutorRequest $regla, Tutor $tutor): RedirectResponse
     {
@@ -282,6 +298,7 @@ class TutorController extends Controller
         return redirect()->route('tutor.index')->with('success', 'El tutor fue eliminado exitosamente');
     }
 
+
     /* ==================== Contacto ==================== */
 
     /**
@@ -298,6 +315,7 @@ class TutorController extends Controller
         $telefono = new Telefono(['tutor_id' => $tutor_id]);
         return view('tutor.formulario-telefono', compact('telefono', 'tutor_id'));
     }
+
 
     /**
      * Este método:
@@ -319,6 +337,7 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Registrar teléfono', "Registró contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El teléfono fue registrado exitosamente.');
     }
+
 
     /**
      * Este método:
@@ -355,6 +374,7 @@ class TutorController extends Controller
         return view('tutor.formulario-correo', compact('correo', 'tutor_id'));
     }
 
+
     /**
      * Este método:
      * → Registra un nuevo correo electrónico en la base de datos con datos validados.
@@ -375,6 +395,7 @@ class TutorController extends Controller
         $this->registrarAccion(auth()->id(), 'Registrar correo', "Registró contacto del tutor {$tutor->Nombre} {$tutor->Apellido}");
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El correo fue registrado exitosamente.');
     }
+
 
     /**
      * Este método:
@@ -413,6 +434,7 @@ class TutorController extends Controller
         return view('tutor.agregar-domicilio', compact('domicilio', 'tutor_id'));
     }
 
+
     /**
      * Este método:
      * → Registra los datos de un domicilio con validaciones.
@@ -434,6 +456,7 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El domicilio fue registrado exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Recupera los datos de un domicilio por el identificador del tutor.
@@ -448,6 +471,7 @@ class TutorController extends Controller
         $domicilio = Domicilio::where('tutor_id', $tutor_id)->firstOrFail();
         return view('tutor.editar-domicilio', compact('domicilio', 'tutor_id'));
     }
+
 
     /**
      * Este método:
@@ -488,6 +512,7 @@ class TutorController extends Controller
         return view('tutor.agregar-trabajador', compact('trabajador', 'tutor_id'));
     }
 
+
     /**
      * Este método:
      * → Registra los datos de un trabajador con validaciones.
@@ -507,6 +532,7 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', ['id' => $tutor_id])->with('success', 'El trabajador fue registrado exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Recupera los datos de un trabajador por el identificador del tutor.
@@ -521,6 +547,7 @@ class TutorController extends Controller
         $trabajador = Trabajador::where('tutor_id', $tutor_id)->firstOrFail();
         return view('tutor.editar-trabajador', compact('trabajador', 'tutor_id'));
     }
+
 
     /**
      * Este método:
@@ -539,6 +566,7 @@ class TutorController extends Controller
         $trabajador->update($datos);
         return redirect()->route('tutor.presentacion', ['id' => $trabajador->tutor_id])->with('success', 'El trabajador fue modificado exitosamente.');
     }
+
 
     /* ==================== Cuota ==================== */
 
@@ -607,6 +635,7 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La cuota fue eliminada exitosamente');
     }
 
+
     /* ==================== Carrera ==================== */
 
     /**
@@ -623,6 +652,7 @@ class TutorController extends Controller
         $carrera = new Carrera(['tutor_id' => $tutor_id]);
         return view('tutor.agregar-carrera', compact('carrera', 'tutor_id'));
     }
+
 
     /**
      * Este método:
@@ -642,6 +672,7 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', $tutor_id)->with('success', 'La carrera fue registrada exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Recupera los datos de una carrera por el identificador del tutor.
@@ -656,6 +687,7 @@ class TutorController extends Controller
         $carrera = Carrera::where('tutor_id', $tutor_id)->firstOrFail();
         return view('tutor.editar-carrera', compact('carrera', 'tutor_id'));
     }
+
 
     /**
      * Este método:
@@ -673,6 +705,7 @@ class TutorController extends Controller
         $carrera->update($datos);
         return redirect()->route('tutor.presentacion', ['id' => $carrera->tutor_id])->with('success', 'La carrera fue modificada exitosamente.');
     }
+
 
     /* ==================== Asignatura ==================== */
 
@@ -720,6 +753,7 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', $tutor_id)->with('success', 'La asignatura fue registrada exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Recupera los datos de una asignatura por su identificador y el de su carrera.
@@ -758,6 +792,7 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', ['id' => $tutor->id])->with('success', 'La asignatura fue modificada exitosamente.');
     }
 
+
     /**
      * Este método:
      * → Elimina una asignatura de la base de datos.
@@ -778,6 +813,19 @@ class TutorController extends Controller
         return redirect()->route('tutor.presentacion', $tutor->id)->with('success', 'La asignatura fue eliminada exitosamente');
     }
 
+
+    /**
+     * Este método:
+     * → Genera un reporte específico en formato PDF con la información detallada de un tutor.
+     * → Obtiene los datos del tutor junto con sus relaciones.
+     * → Calcula la edad del tutor, sus infantes y familiares.
+     * → Determina el total de cuotas pagadas si es trabajador.
+     * → Calcula el porcentaje de asignaturas aprobadas si es alumno.
+     * → Descarga el reporte PDF directamente en el navegador.
+     * 
+     * @param int $tutor_id → ID del tutor a procesar.
+     * @return PDF → Retorna el PDF generado para ser mostrado o descargado.
+     */
     public function generarReporteEspecifico(int $tutor_id)
     {
         $tutor = Tutor::with([
@@ -825,8 +873,6 @@ class TutorController extends Controller
             'totalCuotasPagadas' => $totalCuotasPagadas
         ]);
 
-        return $pdf->stream();
+        return $pdf->download('Reporte de ' . $tutor->Nombre . ' ' . $tutor->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }
-
-    //return $pdf->download('Reporte de ' . $tutor->Nombre . ' ' . $tutor->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
 }

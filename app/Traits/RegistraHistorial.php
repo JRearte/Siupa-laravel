@@ -46,7 +46,21 @@ trait RegistraHistorial
             throw new \App\Exceptions\ValidacionException($mensaje, $ruta);
         }
     }
-    
+
+
+    /**
+     * Este método:
+     * → Valida si el usuario autenticado tiene la categoría requerida para realizar la acción.
+     * → Si no tiene permisos, lanza una excepción personalizada con el mensaje, la ruta y el ID especificado.
+     * 
+     * @param array $categorias → Categorías permitidas para realizar la acción.
+     * @param string $mensaje → Mensaje de error en caso de que el usuario no tenga permisos.
+     * @param string $ruta → Ruta a la que se redirige si el usuario no tiene permisos.
+     * @param int $id → Identificador adicional que se pasa a la excepción.
+     * @return void → No retorna ningún valor.
+     * 
+     * @throws \App\Exceptions\ValidacionException → Excepción lanzada si el usuario no tiene la categoría correcta.
+     */
     public function validarPermisoConID(array $categorias, string $mensaje, string $ruta, int $id)
     {
         $usuarioAutenticado = auth()->user();
@@ -54,7 +68,4 @@ trait RegistraHistorial
             throw new \App\Exceptions\ValidacionException($mensaje, $ruta, ['id' => $id]);
         }
     }
-    
-    
-     
 }
