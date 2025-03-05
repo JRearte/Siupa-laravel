@@ -56,6 +56,10 @@
         font-size: 1.2em;
         margin-bottom: -5px;
         text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
     }
 
     .sidebar .user-extra {
@@ -102,7 +106,7 @@
         font-size: 14px;
     }
 
-    .sidebar .nav-link.active{
+    .sidebar .nav-link.active {
         background: rgba(255, 255, 255, 0.7);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         color: #ff0000;
@@ -212,12 +216,12 @@
         color: #ff0000;
     }
 
-    .sidebar .nav-link.active{
+    .sidebar .nav-link.active {
         background: rgba(255, 255, 255, 0.7);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         color: #ff0000;
     }
-    
+
     .sidebar .icon {
         position: relative;
         top: 10px;
