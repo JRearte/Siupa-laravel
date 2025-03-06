@@ -17,7 +17,7 @@
                         <i class="fas fa-search"></i> <span>{{ __('Buscar') }}</span>
                     </button>
                 </form>
-                
+
 
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -25,7 +25,7 @@
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <ul class="dropdown-menu">
-                                    
+
                         <li>
                             <a class="dropdown-item text-danger" href="{{ route('usuario.logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -47,7 +47,7 @@
         <div class="contenido-principal">
             @include('asistencia.listar', ['sala1' => $sala1, 'sala2' => $sala2, 'sala3' => $sala3])
 
-            <div>
+            <div class="contenido-estadistico">
                 @include('asistencia.estadistica', compact('graficoDatos'))
             </div>
         </div>
