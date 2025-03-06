@@ -256,6 +256,7 @@ class TutorController extends Controller
             $trabajador = Trabajador::where('tutor_id', $tutor->id)->exists();
 
             if ($trabajador) {
+                $this->registrarAccion(auth()->id(), 'Modificar tutor trabajador', "Modifico al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
                 return redirect()->route('tutor.editar-trabajador', $tutor->id);
             }
             return redirect()->route('tutor.agregar-trabajador', $tutor->id);
@@ -263,6 +264,7 @@ class TutorController extends Controller
             $carrera = Carrera::where('tutor_id', $tutor->id)->exists();
 
             if ($carrera) {
+                $this->registrarAccion(auth()->id(), 'Modificar tutor alumno', "Modifico al tutor {$tutor->Tipo_tutor} {$tutor->Nombre} {$tutor->Apellido} ");
                 return redirect()->route('tutor.editar-carrera', $tutor->id);
             }
             return redirect()->route('tutor.agregar-carrera', $tutor->id);
