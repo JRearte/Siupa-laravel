@@ -260,7 +260,7 @@
         <p class="formato">
             <strong>{{ $infante?->Nombre }} {{ $infante?->Apellido }}</strong>,
             nacido el {{ $infante?->Fecha_de_nacimiento?->translatedFormat('d \d\e F \d\e Y') }}, actualmente con
-            {{ $infante?->edad }} años,
+            {{ $infante?->edad == 1 ? $infante?->edad . ' año' : $infante?->edad .' años' }},
             @if ($infante?->familiares?->isNotEmpty())
                 vive junto a {{ $infante?->familiares?->count() }}
                 {{ $infante?->familiares?->count() <= 1 ? 'familiar que lo acompaña en su hogar. Este es:' : 'familiares que lo acompañan en su hogar. Estos son: ' }}

@@ -865,6 +865,7 @@ class TutorController extends Controller
                 $porcentaje = $totalAsignaturas > 0 ? round(($condicion / $totalAsignaturas) * 100, 2) : 0;
             }
         }
+        
 
         $pdf = PDF::loadView('reporte/reporte-especifico-tutor', [
             'tutor' => $tutor,
@@ -872,6 +873,11 @@ class TutorController extends Controller
             'totalAsignaturas' => $totalAsignaturas,
             'totalCuotasPagadas' => $totalCuotasPagadas
         ]);
+
+        $pdf->setPaper('A4', 'portrait');
+        $pdf->render();
+
+        $this->registrarAccion(auth()->id(), 'Descargar reporte especifico', "Descargo el reporte del tutor {$tutor->Nombre} {$tutor->Apellido} ");
 
         return $pdf->download('Reporte de ' . $tutor->Nombre . ' ' . $tutor->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }

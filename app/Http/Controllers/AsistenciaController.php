@@ -90,6 +90,7 @@ class AsistenciaController extends Controller
         $diasMes = Carbon::create($anio, $mes, 1)->daysInMonth;
 
         $asistencias = Asistencia::selectRaw('DAY(Fecha) as dia, COUNT(*) as cantidad')
+            ->where('Estado', 'Presente')
             ->whereYear('Fecha', $anio)
             ->whereMonth('Fecha', $mes)
             ->groupBy('dia')
@@ -310,6 +311,7 @@ class AsistenciaController extends Controller
             'ultimaAsistencia' => $ultimaAsistencia ? Carbon::parse($ultimaAsistencia->Fecha)->format('d/m/Y') : 'No disponible',
             'observaciones' => $observaciones
         ]);
+        $this->registrarAccion(auth()->id(), 'Descargar reporte especifico', "Descargo el reporte del infante {$infante->Nombre} {$infante->Apellido} ");
 
         return $pdf->download('Reporte de ' . $infante->Nombre . ' ' . $infante->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }

@@ -19,13 +19,13 @@
         <canvas id="asistenciasChart" data-grafico-datos='@json($graficoDatos)'></canvas>
     </div>
 
-    <!-- Leyenda personalizada -->
+    <!-- Leyenda -->
     <div class="asistencias-legend">
-        <span class="legend-box" style="background-color: #FF4D4D;"></span> 0-30% (Deficiente)
-        <span class="legend-box" style="background-color: #FFA500;"></span> 30-50% (Insuficiente)
+        <span class="legend-box" style="background-color: #FF4D4D;"></span> 0-30% (Muy Baja)
+        <span class="legend-box" style="background-color: #FFA500;"></span> 30-50% (Baja)
         <span class="legend-box" style="background-color: #FFD700;"></span> 50-70% (Moderada)
-        <span class="legend-box" style="background-color: #90EE90;"></span> 70-90% (Buena)
-        <span class="legend-box" style="background-color: #008000;"></span> 90-100% (Excelente)
+        <span class="legend-box" style="background-color: #90EE90;"></span> 70-90% (Alta)
+        <span class="legend-box" style="background-color: #008000;"></span> 90-100% (Muy Alta)
     </div>
-    
+        
 </div>

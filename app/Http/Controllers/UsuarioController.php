@@ -348,8 +348,7 @@ class UsuarioController extends Controller
         $totalHistoriales = Historial::count();
         $porcentajeHistorial = $totalHistoriales > 0 ? round(($cantidadHistorial / $totalHistoriales) * 100, 2) : 0;
 
-        $this->registrarAccion(auth()->id(), 'Descargar reporte específico', "Descargó el reporte del usuario {$usuario->Nombre} {$usuario->Apellido}");
-
+        
         $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact(
             'usuario',
             'historiales',
@@ -357,9 +356,11 @@ class UsuarioController extends Controller
             'totalHistoriales',
             'porcentajeHistorial'
         ));
-
+        
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
+        
+        $this->registrarAccion(auth()->id(), 'Descargar reporte específico', "Descargó el reporte del usuario {$usuario->Nombre} {$usuario->Apellido}");
         return $pdf->download('Reporte de ' . $usuario->Nombre . ' ' . $usuario->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }
 }
