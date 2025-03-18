@@ -60,11 +60,9 @@ class UsuarioController extends Controller
 
         // ==================== Historial ====================
         $historial = Historial::orderBy('created_at', 'desc')->get();
-        $modelo = new Usuario;
 
         return view('usuario.index', compact(
             'usuarios',
-            'modelo',
             'buscar',
             'totalUsuarios',
             'usuariosBienestar',
@@ -112,7 +110,15 @@ class UsuarioController extends Controller
     {
         $this->validarPermiso(["Bienestar"], "No tienes permiso para registrar usuarios.", "usuario.index");
         $usuario = new Usuario();
-        return view('usuario.agregar', compact('usuario'));
+
+        $categorias = [
+            'Bienestar' => Crypt::encryptString('Bienestar'),
+            'Coordinador' => Crypt::encryptString('Coordinador'),
+            'Maestro' => Crypt::encryptString('Maestro'),
+            'Invitado' => Crypt::encryptString('Invitado'),
+        ];
+
+        return view('usuario.agregar', compact('usuario', 'categorias'))->with('categoriaEncriptada', Crypt::encryptString($usuario->Categoria));
     }
 
 
@@ -129,6 +135,8 @@ class UsuarioController extends Controller
     {
         $this->validarPermiso(["Bienestar"], "No tienes permiso para registrar usuarios.", "usuario.index");
         $datos = $regla->validated();
+        $categoria = Crypt::decryptString($datos['Categoria']);
+        $datos['Categoria'] = $categoria;
         $datos['password'] = Hash::make($datos['password']);
         $usuario = Usuario::create($datos);
         $this->registrarAccion(auth()->id(), 'Registrar usuario', "Registro al usuario {$usuario->Nombre} {$usuario->Apellido} ");
@@ -159,7 +167,7 @@ class UsuarioController extends Controller
         return view('usuario.editar', compact('usuario', 'categorias'))->with('categoriaEncriptada', Crypt::encryptString($usuario->Categoria));
     }
 
-    
+
     /**
      * Este método:
      * → Modifica la información de un usuario en la base de datos con datos validados.
@@ -210,7 +218,7 @@ class UsuarioController extends Controller
         } else {
             unset($datos['password']);
         }
-        
+
         $usuario->update($datos);
         $this->registrarAccion(auth()->id(), 'Modificar usuario', "Modificó el usuario {$usuario->Nombre} {$usuario->Apellido}");
         return redirect()->route('usuario.presentacion', $usuario->id)->with('success', 'El usuario fue modificado exitosamente');
@@ -348,7 +356,7 @@ class UsuarioController extends Controller
         $totalHistoriales = Historial::count();
         $porcentajeHistorial = $totalHistoriales > 0 ? round(($cantidadHistorial / $totalHistoriales) * 100, 2) : 0;
 
-        
+
         $pdf = PDF::loadView('reporte/reporte-especifico-usuario', compact(
             'usuario',
             'historiales',
@@ -356,10 +364,10 @@ class UsuarioController extends Controller
             'totalHistoriales',
             'porcentajeHistorial'
         ));
-        
+
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
-        
+
         $this->registrarAccion(auth()->id(), 'Descargar reporte específico', "Descargó el reporte del usuario {$usuario->Nombre} {$usuario->Apellido}");
         return $pdf->download('Reporte de ' . $usuario->Nombre . ' ' . $usuario->Apellido . ' ' . now()->format('d-m-Y') . '.pdf');
     }
