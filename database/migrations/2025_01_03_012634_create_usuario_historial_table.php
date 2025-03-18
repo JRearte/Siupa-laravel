@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('usuario_historial', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('usuario')->onDelete('cascade');;
+            $table->foreignId('usuario_id')->constrained('usuario')->onDelete('cascade');
             $table->string('accion', 40);
             $table->string('detalles', 200)->nullable();
             $table->timestamps();
