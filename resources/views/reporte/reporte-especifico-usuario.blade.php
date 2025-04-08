@@ -140,7 +140,7 @@
             <p class="formato">
                 El usuario <strong>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</strong>, quien desempeña el rol de
                 <strong>{{ $usuario->Categoria }}</strong> fue registrado en el sistema
-                SUIpa el dia
+                SIUpa el dia
                 <strong>{{ $usuario->created_at->translatedFormat('d F Y') }}</strong>, iniciando su actividad en la
                 plataforma.
                 Desde entonces, ha realizado un total de

@@ -161,7 +161,7 @@ class InfanteController extends Controller
         $sala = Sala::findOrFail($infante->sala_id);
         $cantidadInfantes = Infante::where('sala_id', $sala->id)->where('Habilitado', 1)->count();
     
-        if ($sala->Capacidad == $cantidadInfantes && isset($datos['Habilitado']) && $datos['Habilitado'] == 1) {
+        if ($sala->Capacidad <= $cantidadInfantes && isset($datos['Habilitado']) && $datos['Habilitado'] == 1) {
             return redirect()->route('infante.presentacion', ['id' => $infante->id])->with('info', "La sala {$sala->Nombre} está llena, no se puede habilitar al infante.");
         }
 

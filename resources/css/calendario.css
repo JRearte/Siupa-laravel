@@ -152,23 +152,23 @@
     cursor: pointer;
 }
 
-/* Botón de Modificar */
+
 .btn-modificar {
-    background-color: #6c3d2d; /* Marrón oscuro */
+    background-color: #A67C52;
     color: white;
 }
 .btn-modificar:hover {
-    background-color: #4a281d;
+    background-color: #8D6A45;
 }
 
-/* Botón de Eliminar */
 .btn-eliminar {
-    background-color: #ff0000; /* Rojo */
+    background-color: #E57373;
     color: white;
 }
 .btn-eliminar:hover {
-    background-color: #cc0000;
+    background-color: #D32F2F; 
 }
+
 
 /* ==================== Ajustes responsivos ==================== */
 @media (max-width: 576px) {

@@ -36,14 +36,14 @@
                                         </div>
                                         <div class="categoria">
                                             @foreach ($trabajador->infantes as $infante)
+                                                @php
+                                                    $nombreCompleto = $infante->Nombre;
+                                                    $primerNombre = explode(' ', $nombreCompleto)[0];
+                                                    $apellidoCompleto = $infante->Apellido;
+                                                    $primerApellido = explode(' ', $apellidoCompleto)[0];
+                                                @endphp
                                                 <div>
-                                                    @if ($infante->Genero == 'Masculino')
-                                                        <i class="fa-solid fa-mars icon"></i> {{ $infante->Nombre }}
-                                                        {{ $infante->Apellido }}
-                                                    @else
-                                                        <i class="fa-solid fa-venus icon"></i> {{ $infante->Nombre }}
-                                                        {{ $infante->Apellido }}
-                                                    @endif
+                                                    {{ $primerNombre }} {{ $primerApellido}}
                                                 </div>
                                                 |
                                             @endforeach
@@ -131,14 +131,14 @@
                                         </div>
                                         <div class="categoria">
                                             @foreach ($alumno->infantes as $infante)
+                                                @php
+                                                    $nombreCompleto = $infante->Nombre;
+                                                    $primerNombre = explode(' ', $nombreCompleto)[0];
+                                                    $apellidoCompleto = $infante->Apellido;
+                                                    $primerApellido = explode(' ', $apellidoCompleto)[0];
+                                                @endphp
                                                 <div>
-                                                    @if ($infante->Genero == 'Masculino')
-                                                        <i class="fa-solid fa-mars icon"></i> {{ $infante->Nombre }}
-                                                        {{ $infante->Apellido }}
-                                                    @else
-                                                        <i class="fa-solid fa-venus icon"></i> {{ $infante->Nombre }}
-                                                        {{ $infante->Apellido }}
-                                                    @endif
+                                                    {{ $primerNombre }} {{ $primerApellido}}
                                                 </div>
                                                 |
                                             @endforeach
@@ -220,7 +220,9 @@
                                         <div class="birthday">
                                             {{ ucfirst($infante->fechaCumple->translatedFormat('d F')) }}
                                             @if ($esHoy)
-                                                <span class="aviso-cumple"><i class="fa-solid fa-birthday-cake pastel"></i> ¡Hoy es su cumpleaños! <i class="fa-solid fa-gift pastel"></i></span>
+                                                <span class="aviso-cumple"><i
+                                                        class="fa-solid fa-birthday-cake pastel"></i> ¡Hoy es su
+                                                    cumpleaños! <i class="fa-solid fa-gift pastel"></i></span>
                                             @endif
                                         </div>
                                     </div>

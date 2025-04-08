@@ -141,7 +141,11 @@
 
 
     <p class="formato">
-        El infante <strong>{{ $infante->Nombre }} {{ $infante->Apellido }}</strong> comenzó su cursada en el jardín
+        @php
+            $conector = $infante?->Genero == 'Masculino' ? 'EL ' : 'La ';
+        @endphp
+
+        {{$conector}} infante <strong>{{ $infante->Nombre }} {{ $infante->Apellido }}</strong> comenzó su cursada en el jardín
         maternal Upa en la sala <strong>{{ $infante->sala->Nombre }}</strong>, desde el
         <strong>{{ $primerAsistencia }}</strong> hasta el <strong>{{ $ultimaAsistencia }}</strong>,
         registrando un total de <strong>{{ $totalAsistencias }}</strong> asistencias a lo largo del año.
@@ -174,7 +178,8 @@
                 </tr>
             @endforeach
             <tr>
-                <th colspan="6"> Se transcurrió un total de <strong>{{ $totalGeneral }}</strong> en asistencia durante el año.</th>
+                <th colspan="6"> Se transcurrió un total de <strong>{{ $totalGeneral }}</strong> en asistencia
+                    durante el año.</th>
             </tr>
         </tbody>
     </table>

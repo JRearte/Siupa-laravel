@@ -258,13 +258,21 @@
     @foreach ($tutor->infantes as $infante)
         <p style="text-align: center"><strong>Información del Infante</strong></p>
         <p class="formato">
+            @php
+                $conector = $infante?->Genero == 'Masculino' ? 'lo ' : 'la ';
+                $nacido = $infante?->Genero == 'Masculino' ? 'nacido' : 'nacida';
+                $cantidad = $infante?->familiares?->count();
+            @endphp
+
             <strong>{{ $infante?->Nombre }} {{ $infante?->Apellido }}</strong>,
-            nacido el {{ $infante?->Fecha_de_nacimiento?->translatedFormat('d \d\e F \d\e Y') }}, actualmente con
-            {{ $infante?->edad == 1 ? $infante?->edad . ' año' : $infante?->edad .' años' }},
+            {{ $nacido }} el {{ $infante?->Fecha_de_nacimiento?->translatedFormat('d \d\e F \d\e Y') }},
+            actualmente con
+            {{ $infante?->edad == 1 ? $infante?->edad . ' año' : $infante?->edad . ' años' }},
             @if ($infante?->familiares?->isNotEmpty())
-                vive junto a {{ $infante?->familiares?->count() }}
-                {{ $infante?->familiares?->count() <= 1 ? 'familiar que lo acompaña en su hogar. Este es:' : 'familiares que lo acompañan en su hogar. Estos son: ' }}
+                vive junto a 
+                {{ $infante?->familiares?->count() <= 1 ? 'su familiar que ' . $conector . 'acompaña en su hogar. Este es:' : ' sus ' . $cantidad . ' familiares que ' . $conector . 'acompañan en su hogar. Estos son:' }}
         </p>
+
 
         <ul>
             @foreach ($infante?->familiares as $familiar)
